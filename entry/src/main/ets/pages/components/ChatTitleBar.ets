@@ -24,6 +24,12 @@ export struct CustomeTitleBar {
   @Prop connectStatus: boolean;
 
   @Prop keepAliveStatus: boolean;
+  
+  // 用户头像路径（从父组件传入）
+  @Prop avatarPath: string = '';
+  
+  // 用户头像首字母（从父组件传入）
+  @Prop avatarText: string = 'U';
 
   // 返回按钮图片
   backImg: Resource = $r("app.media.widget_title_btn_back_normal");
@@ -61,6 +67,33 @@ export struct CustomeTitleBar {
         .layoutWeight(1)
 
         Row() {
+          // 用户头像显示区域
+          if (this.avatarPath && this.avatarPath.length > 0) {
+            // 显示自定义头像
+            Image('file://' + this.avatarPath)
+              .width(32)
+              .height(32)
+              .borderRadius(16)
+              .objectFit(ImageFit.Cover)
+              .margin({ right: 6 })
+          } else {
+            // 显示默认头像（首字母）
+            Stack() {
+              Circle()
+                .width(32)
+                .height(32)
+                .fill('#0A59F7')
+              
+              Text(this.avatarText)
+                .fontSize(16)
+                .fontColor(Color.White)
+                .fontWeight(FontWeight.Medium)
+            }
+            .width(32)
+            .height(32)
+            .margin({ right: 6 })
+          }
+          
           // Image($r(this.connectStatus ? (this.keepAliveStatus ? 'app.media.ic_net_status_light': 'app.media.ic_net_status_ok') : 'app.media.ic_net_status_warn'))
           //   .width(12)
           //   .height(12)

@@ -13,6 +13,10 @@ import MsgType from "../../constants/MsgType";
 import { MsgContentView_text } from "../msg_content_view/MsgContentView_text";
 import MsgSendStatus from "../../constants/MsgSendStatus";
 import ToolKits from "../../utils/ToolKits";
+import UserDatabaseHelper from "../../utils/UserDatabaseHelper";
+import { common } from '@kit.AbilityKit';
+
+const TAG: string = '[NormalMsgView] ';
 
 /**
  * 普通聊天消息UI组件。
@@ -22,6 +26,60 @@ import ToolKits from "../../utils/ToolKits";
 @Component
 export struct MsgView_normal {
   message?: Message;
+  
+  /** 头像路径（自定义头像） */
+  @State avatarPath: string = '';
+  /** 发送者首字母（用于默认头像） */
+  @State avatarText: string = 'U';
+  /** 数据库助手 */
+  private userDbHelper: UserDatabaseHelper | null = null;
+  /** 上下文 */
+  private context: common.UIAbilityContext | null = null;
+  
+  /**
+   * 组件即将出现时调用。
+   */
+  async aboutToAppear(): Promise<void> {
+    // 初始化上下文和数据库助手
+    try {
+      this.context = getContext(this) as common.UIAbilityContext;
+      this.userDbHelper = UserDatabaseHelper.getInstance(this.context);
+    } catch (err) {
+      console.error(TAG + 'Failed to get context: ' + JSON.stringify(err));
+    }
+    
+    // 设置发送者首字母
+    if (this.message && this.message.senderDisplayName && this.message.senderDisplayName.length > 0) {
+      this.avatarText = this.message.senderDisplayName.charAt(0).toUpperCase();
+    } else if (this.message && this.message.senderId && this.message.senderId.length > 0) {
+      this.avatarText = this.message.senderId.charAt(0).toUpperCase();
+    }
+    
+    // 加载头像
+    await this.loadAvatar();
+  }
+  
+  /**
+   * 加载发送者头像。
+   */
+  async loadAvatar(): Promise<void> {
+    if (!this.userDbHelper || !this.message || !this.message.senderId) {
+      return;
+    }
+    
+    try {
+      const savedAvatarPath = await this.userDbHelper.getUserAvatar(this.message.senderId);
+      if (savedAvatarPath && ToolKits.isFileExists(savedAvatarPath)) {
+        this.avatarPath = savedAvatarPath;
+        console.info(TAG + 'Avatar loaded for ' + this.message.senderId + ': ' + savedAvatarPath);
+      } else {
+        this.avatarPath = '';
+      }
+    } catch (err) {
+      console.error(TAG + 'Failed to load avatar: ' + JSON.stringify(err));
+      this.avatarPath = '';
+    }
+  }
 
   build() {
     Row() {
@@ -75,13 +133,30 @@ export struct MsgView_normal {
 
   @Builder
   AvatarImage(isOutgoing: boolean) {
-    Image($r(isOutgoing ? "app.media.default_avatar1": "app.media.default_avatar2"))
-      .backgroundColor(Color.White)
-      .objectFit(ImageFit.Fill)
-      .width(40)
-      .height(40)
-      .borderRadius(20)
-      .margin({ left: 8, right: 8 })
+    Stack() {
+      if (this.avatarPath && this.avatarPath.length > 0) {
+        // 显示自定义头像
+        Image('file://' + this.avatarPath)
+          .width(40)
+          .height(40)
+          .borderRadius(20)
+          .objectFit(ImageFit.Cover)
+      } else {
+        // 显示默认头像（首字母）
+        Circle()
+          .width(40)
+          .height(40)
+          .fill(isOutgoing ? '#0A59F7' : '#07C160')
+        
+        Text(this.avatarText)
+          .fontSize(18)
+          .fontColor(Color.White)
+          .fontWeight(FontWeight.Medium)
+      }
+    }
+    .width(40)
+    .height(40)
+    .margin({ left: 8, right: 8 })
   }
 
   @Builder

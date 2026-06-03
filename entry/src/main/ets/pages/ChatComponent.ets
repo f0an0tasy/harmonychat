@@ -22,6 +22,7 @@ import {router } from '@kit.ArkUI';
 import ToolKits from './utils/ToolKits';
 import { common } from '@kit.AbilityKit';
 import { MsgTimeView } from './components/msg_view/MsgTimeView';
+import UserDatabaseHelper from './utils/UserDatabaseHelper';
 
 const TAG: string = '[ChatComponent] '
 
@@ -39,9 +40,21 @@ export struct ChatComponent {
   @State connectStatus: boolean = ClientCoreSDK.getInstance().connectedToServer;
   /** 心跳状态：true表示刚刚已发送心跳包，本心跳状态仅仅是为了在ui界面上实现心跳呼吸灯效果 */
   @State keepAliveStatus: boolean = false;
+  
+  /** 当前登录用户名 */
+  @StorageProp('currentUsername') currentUsername: string = '';
+  /** 用户头像首字母 */
+  @State avatarText: string = 'U';
+  /** 用户头像路径 */
+  @State avatarPath: string = '';
+  /** 头像刷新触发器（用于监听Tab切换事件） */
+  @StorageLink('avatarRefreshTrigger') @Watch('onAvatarRefreshTriggered') avatarRefreshTrigger: number = 0;
 
   /** 聊天消息列表对应的数据源对象（本对象与MessageProvider配合，用于实现UI界面与数据组的解偶）*/
   messagesDataSource: MessagesDataSource = new MessagesDataSource();
+  
+  /** 数据库助手 */
+  private userDbHelper: UserDatabaseHelper | null = null;
 
   /** 事件回调：增加了聊天消息 */
   meessageAddedEventCallback?: Function;
@@ -62,10 +75,63 @@ export struct ChatComponent {
    * 生命周期中只被调用一次，类似于iOS中的viewDidLoad、Android中的onCreate.
    */
   aboutToAppear() {
+    // 初始化数据库助手
+    this.userDbHelper = UserDatabaseHelper.getInstance(getContext(this) as common.UIAbilityContext);
+    
+    // 设置头像文字（用户名首字母）
+    if (this.currentUsername && this.currentUsername.length > 0) {
+      this.avatarText = this.currentUsername.charAt(0).toUpperCase();
+    }
+    
+    // 加载用户头像
+    this.loadUserAvatar();
+    
     // 添加事件通知
     this.addEvents();
     // 添加一条预定义的系统消息在列表列表里
     IMClientManager.getInstance().getMessageProvider().addSystemMessage('当前通信层，基于鸿蒙NEXT原生WebSocket');
+  }
+  
+  /**
+   * 页面显示时调用（用于实现头像同步）。
+   * 当用户从"我的"页面返回时，重新加载头像以实现同步。
+   */
+  onPageShow() {
+    // 重新加载头像，确保与"我的"页面同步
+    this.loadUserAvatar();
+  }
+  
+  /**
+   * 头像刷新触发器变化时的回调。
+   * 当Tab切换到聊天页面时，重新加载头像以实现同步。
+   */
+  onAvatarRefreshTriggered() {
+    // 重新加载头像，确保与"我的"页面同步
+    this.loadUserAvatar();
+    console.info(TAG + 'Avatar refresh triggered by tab switch');
+  }
+  
+  /**
+   * 加载用户头像。
+   */
+  async loadUserAvatar(): Promise<void> {
+    if (!this.userDbHelper || !this.currentUsername) {
+      return;
+    }
+    
+    try {
+      const savedAvatarPath = await this.userDbHelper.getUserAvatar(this.currentUsername);
+      if (savedAvatarPath && ToolKits.isFileExists(savedAvatarPath)) {
+        this.avatarPath = savedAvatarPath;
+        console.info(TAG + 'Avatar loaded: ' + savedAvatarPath);
+      } else {
+        this.avatarPath = '';
+        console.info(TAG + 'No custom avatar found, using default');
+      }
+    } catch (err) {
+      console.error(TAG + 'Failed to load avatar: ' + JSON.stringify(err));
+      this.avatarPath = '';
+    }
   }
 
   /**
@@ -209,7 +275,12 @@ export struct ChatComponent {
   build() {
     Column() {
       // 聊天界面自定义标题栏
-      CustomeTitleBar({ connectStatus: this.connectStatus, keepAliveStatus: this.keepAliveStatus })
+      CustomeTitleBar({ 
+        connectStatus: this.connectStatus, 
+        keepAliveStatus: this.keepAliveStatus,
+        avatarPath: this.avatarPath,
+        avatarText: this.avatarText
+      })
 
       // 聊天界面内容区
       Column() {

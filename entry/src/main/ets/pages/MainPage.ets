@@ -44,6 +44,9 @@ struct MainPage {
     // 初始化上下文
     this.context = getContext(this) as common.UIAbilityContext;
     
+    // 初始化头像刷新触发器
+    AppStorage.setOrCreate<number>('avatarRefreshTrigger', 0);
+    
     // 初始化字体缩放管理器并应用用户设置
     if (this.context) {
       this.fontScaleManager = FontScaleManager.getInstance(this.context);
@@ -92,6 +95,12 @@ struct MainPage {
     .barBackgroundColor(Color.White)
     .onChange((index: number) => {
       this.currentIndex = index;
+      
+      // 当切换到聊天Tab时，通知刷新头像
+      if (index === 0) {
+        // 通过AppStorage发送头像刷新事件
+        AppStorage.set<number>('avatarRefreshTrigger', Date.now());
+      }
     })
     .width('100%')
     .height('100%')

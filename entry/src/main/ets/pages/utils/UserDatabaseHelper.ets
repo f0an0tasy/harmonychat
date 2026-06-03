@@ -32,6 +32,9 @@ export default class UserDatabaseHelper {
   // 单例实例
   private static instance: UserDatabaseHelper | null = null;
   
+  // 头像缓存：username -> avatarPath
+  private avatarCache: Map<string, string | null> = new Map();
+  
   /**
    * 私有构造函数，实现单例模式。
    */
@@ -374,6 +377,12 @@ export default class UserDatabaseHelper {
       const rowCount = await this.rdbStore.update(valueBucket, predicates);
       const success = rowCount > 0;
       console.info(TAG + 'Avatar update result: ' + success + ', rows affected: ' + rowCount);
+      
+      // 更新成功后，清除该用户的头像缓存
+      if (success) {
+        this.clearAvatarCache(username);
+      }
+      
       return success;
     } catch (err) {
       console.error(TAG + 'Failed to update avatar: ' + JSON.stringify(err));
@@ -387,6 +396,11 @@ export default class UserDatabaseHelper {
    * @returns Promise<string | null> 返回头像路径，null表示用户不存在或未设置头像
    */
   public async getUserAvatar(username: string): Promise<string | null> {
+    // 先检查缓存
+    if (this.avatarCache.has(username)) {
+      return this.avatarCache.get(username) ?? null;
+    }
+    
     if (this.rdbStore === null) {
       console.error(TAG + 'RdbStore is null, cannot get user avatar');
       return null;
@@ -402,14 +416,31 @@ export default class UserDatabaseHelper {
         const avatarPath = resultSet.getString(resultSet.getColumnIndex('avatar_path'));
         resultSet.close();
         // 如果头像路径为空字符串，返回null
-        return avatarPath && avatarPath.length > 0 ? avatarPath : null;
+        const result = avatarPath && avatarPath.length > 0 ? avatarPath : null;
+        // 存入缓存
+        this.avatarCache.set(username, result);
+        return result;
       }
       
       resultSet.close();
+      // 用户不存在，缓存null
+      this.avatarCache.set(username, null);
       return null;
     } catch (err) {
       console.error(TAG + 'Failed to get user avatar: ' + JSON.stringify(err));
       return null;
+    }
+  }
+  
+  /**
+   * 清除头像缓存。
+   * @param username 用户名，如果不传则清除所有缓存
+   */
+  public clearAvatarCache(username?: string): void {
+    if (username) {
+      this.avatarCache.delete(username);
+    } else {
+      this.avatarCache.clear();
     }
   }
 }
