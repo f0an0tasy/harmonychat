@@ -1,0 +1,48 @@
+{
+	"app": {
+		"bundleName": "com.eva.mobileimsdk.harmony",
+		"versionCode": 1000000,
+		"versionName": "1.0.0",
+		"minAPIVersion": 50000012,
+		"targetAPIVersion": 50001013,
+		"apiReleaseType": "Beta3",
+		"compileSdkVersion": "5.0.1.106",
+		"compileSdkType": "HarmonyOS",
+		"appEnvironments": [],
+		"bundleType": "app"
+	},
+	"module": {
+		"name": "mobileimsdk",
+		"type": "har",
+		"description": "$string:module_desc",
+		"deviceTypes": [
+			"phone",
+			"tablet",
+			"2in1"
+		],
+		"requestPermissions": [
+			{
+				"name": "ohos.permission.INTERNET",
+				"reason": "$string:internet_reason",
+				"usedScene": {
+					"when": "always"
+				}
+			},
+			{
+				"name": "ohos.permission.GET_NETWORK_INFO",
+				"reason": "$string:network_reason",
+				"usedScene": {
+					"abilities": [
+						"EntryAbility"
+					],
+					"when": "inuse"
+				}
+			}
+		],
+		"packageName": "mobileimsdk",
+		"installationFree": false,
+		"virtualMachine": "ark12.0.2.0",
+		"compileMode": "esmodule",
+		"dependencies": []
+	}
+}

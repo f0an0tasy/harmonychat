@@ -1,0 +1,4 @@
+string internet_reason 0x02000000
+string module_desc 0x02000001
+string network_reason 0x02000002
+color start_window_background 0x02000003

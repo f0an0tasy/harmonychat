@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "MobileIMSDK-鸿蒙端"
+    },
+    {
+      "name": "internet_reason",
+      "value": "需要获取您的网络权限，用于聊天数据的收发"
+    },
+    {
+      "name": "network_reason",
+      "value": "需要获取您的网络状态信息，用于即时获取网络连接和断线情况"
+    }
+  ]
+}
