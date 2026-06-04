@@ -12,8 +12,22 @@ import { LocalDataSender, ClientCoreSDK, ErrorCode, Protocal } from "mobileimsdk
 import IMClientManager from "../../IMClientManager";
 import Message from "../model/Message";
 import ToolKits from "../utils/ToolKits";
+import UserDatabaseHelper from "../utils/UserDatabaseHelper";
+import { AvatarSendManager } from "../utils/AvatarCacheManager";
+import { common } from '@kit.AbilityKit';
 
 const TAG: string = '[ChatInputView] '
+
+/**
+ * 消息数据封装对象。
+ * 用于将消息内容和头像Base64一起发送。
+ */
+interface MessageData {
+  /** 消息内容 */
+  content: string;
+  /** 发送者头像Base64（可选，仅在需要时携带） */
+  avatarBase64?: string;
+}
 
 /**
  * 聊天界面输入区组件。
@@ -26,9 +40,26 @@ export struct ChatInputView {
 
   @State messageInput: string = '';
   @State receiverInput: string = '';
+  
+  /** 数据库助手 */
+  private userDbHelper: UserDatabaseHelper | null = null;
+  /** 上下文 */
+  private context: common.UIAbilityContext | null = null;
+
+  /**
+   * 组件即将出现时调用。
+   */
+  aboutToAppear(): void {
+    try {
+      this.context = getContext(this) as common.UIAbilityContext;
+      this.userDbHelper = UserDatabaseHelper.getInstance(this.context);
+    } catch (err) {
+      console.error(TAG + 'Failed to get context: ' + JSON.stringify(err));
+    }
+  }
 
   // 发送消息实现方法
-  doSendMessage() {
+  async doSendMessage(): Promise<void> {
     if(this.messageInput.length > 0 && this.receiverInput.length > 0) {
       if(this.receiverInput === ClientCoreSDK.getInstance().currentLoginInfo?.loginUserId) {
         ToolKits.showToast('不能给自已发送消息哦！');
@@ -37,12 +68,52 @@ export struct ChatInputView {
 
       // 先生成指纹码
       let fingerPring: string = Protocal.genFingerPrint();
+      
+      // === 头像携带逻辑 ===
+      let avatarBase64: string = '';
+      try {
+        // 获取当前用户的头像路径
+        const currentUsername = ToolKits.getLocalUserUid();
+        if (currentUsername && this.userDbHelper) {
+          const avatarPath = await this.userDbHelper.getUserAvatar(currentUsername);
+          
+          if (avatarPath && ToolKits.isFileExists(avatarPath)) {
+            // 读取头像并转换为 Base64
+            const base64 = await ToolKits.readImageToBase64(avatarPath);
+            
+            if (base64 && AvatarSendManager.shouldSendAvatar(base64)) {
+              // 需要携带头像
+              avatarBase64 = base64;
+              // 更新上次发送的头像记录
+              AvatarSendManager.updateLastSentAvatarBase64(base64);
+              console.info(TAG + 'Avatar will be sent with message, length: ' + base64.length);
+            }
+          }
+        }
+      } catch (err) {
+        console.error(TAG + 'Failed to get avatar for sending: ' + JSON.stringify(err));
+      }
+      
+      // === 构建消息内容 ===
+      let messageContent: string;
+      if (avatarBase64 && avatarBase64.length > 0) {
+        // 如果需要携带头像，使用 JSON 格式封装
+        const messageData: MessageData = {
+          content: this.messageInput,
+          avatarBase64: avatarBase64
+        };
+        messageContent = JSON.stringify(messageData);
+      } else {
+        // 否则直接发送原始消息
+        messageContent = this.messageInput;
+      }
+      
       // 发送消息
-      let code = LocalDataSender.getInstance().sendCommonDataPlain(this.messageInput, this.receiverInput, true, fingerPring);
+      let code = LocalDataSender.getInstance().sendCommonDataPlain(messageContent, this.receiverInput, true, fingerPring);
       if(code === ErrorCode.COMMON_CODE_OK) {
         ClientCoreSDK.Log.info("数据已成功发出！");
 
-        // 用于ui显示的消息对象
+        // 用于ui显示的消息对象（注意：UI显示使用原始消息内容，不包含头像数据）
         let m: Message = Message.createChatMsgEntity_OUTGO_TEXT(this.messageInput, fingerPring);
         // 将消息对象放入全局消息数据缓存中（以备聊天ui列表中显示之）
         IMClientManager.getInstance().getMessageProvider().putMessage(m);

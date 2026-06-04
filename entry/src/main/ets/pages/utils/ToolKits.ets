@@ -489,4 +489,65 @@ export default class ToolKits {
       return false;
     }
   }
+
+  /**
+   * 读取图片文件并转换为Base64字符串。
+   * 用于发送消息时携带头像数据。
+   * 
+   * @param filePath 图片文件路径
+   * @returns Promise<string | null> 返回Base64字符串，null表示失败
+   */
+  static async readImageToBase64(filePath: string): Promise<string | null> {
+    try {
+      // 检查文件是否存在
+      if (!ToolKits.isFileExists(filePath)) {
+        console.error(TAG + 'Image file not exists: ' + filePath);
+        return null;
+      }
+
+      // 打开文件
+      const file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
+      
+      // 获取文件大小
+      const stat = fs.statSync(filePath);
+      const fileSize = stat.size;
+      
+      // 限制文件大小（最大 100KB，避免消息过大）
+      const MAX_SIZE = 100 * 1024;
+      if (fileSize > MAX_SIZE) {
+        console.warn(TAG + `Image file too large (${fileSize} bytes), max is ${MAX_SIZE} bytes`);
+        fs.closeSync(file);
+        return null;
+      }
+      
+      // 读取文件内容
+      const buffer = new ArrayBuffer(fileSize);
+      fs.readSync(file.fd, buffer);
+      fs.closeSync(file);
+      
+      // 转换为Base64
+      // 使用 util.Base64Helper 进行编码
+      const util = await import('@kit.ArkTS');
+      const base64Helper = new util.util.Base64Helper();
+      const uint8Array = new Uint8Array(buffer);
+      const base64String = base64Helper.encodeToStringSync(uint8Array);
+      
+      console.info(TAG + `Image converted to Base64, size: ${base64String.length} chars`);
+      return base64String;
+    } catch (err) {
+      console.error(TAG + 'Failed to read image to Base64: ' + JSON.stringify(err));
+      return null;
+    }
+  }
+
+  /**
+   * 将Base64字符串转换为可用于Image组件显示的Data URL格式。
+   * 
+   * @param base64 Base64字符串
+   * @param mimeType MIME类型，默认为 image/jpeg
+   * @returns string Data URL格式的字符串
+   */
+  static base64ToDataURL(base64: string, mimeType: string = 'image/jpeg'): string {
+    return `data:${mimeType};base64,${base64}`;
+  }
 }

@@ -14,6 +14,8 @@ import { MsgContentView_text } from "../msg_content_view/MsgContentView_text";
 import MsgSendStatus from "../../constants/MsgSendStatus";
 import ToolKits from "../../utils/ToolKits";
 import UserDatabaseHelper from "../../utils/UserDatabaseHelper";
+import AvatarCacheManager from "../../utils/AvatarCacheManager";
+import IMClientManager from "../../../IMClientManager";
 import { common } from '@kit.AbilityKit';
 
 const TAG: string = '[NormalMsgView] ';
@@ -29,12 +31,16 @@ export struct MsgView_normal {
   
   /** 头像路径（自定义头像） */
   @State avatarPath: string = '';
+  /** 头像Base64（从缓存或消息中获取） */
+  @State avatarBase64: string = '';
   /** 发送者首字母（用于默认头像） */
   @State avatarText: string = 'U';
   /** 数据库助手 */
   private userDbHelper: UserDatabaseHelper | null = null;
   /** 上下文 */
   private context: common.UIAbilityContext | null = null;
+  /** 头像更新事件回调 */
+  private avatarUpdateEventCallback?: Function;
   
   /**
    * 组件即将出现时调用。
@@ -57,6 +63,37 @@ export struct MsgView_normal {
     
     // 加载头像
     await this.loadAvatar();
+    
+    // 订阅头像更新事件
+    this.addAvatarUpdateEvent();
+  }
+  
+  /**
+   * 组件即将消失时调用。
+   */
+  aboutToDisappear(): void {
+    // 取消订阅头像更新事件
+    this.removeAvatarUpdateEvent();
+  }
+  
+  /**
+   * 订阅头像更新事件。
+   */
+  addAvatarUpdateEvent(): void {
+    IMClientManager.getInstance().getEmitter().on('avatarUpdated', this.avatarUpdateEventCallback = (uid: string) => {
+      // 如果更新的头像属于当前消息的发送者，重新加载头像
+      if (this.message && this.message.senderId === uid) {
+        console.info(TAG + `Avatar updated for sender: ${uid}, reloading...`);
+        this.loadAvatarFromCache();
+      }
+    });
+  }
+  
+  /**
+   * 取消订阅头像更新事件。
+   */
+  removeAvatarUpdateEvent(): void {
+    IMClientManager.getInstance().getEmitter().off('avatarUpdated', this.avatarUpdateEventCallback);
   }
   
   /**
@@ -67,17 +104,46 @@ export struct MsgView_normal {
       return;
     }
     
+    // 优先从缓存中加载头像 Base64
+    const cachedBase64 = AvatarCacheManager.getInstance().getAvatar(this.message.senderId);
+    if (cachedBase64 && cachedBase64.length > 0) {
+      this.avatarBase64 = cachedBase64;
+      this.avatarPath = ''; // 清空本地路径，使用 Base64
+      console.info(TAG + 'Avatar loaded from cache for ' + this.message.senderId);
+      return;
+    }
+    
+    // 如果缓存中没有，尝试从本地数据库加载（仅对本地用户有效）
     try {
       const savedAvatarPath = await this.userDbHelper.getUserAvatar(this.message.senderId);
       if (savedAvatarPath && ToolKits.isFileExists(savedAvatarPath)) {
         this.avatarPath = savedAvatarPath;
-        console.info(TAG + 'Avatar loaded for ' + this.message.senderId + ': ' + savedAvatarPath);
+        this.avatarBase64 = ''; // 清空 Base64，使用本地路径
+        console.info(TAG + 'Avatar loaded from database for ' + this.message.senderId + ': ' + savedAvatarPath);
       } else {
         this.avatarPath = '';
+        this.avatarBase64 = '';
       }
     } catch (err) {
       console.error(TAG + 'Failed to load avatar: ' + JSON.stringify(err));
       this.avatarPath = '';
+      this.avatarBase64 = '';
+    }
+  }
+  
+  /**
+   * 从缓存中重新加载头像。
+   */
+  loadAvatarFromCache(): void {
+    if (!this.message || !this.message.senderId) {
+      return;
+    }
+    
+    const cachedBase64 = AvatarCacheManager.getInstance().getAvatar(this.message.senderId);
+    if (cachedBase64 && cachedBase64.length > 0) {
+      this.avatarBase64 = cachedBase64;
+      this.avatarPath = '';
+      console.info(TAG + 'Avatar reloaded from cache for ' + this.message.senderId);
     }
   }
 
@@ -134,8 +200,16 @@ export struct MsgView_normal {
   @Builder
   AvatarImage(isOutgoing: boolean) {
     Stack() {
-      if (this.avatarPath && this.avatarPath.length > 0) {
-        // 显示自定义头像
+      // 优先显示 Base64 头像（从消息或缓存中获取）
+      if (this.avatarBase64 && this.avatarBase64.length > 0) {
+        // 显示 Base64 头像
+        Image(ToolKits.base64ToDataURL(this.avatarBase64))
+          .width(40)
+          .height(40)
+          .borderRadius(20)
+          .objectFit(ImageFit.Cover)
+      } else if (this.avatarPath && this.avatarPath.length > 0) {
+        // 显示本地路径头像
         Image('file://' + this.avatarPath)
           .width(40)
           .height(40)

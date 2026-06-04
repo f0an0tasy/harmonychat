@@ -28,6 +28,14 @@ export default class Message {
   senderDisplayName: string = '';
   /** 消息时间戳 */
   date: number = 0;
+  
+  /** 
+   * 发送者的头像Base64（仅在需要时携带）。
+   * 用于解决：用户自定义头像在对方设备上无法显示的问题。
+   * 当用户设置或修改头像后，首次发送消息时会携带此字段，
+   * 接收方收到后会缓存并更新显示。
+   */
+  avatarBase64?: string = undefined;
   /** 消息内容（注意：此消息内容可能并非扁平文本，可能是对象的JSON字串，以不同消息定义的封装对象为准）。*/
   content: string = '';
 

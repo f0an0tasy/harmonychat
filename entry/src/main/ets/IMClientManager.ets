@@ -14,8 +14,19 @@ import UIEvent from "./pages/constants/UIEvent";
 import Message from "./pages/model/Message";
 import MessagesProvider from "./pages/model/MessagesProvider";
 import MsgSendStatus from "./pages/constants/MsgSendStatus";
+import AvatarCacheManager from "./pages/utils/AvatarCacheManager";
 
 const TAG: string = '[IMClientManager] ';
+
+/**
+ * 消息数据封装对象（用于解析接收到的消息）。
+ */
+interface MessageData {
+  /** 消息内容 */
+  content: string;
+  /** 发送者头像Base64（可选） */
+  avatarBase64?: string;
+}
 
 // MobileIMSDK服务端的WebSocket服务地址（如服务端已开启SSL，此处请使用wss）
 const IM_SERVER_URL: string = 'ws://rbcore.52im.net:3000/websocket';// TODO: 默认地址是官方演示服务，需要改成连接您自已的服务端
@@ -67,6 +78,9 @@ export default class IMClientManager {
 
       //* 【特别注意】请确保首先进行核心库的初始化（这是不同于iOS和Java端的地方？)
       ClientCoreSDK.getInstance().init(eventHub);
+      
+      //* 初始化头像缓存管理器
+      AvatarCacheManager.getInstance().init(eventHub);
 
       //* 开启Debug开关将输出相关的log，方便调试，平时建议关闭之
       ClientCoreSDK.DEBUG = true;
@@ -172,8 +186,35 @@ export default class IMClientManager {
 
       this.getLog().info('[应用层]  >> 收到[聊天消息]📩：' + JSON.stringify(protocal));
 
-      let m = Message.createChatMsgEntity_INCOME_TEXT(protocal.from, 'UID: '+protocal.from, protocal.dataContent, 0);
+      // === 解析消息内容 ===
+      let messageContent: string = protocal.dataContent;
+      let avatarBase64: string | undefined = undefined;
+      
+      // 尝试解析 JSON 格式的消息（可能包含头像数据）
+      try {
+        const messageData: MessageData = JSON.parse(protocal.dataContent);
+        
+        // 如果解析成功且包含 content 字段，说明是 JSON 格式的消息
+        if (messageData && messageData.content) {
+          messageContent = messageData.content;
+          avatarBase64 = messageData.avatarBase64;
+          
+          // 如果消息中携带了头像，更新缓存
+          if (avatarBase64 && avatarBase64.length > 0) {
+            const senderUid = protocal.from;
+            AvatarCacheManager.getInstance().updateAvatar(senderUid, avatarBase64);
+            this.getLog().info('[应用层]  >> 收到头像数据，已更新缓存，发送者UID: ' + senderUid);
+          }
+        }
+      } catch (err) {
+        // 解析失败，说明是普通文本消息，直接使用原始内容
+        // this.getLog().info('[应用层]  >> 消息不是JSON格式，作为普通文本处理');
+      }
+      
+      // 创建消息对象
+      let m = Message.createChatMsgEntity_INCOME_TEXT(protocal.from, 'UID: '+protocal.from, messageContent, 0);
       m.fingerPrintOfProtocal = protocal.fp;
+      
       // 将收到的消息放入全局消息缓存集合中（MessageProvider.putMessage()方法中会同时通知ui层进行刷新显示）
       this.messageProvider.putMessage(m);
     });
