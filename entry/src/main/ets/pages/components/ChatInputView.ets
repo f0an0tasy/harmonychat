@@ -13,7 +13,6 @@ import IMClientManager from "../../IMClientManager";
 import Message from "../model/Message";
 import ToolKits from "../utils/ToolKits";
 import UserDatabaseHelper from "../utils/UserDatabaseHelper";
-import { AvatarSendManager } from "../utils/AvatarCacheManager";
 import { common } from '@kit.AbilityKit';
 
 const TAG: string = '[ChatInputView] '
@@ -81,11 +80,9 @@ export struct ChatInputView {
             // 读取头像并转换为 Base64
             const base64 = await ToolKits.readImageToBase64(avatarPath);
             
-            if (base64 && AvatarSendManager.shouldSendAvatar(base64)) {
-              // 需要携带头像
+            if (base64) {
+              // 每次发送消息都携带头像
               avatarBase64 = base64;
-              // 更新上次发送的头像记录
-              AvatarSendManager.updateLastSentAvatarBase64(base64);
               console.info(TAG + 'Avatar will be sent with message, length: ' + base64.length);
             }
           }

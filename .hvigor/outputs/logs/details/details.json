@@ -5,11 +5,8 @@
         "MODULE_NAME": "923fe53966c6cd9343e11af776cd4b05be315ea4b200b02e4d5dfb0f929b73bf",
         "API_TYPE": "stageMode",
         "INCLUDE_IN_BUILD": true,
-        "IS_COMMAND_LINE_ENTRY_MODULE": false,
+        "IS_COMMAND_LINE_ENTRY_MODULE": true,
         "MODULE_TYPE": "entry",
-        "INCREMENTAL_TASKS": {
-          "COMPILE_ARKTS": true
-        },
         "IS_INCREMENTAL_MODULE": true
       }
     ],
@@ -25,24 +22,22 @@
     "IS_HVIGORFILE_TYPE_CHECK": false,
     "TASK_TIME": {
       "923fe53966c6cd9343e11af776cd4b05be315ea4b200b02e4d5dfb0f929b73bf": {
-        "PreBuild": 3709542,
-        "CreateModuleInfo": 184000,
-        "ConfigureCmake": 94833,
-        "PreCheckSyscap": 69833,
-        "GeneratePkgSdkInfo": 247209,
-        "ProcessIntegratedHsp": 153417,
-        "BuildNativeWithCmake": 61292,
-        "SyscapTransform": 1361833,
-        "ProcessStartupConfig": 1055167,
-        "BuildNativeWithNinja": 494458,
-        "BuildJS": 638250,
-        "CompileArkTS": 521964208,
-        "ProcessCompiledResources": 203666,
-        "PackageHap": 321184041,
-        "PackingCheck": 1820250,
-        "SignHap": 386417,
-        "CollectDebugSymbol": 192708,
-        "assembleHap": 66875
+        "PreBuild": 10318875,
+        "CreateModuleInfo": 171500,
+        "ConfigureCmake": 90292,
+        "PreCheckSyscap": 96709,
+        "GeneratePkgSdkInfo": 408916,
+        "ProcessIntegratedHsp": 282625,
+        "BuildNativeWithCmake": 84833,
+        "SyscapTransform": 565375,
+        "ProcessStartupConfig": 1579750,
+        "BuildNativeWithNinja": 195792,
+        "BuildJS": 623084,
+        "ProcessCompiledResources": 148833,
+        "PackingCheck": 2234458,
+        "SignHap": 382792,
+        "CollectDebugSymbol": 185292,
+        "assembleHap": 85000
       }
     },
     "APIS": [
@@ -53,7 +48,7 @@
       "ENABLE_CPP_FUNCTION_LEVEL_INCREMENTAL": false
     },
     "CONFIG_PROPERTIES": {},
-    "TOTAL_TIME": 1020791000,
-    "BUILD_ID": "202606041654028690"
+    "TOTAL_TIME": 168714542,
+    "BUILD_ID": "202606041713201080"
   }
 }

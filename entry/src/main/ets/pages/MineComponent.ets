@@ -16,7 +16,6 @@ import UserDatabaseHelper from './utils/UserDatabaseHelper';
 import IMClientManager from '../IMClientManager';
 import PreferenceManager from './utils/PreferenceManager';
 import FontScaleManager, { FONT_SCALE_OPTIONS, FontScaleOption } from './utils/FontScaleManager';
-import { AvatarSendManager } from './utils/AvatarCacheManager';
 
 const TAG: string = '[MineComponent] ';
 
@@ -496,11 +495,6 @@ export struct MineComponent {
       if (success) {
         // 更新UI显示
         this.avatarPath = newPath;
-        
-        // === 重置头像发送缓存 ===
-        // 用户修改了头像，下次发送消息时需要携带新头像
-        AvatarSendManager.resetLastSentAvatarBase64();
-        console.info(TAG + 'Avatar changed, last sent avatar reset');
         
         ToolKits.showToast('头像设置成功');
         console.info(TAG + 'Avatar saved successfully: ' + newPath);
