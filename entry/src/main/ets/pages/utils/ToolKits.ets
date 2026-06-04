@@ -512,8 +512,8 @@ export default class ToolKits {
       const stat = fs.statSync(filePath);
       const fileSize = stat.size;
       
-      // 限制文件大小（最大 100KB，避免消息过大）
-      const MAX_SIZE = 100 * 1024;
+      // 限制文件大小（最大 5MB）
+      const MAX_SIZE = 5 * 1024 * 1024;
       if (fileSize > MAX_SIZE) {
         console.warn(TAG + `Image file too large (${fileSize} bytes), max is ${MAX_SIZE} bytes`);
         fs.closeSync(file);
