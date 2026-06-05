@@ -78,6 +78,16 @@ export default class AvatarCacheManager {
       return false;
     }
     
+    // 验证Base64长度
+    if (base64.length === 0) {
+      console.error(TAG + `❌ Base64长度为0`);
+      return false;
+    }
+    
+    if (base64.length > 50000) {
+      console.warn(TAG + `⚠️ Base64长度(${base64.length})超过50000，可能不完整`);
+    }
+    
     const cachedBase64 = this.cache.get(uid);
     console.info(TAG + `缓存中是否已有该用户头像: ${cachedBase64 ? '是' : '否'}`);
     
@@ -100,8 +110,12 @@ export default class AvatarCacheManager {
     // 发送头像更新事件，通知 UI 刷新
     if (this.eventHub) {
       console.info(TAG + `准备发送头像更新事件...`);
-      this.eventHub.emit('avatarUpdated', uid);
-      console.info(TAG + `✅ 头像更新事件已发送，uid: ${uid}`);
+      try {
+        this.eventHub.emit('avatarUpdated', uid);
+        console.info(TAG + `✅ 头像更新事件已发送，uid: ${uid}`);
+      } catch (err) {
+        console.error(TAG + `❌ 发送头像更新事件失败: ${JSON.stringify(err)}`);
+      }
     } else {
       console.error(TAG + `❌ EventHub未初始化，无法发送事件`);
     }
@@ -116,7 +130,16 @@ export default class AvatarCacheManager {
    * @returns string | undefined 返回Base64字符串，undefined表示无缓存
    */
   getAvatar(uid: string): string | undefined {
-    return this.cache.get(uid);
+    const base64 = this.cache.get(uid);
+    
+    // 打印获取日志（仅在调试时启用）
+    // if (base64) {
+    //   console.info(TAG + `getAvatar: uid=${uid}, 找到缓存，长度=${base64.length}`);
+    // } else {
+    //   console.info(TAG + `getAvatar: uid=${uid}, 未找到缓存`);
+    // }
+    
+    return base64;
   }
   
   /**

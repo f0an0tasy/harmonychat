@@ -11,6 +11,7 @@
 import IMClientManager from "../../IMClientManager";
 import { BasicDataSource } from "../common/LazyDataSource";
 import Message from "./Message";
+import AvatarCacheManager from "../../pages/utils/AvatarCacheManager";
 
 /**
  * 聊天界面（ChatPage.ets）中的List列表对应的数据源实现类（负责聊天消息数据的UI显示）。
@@ -47,6 +48,16 @@ export default class MessagesDataSource extends BasicDataSource<Message> {
    */
   static messageItemKey(m: Message) {
     // 优化点：给更新的消息对象加个最近更新时间戳，这应该是个更通用的key计算项，不然一旦变更内容多了，这个key的计算就不那么优雅了
-    return m.msgType + '-' + m.fingerPrintOfProtocal + '-' + m.sendStatus;
+    
+    // 加入头像版本因子，当头像更新时强制刷新列表
+    const avatarBase64 = AvatarCacheManager.getInstance().getAvatar(m.senderId);
+    const avatarHash = avatarBase64 ? avatarBase64.length.toString() : '0';
+    
+    const key = `${m.msgType}-${m.fingerPrintOfProtocal}-${m.sendStatus}-${avatarHash}`;
+    
+    // 打印key计算日志（仅在调试时启用）
+    // console.info(`[MessagesDataSource] messageItemKey: senderId=${m.senderId}, avatarHash=${avatarHash}, key=${key}`);
+    
+    return key;
   }
 }

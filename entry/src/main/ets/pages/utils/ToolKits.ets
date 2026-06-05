@@ -13,6 +13,7 @@ import { Callback } from "@ohos.base";
 import { common } from "@kit.AbilityKit";
 import { ClientCoreSDK } from "mobileimsdk";
 import { fileIo as fs } from '@kit.CoreFileKit';
+import { image } from '@kit.ImageKit';
 
 const TAG: string = '[ToolKits] ';
 
@@ -622,5 +623,147 @@ export default class ToolKits {
     console.info(TAG + '✅ Data URL已生成');
     console.info(TAG + 'Data URL前100字符: ' + dataUrl.substring(0, 100));
     return dataUrl;
+  }
+
+  /**
+   * 压缩图片并转换为Base64字符串。
+   * 用于发送消息时携带头像数据，确保Base64长度不超过限制。
+   * 
+   * @param imagePath 图片文件路径
+   * @param maxWidth 最大宽度，默认200像素
+   * @param maxHeight 最大高度，默认200像素
+   * @param quality JPEG质量（0-100），默认40
+   * @param maxBase64Length Base64最大长度，默认45000字符
+   * @returns Promise<string | null> 返回Base64字符串，null表示失败
+   */
+  static async compressImageToBase64(
+    imagePath: string,
+    maxWidth: number = 200,
+    maxHeight: number = 200,
+    quality: number = 40,
+    maxBase64Length: number = 45000
+  ): Promise<string | null> {
+    console.info(TAG + '=== compressImageToBase64 开始 ===');
+    console.info(TAG + `参数：imagePath=${imagePath}`);
+    console.info(TAG + `参数：maxWidth=${maxWidth}, maxHeight=${maxHeight}`);
+    console.info(TAG + `参数：quality=${quality}, maxBase64Length=${maxBase64Length}`);
+    
+    try {
+      // 检查文件是否存在
+      if (!ToolKits.isFileExists(imagePath)) {
+        console.error(TAG + '❌ 图片文件不存在: ' + imagePath);
+        return null;
+      }
+      console.info(TAG + '✅ 文件存在');
+
+      // 创建ImageSource
+      console.info(TAG + '创建ImageSource...');
+      const imageSource = image.createImageSource(imagePath);
+      
+      // 获取原图信息
+      const imageInfo = await imageSource.getImageInfo();
+      console.info(TAG + `原图尺寸：${imageInfo.size.width}x${imageInfo.size.height}`);
+      
+      // 计算缩放比例
+      let targetWidth = imageInfo.size.width;
+      let targetHeight = imageInfo.size.height;
+      
+      if (targetWidth > maxWidth || targetHeight > maxHeight) {
+        const widthRatio = maxWidth / targetWidth;
+        const heightRatio = maxHeight / targetHeight;
+        const ratio = Math.min(widthRatio, heightRatio);
+        
+        targetWidth = Math.round(targetWidth * ratio);
+        targetHeight = Math.round(targetHeight * ratio);
+        console.info(TAG + `缩放后尺寸：${targetWidth}x${targetHeight}`);
+      } else {
+        console.info(TAG + '原图尺寸已在限制内，无需缩放');
+      }
+      
+      // 创建PixelMap（指定目标尺寸）
+      console.info(TAG + '创建PixelMap...');
+      const decodingOptions: image.DecodingOptions = {
+        desiredSize: { width: targetWidth, height: targetHeight },
+        editable: true
+      };
+      const pixelMap = await imageSource.createPixelMap(decodingOptions);
+      console.info(TAG + '✅ PixelMap创建成功');
+      
+      // 释放ImageSource
+      imageSource.release();
+      
+      // 创建ImagePacker
+      console.info(TAG + '创建ImagePacker...');
+      const imagePacker = image.createImagePacker();
+      
+      // 编码为JPEG
+      console.info(TAG + `编码为JPEG，质量=${quality}...`);
+      const packOpts: image.PackingOption = {
+        format: 'image/jpeg',
+        quality: quality
+      };
+      
+      const packedData = await imagePacker.packing(pixelMap, packOpts);
+      console.info(TAG + `✅ 编码完成，数据大小：${packedData.byteLength} bytes`);
+      
+      // 释放资源
+      imagePacker.release();
+      pixelMap.release();
+      
+      // 转换为Base64
+      console.info(TAG + '转换为Base64...');
+      const util = await import('@kit.ArkTS');
+      const base64Helper = new util.util.Base64Helper();
+      const uint8Array = new Uint8Array(packedData);
+      let base64String = base64Helper.encodeToStringSync(uint8Array);
+      
+      console.info(TAG + `✅ Base64转换完成，长度：${base64String.length} 字符`);
+      
+      // 检查Base64长度是否超过限制
+      if (base64String.length > maxBase64Length) {
+        console.warn(TAG + `⚠️ Base64长度(${base64String.length})超过限制(${maxBase64Length})，进一步压缩...`);
+        
+        // 进一步降低质量
+        let currentQuality = quality;
+        while (base64String.length > maxBase64Length && currentQuality > 10) {
+          currentQuality -= 10;
+          console.info(TAG + `降低质量至 ${currentQuality}...`);
+          
+          // 重新解码和编码
+          const newImageSource = image.createImageSource(packedData);
+          const newPixelMap = await newImageSource.createPixelMap({ editable: true });
+          const newImagePacker = image.createImagePacker();
+          const newPackOpts: image.PackingOption = {
+            format: 'image/jpeg',
+            quality: currentQuality
+          };
+          
+          const newPackedData = await newImagePacker.packing(newPixelMap, newPackOpts);
+          newImagePacker.release();
+          newPixelMap.release();
+          newImageSource.release();
+          
+          const newUint8Array = new Uint8Array(newPackedData);
+          base64String = base64Helper.encodeToStringSync(newUint8Array);
+          
+          console.info(TAG + `新Base64长度：${base64String.length} 字符`);
+        }
+        
+        if (base64String.length > maxBase64Length) {
+          console.error(TAG + `❌ 即使质量降至${currentQuality}，Base64长度仍超过限制`);
+          return null;
+        }
+      }
+      
+      console.info(TAG + `✅ 最终Base64长度：${base64String.length} 字符`);
+      console.info(TAG + '=== compressImageToBase64 完成 ===');
+      return base64String;
+    } catch (err) {
+      console.error(TAG + '❌ 压缩图片失败: ' + JSON.stringify(err));
+      if (err instanceof Error) {
+        console.error(TAG + '错误堆栈: ' + err.stack);
+      }
+      return null;
+    }
   }
 }

@@ -68,7 +68,7 @@ export struct ChatInputView {
       // 先生成指纹码
       let fingerPring: string = Protocal.genFingerPrint();
       
-      // === 头像携带逻辑 ===
+      // === 头像携带逻辑（使用压缩方法） ===
       let avatarBase64: string = '';
       try {
         // 获取当前用户的头像路径
@@ -87,17 +87,31 @@ export struct ChatInputView {
             console.info(TAG + '头像文件是否存在: ' + fileExists);
             
             if (fileExists) {
-              // 读取头像并转换为 Base64
-              console.info(TAG + '开始读取头像文件...');
-              const base64 = await ToolKits.readImageToBase64(avatarPath);
+              // 使用压缩方法读取头像并转换为 Base64
+              // 参数：最大宽高200像素，质量40%，Base64最大长度45000字符
+              console.info(TAG + '开始压缩头像文件...');
+              const base64 = await ToolKits.compressImageToBase64(
+                avatarPath,
+                200,  // maxWidth
+                200,  // maxHeight
+                40,   // quality
+                45000 // maxBase64Length
+              );
               
-              if (base64) {
-                // 每次发送消息都携带头像
+              if (base64 && base64.length > 0) {
+                // 每次发送消息都携带压缩后的头像
                 avatarBase64 = base64;
-                console.info(TAG + '✅ 头像读取成功，Base64长度: ' + base64.length);
+                console.info(TAG + '✅ 头像压缩成功，Base64长度: ' + base64.length);
                 console.info(TAG + 'Base64前100字符: ' + base64.substring(0, 100));
+                
+                // 验证Base64长度
+                if (base64.length > 50000) {
+                  console.error(TAG + `❌ Base64长度(${base64.length})超过50000限制，可能导致传输失败`);
+                } else {
+                  console.info(TAG + `✅ Base64长度(${base64.length})在安全范围内`);
+                }
               } else {
-                console.error(TAG + '❌ 头像读取失败，Base64为空');
+                console.error(TAG + '❌ 头像压缩失败，Base64为空');
               }
             } else {
               console.warn(TAG + '⚠️ 头像文件不存在: ' + avatarPath);

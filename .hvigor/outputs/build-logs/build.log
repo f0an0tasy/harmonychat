@@ -3740,3 +3740,1215 @@ Require stack:
 [2026-06-05T12:49:10.246] [DEBUG] debug-file - session manager: send message to worker process.
 [2026-06-05T12:49:10.247] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
 [2026-06-05T12:49:10.247] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-06-05T13:07:05.712] [DEBUG] debug-file - session manager: set active socket. socketId=Qni1zVYdtCMPo957AAAL
+[2026-06-05T13:07:05.715] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-06-05T13:07:05.723] [DEBUG] debug-file - Workers' log level updated to INFO
+[2026-06-05T13:07:05.728] [DEBUG] debug-file - Hvigor init with startParameters:{
+  hvigorfileTypeCheck: false,
+  parallelExecution: true,
+  incrementalExecution: true,
+  printStackTrace: false,
+  daemon: true,
+  analyze: 0,
+  logLevel: Level { level: 20000, levelStr: 'INFO', colour: 'green' },
+  optimizationStrategy: 'memory',
+  hotCompile: undefined,
+  hotReloadBuild: undefined,
+  customizedParam: undefined
+}
+[2026-06-05T13:07:05.732] [DEBUG] debug-file - Cache service initialization finished in 4 ms 
+[2026-06-05T13:07:05.734] [DEBUG] debug-file - hvigorfile, resolving /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/hvigorfile.ts
+[2026-06-05T13:07:05.789] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-06-05T13:07:05.789] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-06-05T13:07:05.790] [DEBUG] debug-file - Starting plugin build process
+[2026-06-05T13:07:05.790] [DEBUG] debug-file - App plugin prepare start...
+[2026-06-05T13:07:05.790] [DEBUG] debug-file - App plugin prepare end...
+[2026-06-05T13:07:05.790] [DEBUG] debug-file - App plugin creating...
+[2026-06-05T13:07:05.800] [DEBUG] debug-file - App plugin register hook start...
+[2026-06-05T13:07:05.801] [DEBUG] debug-file - App plugin register hook end...
+[2026-06-05T13:07:05.801] [DEBUG] debug-file - Plugin build process completed
+[2026-06-05T13:07:05.801] [DEBUG] debug-file - Start initialize project's product build option map with build mode debug.
+[2026-06-05T13:07:05.801] [DEBUG] debug-file - Picking option from product 'default' with build mode 'debug'.
+[2026-06-05T13:07:05.801] [DEBUG] debug-file - Product 'default' build option initialized
+[2026-06-05T13:07:05.801] [DEBUG] debug-file - End initialize project's product build option map with build mode 'debug'.
+[2026-06-05T13:07:05.802] [DEBUG] debug-file - Obtain build option for product 'default'in this build.
+[2026-06-05T13:07:05.804] [DEBUG] debug-file - No signingConfig found, initRemoteHspCache failed.
+[2026-06-05T13:07:05.805] [DEBUG] debug-file - Start recording SDK configuration permission data.
+[2026-06-05T13:07:05.819] [DEBUG] debug-file - Sdk init in 15 ms 
+[2026-06-05T13:07:05.821] [DEBUG] debug-file - Project task initialization takes 2 ms 
+[2026-06-05T13:07:05.821] [DEBUG] debug-file - hvigorfile, begin to bind custom plugins...
+[2026-06-05T13:07:05.821] [DEBUG] debug-file - hvigorfile, no custom plugins were found in /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/hvigorfile.ts
+[2026-06-05T13:07:05.821] [DEBUG] debug-file - hvigorfile, resolve finished /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/hvigorfile.ts
+[2026-06-05T13:07:05.821] [DEBUG] debug-file - hvigorfile, resolving /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/hvigorfile.ts
+[2026-06-05T13:07:05.823] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-06-05T13:07:05.823] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-06-05T13:07:05.823] [DEBUG] debug-file - Starting plugin build process
+[2026-06-05T13:07:05.823] [DEBUG] debug-file - Hap plugin creating...
+[2026-06-05T13:07:05.823] [DEBUG] debug-file - failed to load cangjie to dynamically generate schemas: Error: Cannot find module '@ohos/cangjie-build-support/index'
+Require stack:
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/hooks/cangjie-register.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/strategy/stage-init-strategy.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/builder/abstract-plugin-builder.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/builder/app-plugin-builder.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/factory/plugin-factory.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/index.js
+- /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/hvigorfile.ts
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor/src/base/internal/lifecycle/configuration.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor/src/base/boot/index.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor/src/base/daemon/cluster/worker-process-lifecycle.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor/src/base/daemon/process/daemon-process-boot-script.js
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=release
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-05T13:07:05.827] [DEBUG] debug-file - Obtain build option for module 'entry' target 'default'in this build.
+[2026-06-05T13:07:05.829] [DEBUG] debug-file - Module entry task initialization takes 2 ms 
+[2026-06-05T13:07:05.829] [DEBUG] debug-file - Hap plugin register hook start...
+[2026-06-05T13:07:05.829] [DEBUG] debug-file - Hap plugin register hook end...
+[2026-06-05T13:07:05.829] [DEBUG] debug-file - Plugin build process completed
+[2026-06-05T13:07:05.829] [DEBUG] debug-file - hvigorfile, begin to bind custom plugins...
+[2026-06-05T13:07:05.829] [DEBUG] debug-file - hvigorfile, no custom plugins were found in /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/hvigorfile.ts
+[2026-06-05T13:07:05.829] [DEBUG] debug-file - hvigorfile, resolve finished /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/hvigorfile.ts
+[2026-06-05T13:07:05.867] [DEBUG] debug-file - hvigorfile, resolve hvigorfile dependencies in 39 ms 
+[2026-06-05T13:07:05.868] [DEBUG] debug-file - project has submodules:entry
+[2026-06-05T13:07:05.869] [DEBUG] debug-file - start to load updatedOhPackageInfo to the disk
+[2026-06-05T13:07:05.870] [DEBUG] debug-file - load to the disk finished
+[2026-06-05T13:07:05.870] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-06-05T13:07:05.871] [DEBUG] debug-file - Module harmonychat-main Collected Dependency: 
+[2026-06-05T13:07:05.871] [DEBUG] debug-file - Module harmonychat-main's total dependency: 0
+[2026-06-05T13:07:05.872] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-06-05T13:07:05.872] [DEBUG] debug-file - Module entry Collected Dependency: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk
+[2026-06-05T13:07:05.872] [DEBUG] debug-file - Module entry's total dependency: 1
+[2026-06-05T13:07:05.873] [DEBUG] debug-file - Configuration phase cost:142 ms 
+[2026-06-05T13:07:05.874] [DEBUG] debug-file - Configuration task cost before running: 151 ms 
+[2026-06-05T13:07:05.875] [DEBUG] debug-file - Executing task :entry:default@PreBuild
+[2026-06-05T13:07:05.876] [DEBUG] debug-file - Task 'entry:default@PreBuild' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.877] [DEBUG] debug-file - Incremental task entry:default@PreBuild pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.877] [DEBUG] debug-file - entry : default@PreBuild cost memory 0.2529144287109375
+[2026-06-05T13:07:05.877] [INFO] debug-file - UP-TO-DATE :entry:default@PreBuild...  
+[2026-06-05T13:07:05.877] [DEBUG] debug-file - Executing task :entry:default@CreateModuleInfo
+[2026-06-05T13:07:05.877] [DEBUG] debug-file - Task 'entry:default@CreateModuleInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.877] [DEBUG] debug-file - entry : default@CreateModuleInfo cost memory 0.038116455078125
+[2026-06-05T13:07:05.877] [DEBUG] debug-file - runTaskFromQueue task cost before running: 154 ms 
+[2026-06-05T13:07:05.877] [INFO] debug-file - Finished :entry:default@CreateModuleInfo... after 1 ms 
+[2026-06-05T13:07:05.878] [DEBUG] debug-file - Executing task :entry:default@GenerateMetadata
+[2026-06-05T13:07:05.878] [DEBUG] debug-file - Task 'entry:default@GenerateMetadata' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.878] [DEBUG] debug-file - Incremental task entry:default@GenerateMetadata pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.878] [DEBUG] debug-file - entry : default@GenerateMetadata cost memory 0.07222747802734375
+[2026-06-05T13:07:05.878] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateMetadata...  
+[2026-06-05T13:07:05.878] [DEBUG] debug-file - Executing task :entry:default@ConfigureCmake
+[2026-06-05T13:07:05.878] [DEBUG] debug-file - entry : default@ConfigureCmake cost memory 0.0142364501953125
+[2026-06-05T13:07:05.878] [DEBUG] debug-file - runTaskFromQueue task cost before running: 155 ms 
+[2026-06-05T13:07:05.878] [INFO] debug-file - Finished :entry:default@ConfigureCmake... after 1 ms 
+[2026-06-05T13:07:05.878] [DEBUG] debug-file - Executing task :entry:default@MergeProfile
+[2026-06-05T13:07:05.879] [DEBUG] debug-file - Task 'entry:default@MergeProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.879] [DEBUG] debug-file - Incremental task entry:default@MergeProfile pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.879] [DEBUG] debug-file - entry : default@MergeProfile cost memory 0.2047882080078125
+[2026-06-05T13:07:05.879] [INFO] debug-file - UP-TO-DATE :entry:default@MergeProfile...  
+[2026-06-05T13:07:05.879] [DEBUG] debug-file - Executing task :entry:default@CreateBuildProfile
+[2026-06-05T13:07:05.879] [DEBUG] debug-file - Task 'entry:default@CreateBuildProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.880] [DEBUG] debug-file - Incremental task entry:default@CreateBuildProfile pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.880] [DEBUG] debug-file - entry : default@CreateBuildProfile cost memory 0.08916473388671875
+[2026-06-05T13:07:05.880] [INFO] debug-file - UP-TO-DATE :entry:default@CreateBuildProfile...  
+[2026-06-05T13:07:05.880] [DEBUG] debug-file - Executing task :entry:default@PreCheckSyscap
+[2026-06-05T13:07:05.880] [DEBUG] debug-file - entry : default@PreCheckSyscap cost memory 0.01432037353515625
+[2026-06-05T13:07:05.880] [DEBUG] debug-file - runTaskFromQueue task cost before running: 157 ms 
+[2026-06-05T13:07:05.880] [INFO] debug-file - Finished :entry:default@PreCheckSyscap... after 1 ms 
+[2026-06-05T13:07:05.880] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgContextInfo
+[2026-06-05T13:07:05.882] [DEBUG] debug-file - Task 'entry:default@GeneratePkgContextInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.882] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgContextInfo pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.882] [DEBUG] debug-file - entry : default@GeneratePkgContextInfo cost memory 0.7229537963867188
+[2026-06-05T13:07:05.882] [INFO] debug-file - UP-TO-DATE :entry:default@GeneratePkgContextInfo...  
+[2026-06-05T13:07:05.882] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgSdkInfo
+[2026-06-05T13:07:05.883] [DEBUG] debug-file - Task 'entry:default@GeneratePkgSdkInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.883] [DEBUG] debug-file - entry : default@GeneratePkgSdkInfo cost memory 0.111175537109375
+[2026-06-05T13:07:05.883] [DEBUG] debug-file - runTaskFromQueue task cost before running: 160 ms 
+[2026-06-05T13:07:05.883] [INFO] debug-file - Finished :entry:default@GeneratePkgSdkInfo... after 1 ms 
+[2026-06-05T13:07:05.883] [DEBUG] debug-file - Executing task :entry:default@ProcessIntegratedHsp
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - entry:default@ProcessIntegratedHsp is not up-to-date, since the output file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/build/cache/default/integrated_hsp/integratedHspCache.json' does not exist.
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - entry : default@ProcessIntegratedHsp cost memory 0.05649566650390625
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - runTaskFromQueue task cost before running: 160 ms 
+[2026-06-05T13:07:05.884] [INFO] debug-file - Finished :entry:default@ProcessIntegratedHsp... after 1 ms 
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithCmake
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - entry : default@BuildNativeWithCmake cost memory 0.01409912109375
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - runTaskFromQueue task cost before running: 161 ms 
+[2026-06-05T13:07:05.884] [INFO] debug-file - Finished :entry:default@BuildNativeWithCmake... after 1 ms 
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - Executing task :entry:default@MakePackInfo
+[2026-06-05T13:07:05.884] [DEBUG] debug-file - Incremental task entry:default@MakePackInfo pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.885] [DEBUG] debug-file - entry : default@MakePackInfo cost memory 0.0956573486328125
+[2026-06-05T13:07:05.885] [INFO] debug-file - UP-TO-DATE :entry:default@MakePackInfo...  
+[2026-06-05T13:07:05.885] [DEBUG] debug-file - Executing task :entry:default@SyscapTransform
+[2026-06-05T13:07:05.885] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/syscap.json' from 'sysCapJsonPath' is not exists, just ignore.
+[2026-06-05T13:07:05.885] [DEBUG] debug-file - Task 'entry:default@SyscapTransform' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.886] [DEBUG] debug-file - entry:default@SyscapTransform is not up-to-date, since the output file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/syscap/default/rpcid.sc' does not exist.
+[2026-06-05T13:07:05.886] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.886] [DEBUG] debug-file - entry : default@SyscapTransform cost memory 0.10650634765625
+[2026-06-05T13:07:05.886] [DEBUG] debug-file - runTaskFromQueue task cost before running: 163 ms 
+[2026-06-05T13:07:05.886] [INFO] debug-file - Finished :entry:default@SyscapTransform... after 2 ms 
+[2026-06-05T13:07:05.888] [DEBUG] debug-file - Executing task :entry:default@ProcessProfile
+[2026-06-05T13:07:05.889] [DEBUG] debug-file - Task 'entry:default@ProcessProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.889] [DEBUG] debug-file - Incremental task entry:default@ProcessProfile pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.889] [DEBUG] debug-file - entry : default@ProcessProfile cost memory 0.11902618408203125
+[2026-06-05T13:07:05.889] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessProfile...  
+[2026-06-05T13:07:05.889] [DEBUG] debug-file - Executing task :entry:default@ProcessRouterMap
+[2026-06-05T13:07:05.890] [DEBUG] debug-file - Incremental task entry:default@ProcessRouterMap pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.890] [DEBUG] debug-file - entry : default@ProcessRouterMap cost memory 0.1450653076171875
+[2026-06-05T13:07:05.890] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessRouterMap...  
+[2026-06-05T13:07:05.890] [DEBUG] debug-file - Executing task :entry:default@ProcessShareConfig
+[2026-06-05T13:07:05.890] [DEBUG] debug-file - Incremental task entry:default@ProcessShareConfig pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.890] [DEBUG] debug-file - entry : default@ProcessShareConfig cost memory 0.12456512451171875
+[2026-06-05T13:07:05.890] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessShareConfig...  
+[2026-06-05T13:07:05.890] [DEBUG] debug-file - Executing task :entry:default@ProcessStartupConfig
+[2026-06-05T13:07:05.890] [DEBUG] debug-file - Task 'entry:default@ProcessStartupConfig' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.891] [DEBUG] debug-file - entry:default@ProcessStartupConfig is not up-to-date, since the output file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/startup/default/startup_config.json' does not exist.
+[2026-06-05T13:07:05.891] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.891] [DEBUG] debug-file - entry : default@ProcessStartupConfig cost memory 0.13668060302734375
+[2026-06-05T13:07:05.891] [DEBUG] debug-file - runTaskFromQueue task cost before running: 168 ms 
+[2026-06-05T13:07:05.891] [INFO] debug-file - Finished :entry:default@ProcessStartupConfig... after 1 ms 
+[2026-06-05T13:07:05.891] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithNinja
+[2026-06-05T13:07:05.892] [DEBUG] debug-file - entry : default@BuildNativeWithNinja cost memory 0.01970672607421875
+[2026-06-05T13:07:05.892] [DEBUG] debug-file - runTaskFromQueue task cost before running: 168 ms 
+[2026-06-05T13:07:05.892] [INFO] debug-file - Finished :entry:default@BuildNativeWithNinja... after 1 ms 
+[2026-06-05T13:07:05.892] [DEBUG] debug-file - restool module names: entry; moduleName=entry, taskName=default@ProcessResource
+[2026-06-05T13:07:05.893] [DEBUG] debug-file - Executing task :entry:default@ProcessResource
+[2026-06-05T13:07:05.893] [DEBUG] debug-file - Task 'entry:default@ProcessResource' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.893] [DEBUG] debug-file - Incremental task entry:default@ProcessResource pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.893] [DEBUG] debug-file - entry : default@ProcessResource cost memory 0.12384796142578125
+[2026-06-05T13:07:05.894] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessResource...  
+[2026-06-05T13:07:05.894] [DEBUG] debug-file - Executing task :entry:default@GenerateLoaderJson
+[2026-06-05T13:07:05.895] [DEBUG] debug-file - Task 'entry:default@GenerateLoaderJson' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.896] [DEBUG] debug-file - Incremental task entry:default@GenerateLoaderJson pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.896] [DEBUG] debug-file - entry : default@GenerateLoaderJson cost memory 0.5390625
+[2026-06-05T13:07:05.897] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateLoaderJson...  
+[2026-06-05T13:07:05.897] [DEBUG] debug-file - Executing task :entry:default@ProcessLibs
+[2026-06-05T13:07:05.898] [DEBUG] debug-file - Incremental task entry:default@ProcessLibs pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.899] [DEBUG] debug-file - entry : default@ProcessLibs cost memory 0.1814117431640625
+[2026-06-05T13:07:05.899] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessLibs...  
+[2026-06-05T13:07:05.899] [DEBUG] debug-file - restool module names: entry; moduleName=entry, taskName=default@CompileResource
+[2026-06-05T13:07:05.899] [DEBUG] debug-file - Executing task :entry:default@CompileResource
+[2026-06-05T13:07:05.908] [DEBUG] debug-file - Incremental task entry:default@CompileResource pre-execution cost: 8 ms .
+[2026-06-05T13:07:05.908] [DEBUG] debug-file - entry : default@CompileResource cost memory 0.8224334716796875
+[2026-06-05T13:07:05.909] [INFO] debug-file - UP-TO-DATE :entry:default@CompileResource...  
+[2026-06-05T13:07:05.909] [DEBUG] debug-file - Executing task :entry:default@DoNativeStrip
+[2026-06-05T13:07:05.909] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/binxo/default' from 'doBinxoNativeLibs' is not exists, just ignore.
+[2026-06-05T13:07:05.909] [DEBUG] debug-file - Task 'entry:default@DoNativeStrip' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.910] [DEBUG] debug-file - Incremental task entry:default@DoNativeStrip pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.910] [DEBUG] debug-file - entry : default@DoNativeStrip cost memory 0.0741119384765625
+[2026-06-05T13:07:05.910] [INFO] debug-file - UP-TO-DATE :entry:default@DoNativeStrip...  
+[2026-06-05T13:07:05.911] [DEBUG] debug-file - Executing task :entry:default@CompileArkTS
+[2026-06-05T13:07:05.911] [DEBUG] debug-file - obfuscationOptions: undefined
+[2026-06-05T13:07:05.912] [DEBUG] debug-file - Task 'entry:default@CompileArkTS' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.916] [DEBUG] debug-file - Incremental task entry:default@CompileArkTS pre-execution cost: 4 ms .
+[2026-06-05T13:07:05.917] [DEBUG] debug-file - entry : default@CompileArkTS cost memory 0.8545150756835938
+[2026-06-05T13:07:05.918] [INFO] debug-file - UP-TO-DATE :entry:default@CompileArkTS...  
+[2026-06-05T13:07:05.920] [DEBUG] debug-file - Executing task :entry:default@BuildJS
+[2026-06-05T13:07:05.921] [DEBUG] debug-file - Task 'entry:default@BuildJS' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.923] [DEBUG] debug-file - entry : default@BuildJS cost memory 0.13300323486328125
+[2026-06-05T13:07:05.923] [DEBUG] debug-file - runTaskFromQueue task cost before running: 200 ms 
+[2026-06-05T13:07:05.923] [INFO] debug-file - Finished :entry:default@BuildJS... after 4 ms 
+[2026-06-05T13:07:05.925] [DEBUG] debug-file - Executing task :entry:default@CacheNativeLibs
+[2026-06-05T13:07:05.925] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/binxo/default' from 'cacheBinxoNativeLibs' is not exists, just ignore.
+[2026-06-05T13:07:05.925] [DEBUG] debug-file - Task 'entry:default@CacheNativeLibs' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.926] [DEBUG] debug-file - Incremental task entry:default@CacheNativeLibs pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.929] [DEBUG] debug-file - entry : default@CacheNativeLibs cost memory 0.08657073974609375
+[2026-06-05T13:07:05.929] [INFO] debug-file - UP-TO-DATE :entry:default@CacheNativeLibs...  
+[2026-06-05T13:07:05.929] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgModuleJson
+[2026-06-05T13:07:05.929] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/preload/default/preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-06-05T13:07:05.929] [DEBUG] debug-file - Error occurs while handling @Input 'shouldDeduplicateHar': The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+[2026-06-05T13:07:05.930] [DEBUG] debug-file - Task 'entry:default@GeneratePkgModuleJson' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.930] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgModuleJson pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.930] [DEBUG] debug-file - entry : default@GeneratePkgModuleJson cost memory 0.0904388427734375
+[2026-06-05T13:07:05.930] [INFO] debug-file - UP-TO-DATE :entry:default@GeneratePkgModuleJson...  
+[2026-06-05T13:07:05.930] [DEBUG] debug-file - Executing task :entry:default@ProcessCompiledResources
+[2026-06-05T13:07:05.930] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/preload/default/preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-06-05T13:07:05.930] [DEBUG] debug-file - Task 'entry:default@ProcessCompiledResources' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:07:05.930] [DEBUG] debug-file - entry : default@ProcessCompiledResources cost memory 0.0593414306640625
+[2026-06-05T13:07:05.930] [DEBUG] debug-file - runTaskFromQueue task cost before running: 207 ms 
+[2026-06-05T13:07:05.930] [INFO] debug-file - Finished :entry:default@ProcessCompiledResources... after 1 ms 
+[2026-06-05T13:07:05.931] [DEBUG] debug-file - Executing task :entry:default@PackageHap
+[2026-06-05T13:07:05.932] [DEBUG] debug-file - Incremental task entry:default@PackageHap pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.932] [DEBUG] debug-file - entry : default@PackageHap cost memory 0.3212738037109375
+[2026-06-05T13:07:05.932] [INFO] debug-file - UP-TO-DATE :entry:default@PackageHap...  
+[2026-06-05T13:07:05.932] [DEBUG] debug-file - Executing task :entry:default@PackingCheck
+[2026-06-05T13:07:05.935] [DEBUG] debug-file - entry : default@PackingCheck cost memory 0.6342086791992188
+[2026-06-05T13:07:05.935] [DEBUG] debug-file - runTaskFromQueue task cost before running: 212 ms 
+[2026-06-05T13:07:05.935] [INFO] debug-file - Finished :entry:default@PackingCheck... after 3 ms 
+[2026-06-05T13:07:05.936] [DEBUG] debug-file - Executing task :entry:default@SignHap
+[2026-06-05T13:07:05.936] [WARN] debug-file - Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
+             If needed, configure the signingConfigs in /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/build-profile.json5.
+[2026-06-05T13:07:05.936] [DEBUG] debug-file - entry:default@SignHap is not up-to-date, since the output file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/entry-default-signed.hap' does not exist.
+[2026-06-05T13:07:05.936] [DEBUG] debug-file - Incremental task entry:default@SignHap pre-execution cost: 1 ms .
+[2026-06-05T13:07:05.936] [DEBUG] debug-file - entry : default@SignHap cost memory 0.074676513671875
+[2026-06-05T13:07:05.937] [DEBUG] debug-file - runTaskFromQueue task cost before running: 213 ms 
+[2026-06-05T13:07:05.937] [INFO] debug-file - Finished :entry:default@SignHap... after 1 ms 
+[2026-06-05T13:07:05.937] [DEBUG] debug-file - Executing task :entry:default@CollectDebugSymbol
+[2026-06-05T13:07:05.937] [DEBUG] debug-file - entry : default@CollectDebugSymbol cost memory 0.0732269287109375
+[2026-06-05T13:07:05.937] [DEBUG] debug-file - runTaskFromQueue task cost before running: 214 ms 
+[2026-06-05T13:07:05.937] [INFO] debug-file - Finished :entry:default@CollectDebugSymbol... after 1 ms 
+[2026-06-05T13:07:05.937] [DEBUG] debug-file - Executing task :entry:assembleHap
+[2026-06-05T13:07:05.937] [DEBUG] debug-file - entry : assembleHap cost memory 0.01708221435546875
+[2026-06-05T13:07:05.937] [DEBUG] debug-file - runTaskFromQueue task cost before running: 214 ms 
+[2026-06-05T13:07:05.937] [INFO] debug-file - Finished :entry:assembleHap... after 1 ms 
+[2026-06-05T13:07:05.938] [INFO] debug-file - BUILD SUCCESSFUL in 215 ms 
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@PreBuild is up-to-date.
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - Update task entry:default@CreateModuleInfo output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/generated/profile/default/ModuleInfo.ts cache.
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - Incremental task entry:default@CreateModuleInfo post-execution cost:1 ms .
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateMetadata is up-to-date.
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MergeProfile is up-to-date.
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CreateBuildProfile is up-to-date.
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GeneratePkgContextInfo is up-to-date.
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - Update task entry:default@GeneratePkgSdkInfo output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgSdkInfo.json cache.
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgSdkInfo post-execution cost:1 ms .
+[2026-06-05T13:07:05.938] [DEBUG] debug-file - Update task entry:default@ProcessIntegratedHsp output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/build/cache/default/integrated_hsp/integratedHspCache.json cache.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp post-execution cost:1 ms .
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MakePackInfo is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/toolchains/syscap_tool cache by regenerate.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/device-define cache by regenerate.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Update task entry:default@SyscapTransform output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/syscap/default/rpcid.sc cache.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform post-execution cost:1 ms .
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessProfile is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessRouterMap is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessShareConfig is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Update task entry:default@ProcessStartupConfig input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgContextInfo.json cache by regenerate.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Update task entry:default@ProcessStartupConfig output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/startup/default/startup_config.json cache.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig post-execution cost:1 ms .
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessResource is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateLoaderJson is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessLibs is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CompileResource is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@DoNativeStrip is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CompileArkTS is up-to-date.
+[2026-06-05T13:07:05.939] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources/rawfile cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/ResourceTable.txt cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/ark_module.json cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources/base/profile cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgContextInfo.json cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@BuildJS output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/js cache.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Incremental task entry:default@BuildJS post-execution cost:1 ms .
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CacheNativeLibs is up-to-date.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GeneratePkgModuleJson is up-to-date.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Incremental task entry:default@ProcessCompiledResources post-execution cost:1 ms .
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@PackageHap is up-to-date.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@SignHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/entry-default-unsigned.hap cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@SignHap output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/entry-default-signed.hap cache.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Incremental task entry:default@SignHap post-execution cost:1 ms .
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/ets/sourceMaps.map cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/libs/default cache by regenerate.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/symbol cache.
+[2026-06-05T13:07:05.940] [DEBUG] debug-file - Incremental task entry:default@CollectDebugSymbol post-execution cost:1 ms .
+[2026-06-05T13:07:05.946] [DEBUG] debug-file - hvigor build process will be closed.
+[2026-06-05T13:07:05.980] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-06-05T13:07:05.980] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-06-05T13:07:05.981] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-06-05T13:07:05.981] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-06-05T13:52:59.299] [DEBUG] debug-file - session manager: set active socket. socketId=WQmx1zVcWmUlXPX9AAAN
+[2026-06-05T13:52:59.307] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-06-05T13:52:59.318] [DEBUG] debug-file - Workers' log level updated to INFO
+[2026-06-05T13:52:59.326] [DEBUG] debug-file - Hvigor init with startParameters:{
+  hvigorfileTypeCheck: false,
+  parallelExecution: true,
+  incrementalExecution: true,
+  printStackTrace: false,
+  daemon: true,
+  analyze: 0,
+  logLevel: Level { level: 20000, levelStr: 'INFO', colour: 'green' },
+  optimizationStrategy: 'memory',
+  hotCompile: undefined,
+  hotReloadBuild: undefined,
+  customizedParam: undefined
+}
+[2026-06-05T13:52:59.330] [DEBUG] debug-file - Cache service initialization finished in 4 ms 
+[2026-06-05T13:52:59.331] [DEBUG] debug-file - hvigorfile, resolving /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/hvigorfile.ts
+[2026-06-05T13:52:59.338] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-06-05T13:52:59.339] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-06-05T13:52:59.339] [DEBUG] debug-file - Starting plugin build process
+[2026-06-05T13:52:59.339] [DEBUG] debug-file - App plugin prepare start...
+[2026-06-05T13:52:59.339] [DEBUG] debug-file - App plugin prepare end...
+[2026-06-05T13:52:59.339] [DEBUG] debug-file - App plugin creating...
+[2026-06-05T13:52:59.344] [DEBUG] debug-file - App plugin register hook start...
+[2026-06-05T13:52:59.344] [DEBUG] debug-file - App plugin register hook end...
+[2026-06-05T13:52:59.344] [DEBUG] debug-file - Plugin build process completed
+[2026-06-05T13:52:59.345] [DEBUG] debug-file - Start initialize project's product build option map with build mode debug.
+[2026-06-05T13:52:59.345] [DEBUG] debug-file - Picking option from product 'default' with build mode 'debug'.
+[2026-06-05T13:52:59.345] [DEBUG] debug-file - Product 'default' build option initialized
+[2026-06-05T13:52:59.345] [DEBUG] debug-file - End initialize project's product build option map with build mode 'debug'.
+[2026-06-05T13:52:59.346] [DEBUG] debug-file - Obtain build option for product 'default'in this build.
+[2026-06-05T13:52:59.347] [DEBUG] debug-file - No signingConfig found, initRemoteHspCache failed.
+[2026-06-05T13:52:59.349] [DEBUG] debug-file - Start recording SDK configuration permission data.
+[2026-06-05T13:52:59.368] [DEBUG] debug-file - Sdk init in 21 ms 
+[2026-06-05T13:52:59.371] [DEBUG] debug-file - Project task initialization takes 3 ms 
+[2026-06-05T13:52:59.371] [DEBUG] debug-file - hvigorfile, begin to bind custom plugins...
+[2026-06-05T13:52:59.371] [DEBUG] debug-file - hvigorfile, no custom plugins were found in /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/hvigorfile.ts
+[2026-06-05T13:52:59.371] [DEBUG] debug-file - hvigorfile, resolve finished /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/hvigorfile.ts
+[2026-06-05T13:52:59.371] [DEBUG] debug-file - hvigorfile, resolving /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/hvigorfile.ts
+[2026-06-05T13:52:59.374] [DEBUG] debug-file - hvigorfile, require result:  { default: { plugins: [] } }
+[2026-06-05T13:52:59.374] [DEBUG] debug-file - hvigorfile, binding system plugins null
+[2026-06-05T13:52:59.374] [DEBUG] debug-file - Starting plugin build process
+[2026-06-05T13:52:59.374] [DEBUG] debug-file - Hap plugin creating...
+[2026-06-05T13:52:59.374] [DEBUG] debug-file - failed to load cangjie to dynamically generate schemas: Error: Cannot find module '@ohos/cangjie-build-support/index'
+Require stack:
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/hooks/cangjie-register.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/strategy/stage-init-strategy.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/builder/abstract-plugin-builder.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/builder/app-plugin-builder.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/src/plugin/factory/plugin-factory.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor-ohos-plugin/index.js
+- /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/hvigorfile.ts
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor/src/base/internal/lifecycle/configuration.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor/src/base/boot/index.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor/src/base/daemon/cluster/worker-process-lifecycle.js
+- /Applications/DevEco-Studio.app/Contents/tools/hvigor/hvigor/src/base/daemon/process/daemon-process-boot-script.js
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=release
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - Start initialize module-target build option map, moduleName=entry, buildMode=debug
+[2026-06-05T13:52:59.375] [DEBUG] debug-file - Target 'default' config initialized
+[2026-06-05T13:52:59.376] [DEBUG] debug-file - Module 'entry' target 'default' build option initialized
+[2026-06-05T13:52:59.376] [DEBUG] debug-file - End initialize module-target build option map, moduleName=entry
+[2026-06-05T13:52:59.376] [DEBUG] debug-file - Obtain build option for module 'entry' target 'default'in this build.
+[2026-06-05T13:52:59.376] [DEBUG] debug-file - Module entry task initialization takes 1 ms 
+[2026-06-05T13:52:59.376] [DEBUG] debug-file - Hap plugin register hook start...
+[2026-06-05T13:52:59.377] [DEBUG] debug-file - Hap plugin register hook end...
+[2026-06-05T13:52:59.377] [DEBUG] debug-file - Plugin build process completed
+[2026-06-05T13:52:59.377] [DEBUG] debug-file - hvigorfile, begin to bind custom plugins...
+[2026-06-05T13:52:59.377] [DEBUG] debug-file - hvigorfile, no custom plugins were found in /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/hvigorfile.ts
+[2026-06-05T13:52:59.377] [DEBUG] debug-file - hvigorfile, resolve finished /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/hvigorfile.ts
+[2026-06-05T13:52:59.412] [DEBUG] debug-file - hvigorfile, resolve hvigorfile dependencies in 36 ms 
+[2026-06-05T13:52:59.412] [DEBUG] debug-file - project has submodules:entry
+[2026-06-05T13:52:59.413] [DEBUG] debug-file - start to load updatedOhPackageInfo to the disk
+[2026-06-05T13:52:59.414] [DEBUG] debug-file - load to the disk finished
+[2026-06-05T13:52:59.414] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-06-05T13:52:59.415] [DEBUG] debug-file - Module harmonychat-main Collected Dependency: 
+[2026-06-05T13:52:59.415] [DEBUG] debug-file - Module harmonychat-main's total dependency: 0
+[2026-06-05T13:52:59.415] [DEBUG] debug-file - Start to initialize dependency information.
+[2026-06-05T13:52:59.415] [DEBUG] debug-file - Module entry Collected Dependency: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk
+[2026-06-05T13:52:59.415] [DEBUG] debug-file - Module entry's total dependency: 1
+[2026-06-05T13:52:59.416] [DEBUG] debug-file - Configuration phase cost:86 ms 
+[2026-06-05T13:52:59.416] [DEBUG] debug-file - Configuration task cost before running: 97 ms 
+[2026-06-05T13:52:59.417] [DEBUG] debug-file - Executing task :entry:default@PreBuild
+[2026-06-05T13:52:59.417] [DEBUG] debug-file - Task 'entry:default@PreBuild' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.418] [DEBUG] debug-file - Incremental task entry:default@PreBuild pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.418] [DEBUG] debug-file - entry : default@PreBuild cost memory 0.23928070068359375
+[2026-06-05T13:52:59.418] [INFO] debug-file - UP-TO-DATE :entry:default@PreBuild...  
+[2026-06-05T13:52:59.418] [DEBUG] debug-file - Executing task :entry:default@CreateModuleInfo
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - Task 'entry:default@CreateModuleInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - entry : default@CreateModuleInfo cost memory 0.0380706787109375
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - runTaskFromQueue task cost before running: 100 ms 
+[2026-06-05T13:52:59.419] [INFO] debug-file - Finished :entry:default@CreateModuleInfo... after 1 ms 
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - Executing task :entry:default@GenerateMetadata
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - Task 'entry:default@GenerateMetadata' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - Incremental task entry:default@GenerateMetadata pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - entry : default@GenerateMetadata cost memory 0.0709381103515625
+[2026-06-05T13:52:59.419] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateMetadata...  
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - Executing task :entry:default@ConfigureCmake
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - entry : default@ConfigureCmake cost memory 0.01409912109375
+[2026-06-05T13:52:59.419] [DEBUG] debug-file - runTaskFromQueue task cost before running: 101 ms 
+[2026-06-05T13:52:59.419] [INFO] debug-file - Finished :entry:default@ConfigureCmake... after 1 ms 
+[2026-06-05T13:52:59.420] [DEBUG] debug-file - Executing task :entry:default@MergeProfile
+[2026-06-05T13:52:59.420] [DEBUG] debug-file - Task 'entry:default@MergeProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.420] [DEBUG] debug-file - Incremental task entry:default@MergeProfile pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.420] [DEBUG] debug-file - entry : default@MergeProfile cost memory 0.11785125732421875
+[2026-06-05T13:52:59.420] [INFO] debug-file - UP-TO-DATE :entry:default@MergeProfile...  
+[2026-06-05T13:52:59.420] [DEBUG] debug-file - Executing task :entry:default@CreateBuildProfile
+[2026-06-05T13:52:59.420] [DEBUG] debug-file - Task 'entry:default@CreateBuildProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.420] [DEBUG] debug-file - Incremental task entry:default@CreateBuildProfile pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.420] [DEBUG] debug-file - entry : default@CreateBuildProfile cost memory 0.0864105224609375
+[2026-06-05T13:52:59.420] [INFO] debug-file - UP-TO-DATE :entry:default@CreateBuildProfile...  
+[2026-06-05T13:52:59.421] [DEBUG] debug-file - Executing task :entry:default@PreCheckSyscap
+[2026-06-05T13:52:59.421] [DEBUG] debug-file - entry : default@PreCheckSyscap cost memory 0.01432037353515625
+[2026-06-05T13:52:59.421] [DEBUG] debug-file - runTaskFromQueue task cost before running: 102 ms 
+[2026-06-05T13:52:59.421] [INFO] debug-file - Finished :entry:default@PreCheckSyscap... after 1 ms 
+[2026-06-05T13:52:59.421] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgContextInfo
+[2026-06-05T13:52:59.422] [DEBUG] debug-file - Task 'entry:default@GeneratePkgContextInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.422] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgContextInfo pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.422] [DEBUG] debug-file - entry : default@GeneratePkgContextInfo cost memory 0.27660369873046875
+[2026-06-05T13:52:59.422] [INFO] debug-file - UP-TO-DATE :entry:default@GeneratePkgContextInfo...  
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgSdkInfo
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - Task 'entry:default@GeneratePkgSdkInfo' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - entry : default@GeneratePkgSdkInfo cost memory 0.11124420166015625
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - runTaskFromQueue task cost before running: 104 ms 
+[2026-06-05T13:52:59.423] [INFO] debug-file - Finished :entry:default@GeneratePkgSdkInfo... after 1 ms 
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - Executing task :entry:default@ProcessIntegratedHsp
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - entry:default@ProcessIntegratedHsp is not up-to-date, since the output file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/build/cache/default/integrated_hsp/integratedHspCache.json' does not exist.
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - entry : default@ProcessIntegratedHsp cost memory 0.056488037109375
+[2026-06-05T13:52:59.423] [DEBUG] debug-file - runTaskFromQueue task cost before running: 105 ms 
+[2026-06-05T13:52:59.423] [INFO] debug-file - Finished :entry:default@ProcessIntegratedHsp... after 1 ms 
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithCmake
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - entry : default@BuildNativeWithCmake cost memory 0.01409912109375
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - runTaskFromQueue task cost before running: 105 ms 
+[2026-06-05T13:52:59.424] [INFO] debug-file - Finished :entry:default@BuildNativeWithCmake... after 1 ms 
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - Executing task :entry:default@MakePackInfo
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - Incremental task entry:default@MakePackInfo pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - entry : default@MakePackInfo cost memory 0.09283447265625
+[2026-06-05T13:52:59.424] [INFO] debug-file - UP-TO-DATE :entry:default@MakePackInfo...  
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - Executing task :entry:default@SyscapTransform
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/syscap.json' from 'sysCapJsonPath' is not exists, just ignore.
+[2026-06-05T13:52:59.424] [DEBUG] debug-file - Task 'entry:default@SyscapTransform' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.425] [DEBUG] debug-file - entry:default@SyscapTransform is not up-to-date, since the output file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/syscap/default/rpcid.sc' does not exist.
+[2026-06-05T13:52:59.425] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.425] [DEBUG] debug-file - entry : default@SyscapTransform cost memory 0.10520172119140625
+[2026-06-05T13:52:59.425] [DEBUG] debug-file - runTaskFromQueue task cost before running: 106 ms 
+[2026-06-05T13:52:59.425] [INFO] debug-file - Finished :entry:default@SyscapTransform... after 1 ms 
+[2026-06-05T13:52:59.426] [DEBUG] debug-file - Executing task :entry:default@ProcessProfile
+[2026-06-05T13:52:59.427] [DEBUG] debug-file - Task 'entry:default@ProcessProfile' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.427] [DEBUG] debug-file - Incremental task entry:default@ProcessProfile pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.427] [DEBUG] debug-file - entry : default@ProcessProfile cost memory -3.8651275634765625
+[2026-06-05T13:52:59.427] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessProfile...  
+[2026-06-05T13:52:59.427] [DEBUG] debug-file - Executing task :entry:default@ProcessRouterMap
+[2026-06-05T13:52:59.427] [DEBUG] debug-file - Incremental task entry:default@ProcessRouterMap pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.427] [DEBUG] debug-file - entry : default@ProcessRouterMap cost memory 0.14253997802734375
+[2026-06-05T13:52:59.428] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessRouterMap...  
+[2026-06-05T13:52:59.428] [DEBUG] debug-file - Executing task :entry:default@ProcessShareConfig
+[2026-06-05T13:52:59.428] [DEBUG] debug-file - Incremental task entry:default@ProcessShareConfig pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.428] [DEBUG] debug-file - entry : default@ProcessShareConfig cost memory 0.12323760986328125
+[2026-06-05T13:52:59.428] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessShareConfig...  
+[2026-06-05T13:52:59.428] [DEBUG] debug-file - Executing task :entry:default@ProcessStartupConfig
+[2026-06-05T13:52:59.428] [DEBUG] debug-file - Task 'entry:default@ProcessStartupConfig' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.428] [DEBUG] debug-file - entry:default@ProcessStartupConfig is not up-to-date, since the output file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/startup/default/startup_config.json' does not exist.
+[2026-06-05T13:52:59.428] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.429] [DEBUG] debug-file - entry : default@ProcessStartupConfig cost memory 0.13661956787109375
+[2026-06-05T13:52:59.429] [DEBUG] debug-file - runTaskFromQueue task cost before running: 110 ms 
+[2026-06-05T13:52:59.429] [INFO] debug-file - Finished :entry:default@ProcessStartupConfig... after 1 ms 
+[2026-06-05T13:52:59.429] [DEBUG] debug-file - Executing task :entry:default@BuildNativeWithNinja
+[2026-06-05T13:52:59.429] [DEBUG] debug-file - entry : default@BuildNativeWithNinja cost memory 0.01970672607421875
+[2026-06-05T13:52:59.429] [DEBUG] debug-file - runTaskFromQueue task cost before running: 110 ms 
+[2026-06-05T13:52:59.429] [INFO] debug-file - Finished :entry:default@BuildNativeWithNinja... after 1 ms 
+[2026-06-05T13:52:59.429] [DEBUG] debug-file - restool module names: entry; moduleName=entry, taskName=default@ProcessResource
+[2026-06-05T13:52:59.430] [DEBUG] debug-file - Executing task :entry:default@ProcessResource
+[2026-06-05T13:52:59.430] [DEBUG] debug-file - Task 'entry:default@ProcessResource' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.430] [DEBUG] debug-file - Incremental task entry:default@ProcessResource pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.430] [DEBUG] debug-file - entry : default@ProcessResource cost memory 0.12158966064453125
+[2026-06-05T13:52:59.431] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessResource...  
+[2026-06-05T13:52:59.431] [DEBUG] debug-file - Executing task :entry:default@GenerateLoaderJson
+[2026-06-05T13:52:59.431] [DEBUG] debug-file - Task 'entry:default@GenerateLoaderJson' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.433] [DEBUG] debug-file - Incremental task entry:default@GenerateLoaderJson pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.433] [DEBUG] debug-file - entry : default@GenerateLoaderJson cost memory 0.515655517578125
+[2026-06-05T13:52:59.433] [INFO] debug-file - UP-TO-DATE :entry:default@GenerateLoaderJson...  
+[2026-06-05T13:52:59.433] [DEBUG] debug-file - Executing task :entry:default@ProcessLibs
+[2026-06-05T13:52:59.434] [DEBUG] debug-file - Incremental task entry:default@ProcessLibs pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.434] [DEBUG] debug-file - entry : default@ProcessLibs cost memory 0.1621551513671875
+[2026-06-05T13:52:59.434] [INFO] debug-file - UP-TO-DATE :entry:default@ProcessLibs...  
+[2026-06-05T13:52:59.434] [DEBUG] debug-file - restool module names: entry; moduleName=entry, taskName=default@CompileResource
+[2026-06-05T13:52:59.434] [DEBUG] debug-file - Executing task :entry:default@CompileResource
+[2026-06-05T13:52:59.438] [DEBUG] debug-file - Incremental task entry:default@CompileResource pre-execution cost: 4 ms .
+[2026-06-05T13:52:59.438] [DEBUG] debug-file - entry : default@CompileResource cost memory 0.57666015625
+[2026-06-05T13:52:59.439] [INFO] debug-file - UP-TO-DATE :entry:default@CompileResource...  
+[2026-06-05T13:52:59.439] [DEBUG] debug-file - Executing task :entry:default@DoNativeStrip
+[2026-06-05T13:52:59.439] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/binxo/default' from 'doBinxoNativeLibs' is not exists, just ignore.
+[2026-06-05T13:52:59.439] [DEBUG] debug-file - Task 'entry:default@DoNativeStrip' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.439] [DEBUG] debug-file - Incremental task entry:default@DoNativeStrip pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.439] [DEBUG] debug-file - entry : default@DoNativeStrip cost memory 0.073974609375
+[2026-06-05T13:52:59.439] [INFO] debug-file - UP-TO-DATE :entry:default@DoNativeStrip...  
+[2026-06-05T13:52:59.440] [DEBUG] debug-file - Executing task :entry:default@CompileArkTS
+[2026-06-05T13:52:59.440] [DEBUG] debug-file - obfuscationOptions: undefined
+[2026-06-05T13:52:59.440] [DEBUG] debug-file - Task 'entry:default@CompileArkTS' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.442] [DEBUG] debug-file - entry:default@CompileArkTS is not up-to-date, since the input file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets' has been changed.
+[2026-06-05T13:52:59.442] [DEBUG] debug-file - Incremental task entry:default@CompileArkTS pre-execution cost: 2 ms .
+[2026-06-05T13:52:59.446] [DEBUG] debug-file - build config:
+[2026-06-05T13:52:59.446] [DEBUG] debug-file - {
+  moduleType: 'entry',
+  perf: 0,
+  targetName: '.default',
+  packageManagerType: 'ohpm',
+  localPropertiesPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/local.properties',
+  isPreview: false,
+  isOhosTest: false,
+  isLocalTest: false,
+  buildMode: 'Debug',
+  hotReloadBuild: undefined,
+  watchMode: 'false',
+  aceProfilePath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources/base/profile',
+  etsLoaderPath: '/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader',
+  modulePath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry',
+  testFrameworkPar: {
+    testMode: undefined,
+    coveragePathFilter: undefined,
+    coverageMode: undefined
+  },
+  needCoverageInsert: false,
+  debugLine: false,
+  projectTopDir: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main',
+  compileSdkVersion: 23,
+  compatibleSdkVersion: 13,
+  originCompatibleSdkVersion: '5.0.1(13)',
+  compatibleSdkVersionStage: undefined,
+  bundleName: 'c***t',
+  etsLoaderVersion: '6.1.0.105',
+  etsLoaderReleaseType: 'Release',
+  aotCompileMode: 'type',
+  apPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/modules.ap',
+  entryModuleName: 'entry',
+  entryModuleVersion: '1.0.0',
+  entryPackageName: 'entry',
+  allModuleNameHash: '52b4b82f65d9c3d301d0ced3931a74f60219238c22e18d0976c12b0c3363a29e',
+  externalApiPaths: [ '/Applications/DevEco-Studio.app/Contents/sdk/default/hms/ets' ],
+  compilerTypes: [],
+  isCrossplatform: false,
+  hvigorPluginFile: undefined,
+  compilePluginPath: undefined,
+  buildGeneratedProfilePath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/generated/profile/default',
+  bundleType: 'app',
+  arkTSVersion: undefined,
+  apiVersion: 23,
+  needCompleteSourcesMap: false,
+  isFaMode: false,
+  buildDir: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build',
+  deviceTypes: [ 'phone', 'tablet', '2in1' ],
+  pkgContextInfo: {
+    mobileimsdk: {
+      packageName: 'mobileimsdk',
+      bundleName: '*****',
+      moduleName: '',
+      version: '1.0.0',
+      entryPath: 'Index',
+      isSO: false,
+      dependencyAlias: ''
+    },
+    '@ohos/hypium': {
+      packageName: '@ohos/hypium',
+      bundleName: '*****',
+      moduleName: '',
+      version: '1.0.19',
+      entryPath: 'index.js',
+      isSO: false,
+      dependencyAlias: ''
+    },
+    '@ohos/hamock': {
+      packageName: '@ohos/hamock',
+      bundleName: '*****',
+      moduleName: '',
+      version: '1.0.0',
+      entryPath: 'index.ets',
+      isSO: false,
+      dependencyAlias: ''
+    },
+    entry: {
+      packageName: 'entry',
+      bundleName: '*****',
+      moduleName: '',
+      version: '',
+      entryPath: 'src/main/',
+      isSO: false,
+      dependencyAlias: ''
+    }
+  },
+  ohPackagePathMap: {},
+  dependencyAliasMap: {},
+  permission: {
+    requestPermissions: [ [Object], [Object] ],
+    definePermissions: undefined
+  },
+  useGetCurrentBundleName: false,
+  projectArkOption: undefined,
+  sourceMapDir: undefined,
+  branchElimination: false,
+  transformLib: undefined,
+  tsImportSendable: false,
+  resolveConflictMode: true,
+  depName2RootPath: {},
+  depName2DepInfo: {},
+  depName2OhExports: {},
+  rootPathSet: [ '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main' ],
+  useNativeResolver: true,
+  shouldEmitJs: true,
+  useTscResolve: false,
+  singleFileEmit: false,
+  userProjectConfig: {
+    autoLazyImport: false,
+    allowEmptyBundleName: false,
+    reExportCheckMode: 'noCheck',
+    executionMode: 'memory',
+    usePathPlaceholder: false,
+    writeRollupCache: true,
+    isExpandImportEnabled: false,
+    expandImportExclude: '',
+    lazyImportExclude: '',
+    lazyImportInclude: '',
+    ignoreCrossplatformCheck: false,
+    isHarDeduplicateEnabled: false,
+    skipOhModulesLint: false,
+    enableStrictCheckOHModule: false,
+    disableSendableCheckRules: [],
+    useDeclarationFileSignature: false,
+    customizedOptions: undefined,
+    integratedHsp: false,
+    isPreloadSoEnabled: false
+  },
+  executionMode: 'memory',
+  arkCompileCachePath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/cache/default/default@CompileArkTS/esmodule',
+  autoLazyFilter: undefined,
+  isHarDeduplicateEnabled: false,
+  intermediateHarDuplicateDirPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/har_duplicate/default',
+  autoLazyImport: false,
+  allowEmptyBundleName: false,
+  reExportCheckMode: 'noCheck',
+  usePathPlaceholder: false,
+  writeRollupCache: true,
+  isExpandImportEnabled: false,
+  expandImportExclude: '',
+  lazyImportExclude: '',
+  lazyImportInclude: '',
+  ignoreCrossplatformCheck: false,
+  skipOhModulesLint: false,
+  enableStrictCheckOHModule: false,
+  disableSendableCheckRules: [],
+  useDeclarationFileSignature: false,
+  customizedOptions: undefined,
+  integratedHsp: false,
+  isPreloadSoEnabled: false,
+  strictMode: {
+    caseSensitiveCheck: true,
+    useNormalizedOHMUrl: true,
+    noExternalImportByPath: true
+  },
+  useNormalizedOHMUrl: true,
+  caseSensitiveCheck: true,
+  aceModuleJsonPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/ark_module.json',
+  appResource: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/ResourceTable.txt',
+  rawFileResource: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources/rawfile',
+  resourceTableHash: 'c08cf2ccc4b7e67ffe92ac2b3578cff1fc93b83b68ee06731fcd45ac20e5f038',
+  runtimeOS: 'HarmonyOS',
+  sdkInfo: 'false:23:6.1.0.105:Release',
+  aceModuleRoot: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets',
+  compileMode: 'esmodule',
+  aceSuperVisualPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/supervisual',
+  aceBuildJson: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/loader.json',
+  cachePath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/cache/default/default@CompileArkTS/esmodule/debug',
+  aceModuleBuild: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/ets',
+  supportChunks: true,
+  declaredFilesPath: undefined,
+  shouldCollectDirectImportees: false,
+  isByteCodeHarOptimize: false,
+  expandImportPath: undefined,
+  resourceTableTs: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/generated/r/default/ResourceTable.ts',
+  moduleMetaInfoFiles: [
+    {
+      filePath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/generated/r/default/ResourceTable.ts',
+      ohmurl: '&entry/build/generated/r/ResourceTable&'
+    }
+  ],
+  pkgNameToPkgBriefInfo: {
+    mobileimsdk: {
+      pkgRoot: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk',
+      pkgName: 'mobileimsdk',
+      sourceRoots: [Array]
+    },
+    entry: {
+      pkgRoot: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry',
+      originalSourceRoots: undefined,
+      sourceRoots: [Array],
+      pkgName: 'entry'
+    }
+  },
+  projectModel: {
+    '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main': {
+      moduleName: 'entry',
+      modulePkgPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry',
+      belongProjectPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main'
+    },
+    '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry': {
+      moduleName: 'entry',
+      modulePkgPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry',
+      belongProjectPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main'
+    },
+    '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main': {
+      moduleName: 'harmonychat-main',
+      modulePkgPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main',
+      belongProjectPath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main'
+    }
+  },
+  pkgJsonFileHash: 'a11a3b67bb8b0ff7a0222bf8ba1e3ad61b8c0340796aa6972a518570330421f2',
+  allModulePaths: [ '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry' ],
+  routerMap: {},
+  obfuscationOptions: undefined,
+  byteCodeHarToDependencyKeys: undefined,
+  compileBlockPkg: [ 'mobileimsdk' ],
+  mockParams: {
+    decorator: '@MockSetup',
+    packageName: '@ohos/hamock',
+    etsSourceRootPath: 'src/main/ets',
+    mockConfigPath: undefined,
+    mockConfigKey2ModuleInfo: {},
+    source2ModuleIdMap: {}
+  },
+  copyCodeResourceEnable: true,
+  copyCodeResourceExcludes: [],
+  copyCodeResourceIncludes: undefined,
+  uiTransformOptimization: false,
+  sdkPath: '/Applications/DevEco-Studio.app/Contents/sdk',
+  needPreloadSoFileSet: {},
+  preloadSoFilePath: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/preload/default/preload.json',
+  useSourceHash: false,
+  localModuleParamMap: {},
+  otherPaths: {
+    'mobileimsdk/*': [
+      '../../../../oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/*'
+    ],
+    'entry/*': [ '../*', '../../../build/default/generated/profile/default/*' ]
+  },
+  collectImportersConfig: undefined
+}
+[2026-06-05T13:52:59.447] [DEBUG] debug-file - Compile arkts with external api path: /Applications/DevEco-Studio.app/Contents/sdk/default/hms/ets
+[2026-06-05T13:52:59.447] [DEBUG] debug-file - default@CompileArkTS work[9] is submitted.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - default@CompileArkTS work[9] is pushed to ready queue.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - A work dispatched to worker[9] failed because unable to get work from ready queue.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - A work dispatched to worker[8] failed because unable to get work from ready queue.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - A work dispatched to worker[7] failed because unable to get work from ready queue.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - A work dispatched to worker[6] failed because unable to get work from ready queue.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - A work dispatched to worker[5] failed because unable to get work from ready queue.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - default@CompileArkTS work[9] has been dispatched to worker[4].
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - default@CompileArkTS work[9] is dispatched.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - CopyResources startTime: 236529000150750
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - default@CompileArkTS work[10] is submitted.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - default@CompileArkTS work[10] is pushed to ready queue.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - A work dispatched to worker[9] failed because unable to get work from ready queue.
+[2026-06-05T13:52:59.448] [DEBUG] debug-file - Create  resident worker with id: 8.
+[2026-06-05T13:52:59.449] [DEBUG] debug-file - default@CompileArkTS work[10] has been dispatched to worker[8].
+[2026-06-05T13:52:59.449] [DEBUG] debug-file - default@CompileArkTS work[10] is dispatched.
+[2026-06-05T13:52:59.449] [DEBUG] debug-file - entry : default@CompileArkTS cost memory -3.1486053466796875
+[2026-06-05T13:52:59.449] [DEBUG] debug-file - Executing task :entry:default@BuildJS
+[2026-06-05T13:52:59.450] [DEBUG] debug-file - Task 'entry:default@BuildJS' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.450] [DEBUG] debug-file - entry : default@BuildJS cost memory 0.13294219970703125
+[2026-06-05T13:52:59.450] [DEBUG] debug-file - runTaskFromQueue task cost before running: 131 ms 
+[2026-06-05T13:52:59.450] [INFO] debug-file - Finished :entry:default@BuildJS... after 1 ms 
+[2026-06-05T13:52:59.451] [DEBUG] debug-file - Executing task :entry:default@CacheNativeLibs
+[2026-06-05T13:52:59.451] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/binxo/default' from 'cacheBinxoNativeLibs' is not exists, just ignore.
+[2026-06-05T13:52:59.451] [DEBUG] debug-file - Task 'entry:default@CacheNativeLibs' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:52:59.451] [DEBUG] debug-file - Incremental task entry:default@CacheNativeLibs pre-execution cost: 1 ms .
+[2026-06-05T13:52:59.451] [DEBUG] debug-file - entry : default@CacheNativeLibs cost memory 0.0865478515625
+[2026-06-05T13:52:59.451] [INFO] debug-file - UP-TO-DATE :entry:default@CacheNativeLibs...  
+[2026-06-05T13:52:59.790] [DEBUG] debug-file - worker[8] has one work done.
+[2026-06-05T13:52:59.790] [DEBUG] debug-file - CopyResources is end, endTime: 236529342170625
+[2026-06-05T13:52:59.790] [DEBUG] debug-file - default@CompileArkTS work[10] done.
+[2026-06-05T13:52:59.790] [DEBUG] debug-file - A work dispatched to worker[8] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.387] [WARN] debug-file - [33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/d1/f1/k1.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/d1/f1/g1.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/p/r.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/d.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/e/f.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/e/g.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/z.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/e/h.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/e/i.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/e/j.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/e/k.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/e/l.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/m/n.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/p/q.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/t/u.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/t/v.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/t/w.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/t/x.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/y.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/a1.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/b1.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/o/c1.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/d1/e1.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/d1/i1.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets/d1/j1.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/Index.d.ets:2:1
+ Switching off type checks with in-place comments is not allowed (arkts-strict-typing-required)
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN: For details about ArkTS syntax errors, see FAQs[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/ToolKits.ets:39:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/ToolKits.ets:121:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/ToolKits.ets:121:18
+ 'showToast' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/ToolKits.ets:144:17
+ 'show' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/ToolKits.ets:706:44
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/ToolKits.ets:741:54
+ 'packing' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/entryability/EntryAbility.ets:61:53
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/SafePage.ets:89:24
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/SafePage.ets:111:56
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/SafePage.ets:121:24
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/components/ChatInputView.ets:53:22
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/components/msg_view/NormalMsgView.ets:53:22
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatPage.ets:87:32
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatPage.ets:209:46
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatPage.ets:222:51
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatPage.ets:222:93
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatPage.ets:224:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatPage.ets:224:12
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/LoginPage.ets:60:19
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/LoginPage.ets:76:16
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/LoginPage.ets:223:21
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/LoginPage.ets:235:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/LoginPage.ets:235:12
+ 'pushUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/RegisterPage.ets:51:19
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/RegisterPage.ets:110:20
+ 'back' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/RegisterPage.ets:135:12
+ 'back' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/PreferenceManager.ets:23:21
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/PreferenceManager.ets:38:12
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/PreferenceManager.ets:46:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/PreferenceManager.ets:58:14
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/PreferenceManager.ets:74:14
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/PreferenceManager.ets:84:7
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/utils/PreferenceManager.ets:95:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/SplashPage.ets:29:37
+ 'getParams' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/SplashPage.ets:29:59
+ 'getParams' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/SplashPage.ets:65:18
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/SplashPage.ets:75:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/SplashPage.ets:75:12
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatComponent.ets:79:56
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatComponent.ets:256:46
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatComponent.ets:269:51
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatComponent.ets:269:93
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatComponent.ets:271:5
+ Function may throw exceptions. Special handling is required.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/ChatComponent.ets:271:12
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MineComponent.ets:403:20
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MineComponent.ets:568:55
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MineComponent.ets:568:97
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MineComponent.ets:569:16
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MineComponent.ets:598:61
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MineComponent.ets:598:103
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MineComponent.ets:599:22
+ 'replaceUrl' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MineComponent.ets:663:16
+ 'key' can only be used for testing directories 
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MainPage.ets:45:20
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33mArkTS:WARN File: /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets/pages/MainPage.ets:77:32
+ 'getContext' has been deprecated.
+[39m[39m
+[33mWARN: [33m[33m[39m [33mArkTS:WARN Property 'sourceMapsPath' not found in 'mobileimsdk'.[39m [33m[39m[39m[39m
+
+[2026-06-05T13:53:01.387] [DEBUG] debug-file - Ark compile task finished.finished time is 236530938889083
+[2026-06-05T13:53:01.388] [DEBUG] debug-file - worker[4] has one work done.
+[2026-06-05T13:53:01.388] [DEBUG] debug-file - default@CompileArkTS work[9] done.
+[2026-06-05T13:53:01.389] [INFO] debug-file - Finished :entry:default@CompileArkTS... after 1 s 948 ms 
+[2026-06-05T13:53:01.389] [DEBUG] debug-file - Executing task :entry:default@GeneratePkgModuleJson
+[2026-06-05T13:53:01.389] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/preload/default/preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-06-05T13:53:01.389] [DEBUG] debug-file - Error occurs while handling @Input 'shouldDeduplicateHar': The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received undefined
+[2026-06-05T13:53:01.389] [DEBUG] debug-file - Task 'entry:default@GeneratePkgModuleJson' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:53:01.390] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgModuleJson pre-execution cost: 1 ms .
+[2026-06-05T13:53:01.390] [DEBUG] debug-file - entry : default@GeneratePkgModuleJson cost memory 0.086090087890625
+[2026-06-05T13:53:01.390] [INFO] debug-file - UP-TO-DATE :entry:default@GeneratePkgModuleJson...  
+[2026-06-05T13:53:01.390] [DEBUG] debug-file - Executing task :entry:default@ProcessCompiledResources
+[2026-06-05T13:53:01.390] [DEBUG] debug-file - File: '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/preload/default/preload.json' from 'preloadSoJsonPath' is not exists, just ignore.
+[2026-06-05T13:53:01.390] [DEBUG] debug-file - Task 'entry:default@ProcessCompiledResources' cost while wrapping incremental declarations: 1 ms 
+[2026-06-05T13:53:01.390] [DEBUG] debug-file - entry : default@ProcessCompiledResources cost memory 0.05612945556640625
+[2026-06-05T13:53:01.390] [DEBUG] debug-file - runTaskFromQueue task cost before running: 2 s 71 ms 
+[2026-06-05T13:53:01.390] [INFO] debug-file - Finished :entry:default@ProcessCompiledResources... after 1 ms 
+[2026-06-05T13:53:01.391] [DEBUG] debug-file - Executing task :entry:default@PackageHap
+[2026-06-05T13:53:01.392] [DEBUG] debug-file - entry:default@PackageHap is not up-to-date, since the input file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/ets' has been changed.
+[2026-06-05T13:53:01.392] [DEBUG] debug-file - Incremental task entry:default@PackageHap pre-execution cost: 1 ms .
+[2026-06-05T13:53:01.392] [DEBUG] debug-file - Use tool [/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/toolchains/lib/app_packing_tool.jar]
+ [
+  'java',
+  '-Dfile.encoding=utf-8',
+  '-jar',
+  '/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/toolchains/lib/app_packing_tool.jar',
+  '--mode',
+  'hap',
+  '--force',
+  'true',
+  '--lib-path',
+  '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/stripped_native_libs/default',
+  '--json-path',
+  '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/package/default/module.json',
+  '--resources-path',
+  '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources',
+  '--index-path',
+  '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources.index',
+  '--pack-info-path',
+  '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/pack.info',
+  '--out-path',
+  '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/entry-default-unsigned.hap',
+  '--ets-path',
+  '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/ets',
+  '--pkg-context-path',
+  '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgContextInfo.json'
+]
+[2026-06-05T13:53:01.392] [DEBUG] debug-file - default@PackageHap work[11] is submitted.
+[2026-06-05T13:53:01.392] [DEBUG] debug-file - default@PackageHap work[11] is pushed to ready queue.
+[2026-06-05T13:53:01.392] [DEBUG] debug-file - default@PackageHap work[11] is not dispatched.
+[2026-06-05T13:53:01.393] [DEBUG] debug-file - entry : default@PackageHap cost memory 0.46579742431640625
+[2026-06-05T13:53:01.489] [DEBUG] debug-file - default@PackageHap work[11] has been dispatched to worker[4].
+[2026-06-05T13:53:01.491] [DEBUG] debug-file - current process  memoryUsage: {
+  rss: 508477440,
+  heapTotal: 391217152,
+  heapUsed: 353983632,
+  external: 6023323,
+  arrayBuffers: 2170802
+} os memoryUsage :15.868057250976562
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[9] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[8] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[7] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[6] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[5] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[4] failed because of worker busy.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[3] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[2] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[1] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.493] [DEBUG] debug-file - A work dispatched to worker[0] failed because unable to get work from ready queue.
+[2026-06-05T13:53:01.698] [DEBUG] debug-file - worker[4] has one work done.
+[2026-06-05T13:53:01.698] [DEBUG] debug-file - default@PackageHap work[11] done.
+[2026-06-05T13:53:01.699] [INFO] debug-file - Finished :entry:default@PackageHap... after 210 ms 
+[2026-06-05T13:53:01.700] [DEBUG] debug-file - Executing task :entry:default@PackingCheck
+[2026-06-05T13:53:01.702] [DEBUG] debug-file - entry : default@PackingCheck cost memory 0.43729400634765625
+[2026-06-05T13:53:01.702] [DEBUG] debug-file - runTaskFromQueue task cost before running: 2 s 383 ms 
+[2026-06-05T13:53:01.702] [INFO] debug-file - Finished :entry:default@PackingCheck... after 2 ms 
+[2026-06-05T13:53:01.702] [DEBUG] debug-file - Executing task :entry:default@SignHap
+[2026-06-05T13:53:01.702] [WARN] debug-file - Will skip sign 'hos_hap'. No signingConfigs profile is configured in current project.
+             If needed, configure the signingConfigs in /Users/wangyifan/Downloads/harmonyOS/harmonychat-main/build-profile.json5.
+[2026-06-05T13:53:01.702] [DEBUG] debug-file - entry:default@SignHap is not up-to-date, since the input file '/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/entry-default-unsigned.hap' has been changed.
+[2026-06-05T13:53:01.702] [DEBUG] debug-file - Incremental task entry:default@SignHap pre-execution cost: 1 ms .
+[2026-06-05T13:53:01.702] [DEBUG] debug-file - entry : default@SignHap cost memory 0.07346343994140625
+[2026-06-05T13:53:01.702] [DEBUG] debug-file - runTaskFromQueue task cost before running: 2 s 383 ms 
+[2026-06-05T13:53:01.702] [INFO] debug-file - Finished :entry:default@SignHap... after 1 ms 
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - Executing task :entry:default@CollectDebugSymbol
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - entry : default@CollectDebugSymbol cost memory 0.08766937255859375
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - runTaskFromQueue task cost before running: 2 s 384 ms 
+[2026-06-05T13:53:01.703] [INFO] debug-file - Finished :entry:default@CollectDebugSymbol... after 1 ms 
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - Executing task :entry:assembleHap
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - entry : assembleHap cost memory 0.01221466064453125
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - runTaskFromQueue task cost before running: 2 s 384 ms 
+[2026-06-05T13:53:01.703] [INFO] debug-file - Finished :entry:assembleHap... after 1 ms 
+[2026-06-05T13:53:01.703] [INFO] debug-file - BUILD SUCCESSFUL in 2 s 384 ms 
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@PreBuild is up-to-date.
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - Update task entry:default@CreateModuleInfo output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/generated/profile/default/ModuleInfo.ts cache.
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - Incremental task entry:default@CreateModuleInfo post-execution cost:1 ms .
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateMetadata is up-to-date.
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MergeProfile is up-to-date.
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CreateBuildProfile is up-to-date.
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GeneratePkgContextInfo is up-to-date.
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - Update task entry:default@GeneratePkgSdkInfo output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgSdkInfo.json cache.
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - Incremental task entry:default@GeneratePkgSdkInfo post-execution cost:1 ms .
+[2026-06-05T13:53:01.703] [DEBUG] debug-file - Update task entry:default@ProcessIntegratedHsp output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/build/cache/default/integrated_hsp/integratedHspCache.json cache.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Incremental task entry:default@ProcessIntegratedHsp post-execution cost:1 ms .
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@MakePackInfo is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/toolchains/syscap_tool cache by regenerate.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Update task entry:default@SyscapTransform input file:/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/device-define cache by regenerate.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Update task entry:default@SyscapTransform output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/syscap/default/rpcid.sc cache.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Incremental task entry:default@SyscapTransform post-execution cost:1 ms .
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessProfile is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessRouterMap is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessShareConfig is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Update task entry:default@ProcessStartupConfig input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgContextInfo.json cache by regenerate.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Update task entry:default@ProcessStartupConfig output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/startup/default/startup_config.json cache.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Incremental task entry:default@ProcessStartupConfig post-execution cost:1 ms .
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessResource is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GenerateLoaderJson is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@ProcessLibs is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CompileResource is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@DoNativeStrip is up-to-date.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default cache by regenerate.
+[2026-06-05T13:53:01.704] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/oh_modules/.ohpm/mobileimsdk@hoop830zxxr8xnn6crmdrvjoor6h7alv6wz1iybybxq=/oh_modules/mobileimsdk/src/main/ets cache by regenerate.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources/rawfile cache by regenerate.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/ResourceTable.txt cache by regenerate.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/ark_module.json cache by regenerate.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources/base/profile cache by regenerate.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/src/main/ets cache from map.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgContextInfo.json cache by regenerate.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Update task entry:default@CompileArkTS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/generated/profile/default/BuildProfile.ets cache by regenerate.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Update task entry:default@CompileArkTS output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/ets cache.
+[2026-06-05T13:53:01.705] [DEBUG] debug-file - Incremental task entry:default@CompileArkTS post-execution cost:2 ms .
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources/rawfile cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/ResourceTable.txt cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/ark_module.json cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources/base/profile cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@BuildJS input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgContextInfo.json cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@BuildJS output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/js cache.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Incremental task entry:default@BuildJS post-execution cost:1 ms .
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@CacheNativeLibs is up-to-date.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - There is no need to refresh cache, since the incremental task entry:default@GeneratePkgModuleJson is up-to-date.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Incremental task entry:default@ProcessCompiledResources post-execution cost:1 ms .
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/stripped_native_libs/default cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/module.json cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/res/default/resources.index cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/pack.info cache by regenerate.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/ets cache from map.
+[2026-06-05T13:53:01.706] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader/default/pkgContextInfo.json cache by regenerate.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/ets/sourceMaps.map cache by regenerate.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@PackageHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/generated/profile/default/BuildProfile.ets cache by regenerate.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@PackageHap output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/entry-default-unsigned.hap cache.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@PackageHap output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/source_map/default/sourceMaps.map cache.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@PackageHap output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/mapping/sourceMaps.map cache.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Incremental task entry:default@PackageHap post-execution cost:1 ms .
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@SignHap input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/entry-default-unsigned.hap cache from map.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@SignHap output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/entry-default-signed.hap cache.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Incremental task entry:default@SignHap post-execution cost:1 ms .
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/loader_out/default/ets/sourceMaps.map cache by regenerate.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol input file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/intermediates/libs/default cache by regenerate.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Update task entry:default@CollectDebugSymbol output file:/Users/wangyifan/Downloads/harmonyOS/harmonychat-main/entry/build/default/outputs/default/symbol cache.
+[2026-06-05T13:53:01.707] [DEBUG] debug-file - Incremental task entry:default@CollectDebugSymbol post-execution cost:1 ms .
+[2026-06-05T13:53:01.713] [DEBUG] debug-file - Cleanup worker 8.
+[2026-06-05T13:53:01.713] [DEBUG] debug-file - Worker 8 has been cleaned up.
+[2026-06-05T13:53:01.713] [DEBUG] debug-file - Current idle worker size: 1.
+[2026-06-05T13:53:01.713] [DEBUG] debug-file - Current resident worker size: 2.
+[2026-06-05T13:53:01.713] [DEBUG] debug-file - hvigor build process will be closed.
+[2026-06-05T13:53:01.717] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-06-05T13:53:01.717] [DEBUG] debug-file - session manager: send message to worker process.
+[2026-06-05T13:53:01.717] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-06-05T13:53:01.718] [DEBUG] debug-file - watch worker: worker id should be larger than 0. Nothing will be sent to any worker thread.
+[2026-06-05T13:53:01.718] [DEBUG] debug-file - worker[8] exits with exit code 1.

@@ -7,13 +7,15 @@
         "INCLUDE_IN_BUILD": true,
         "IS_COMMAND_LINE_ENTRY_MODULE": true,
         "MODULE_TYPE": "entry",
+        "INCREMENTAL_TASKS": {
+          "COMPILE_ARKTS": true
+        },
         "IS_INCREMENTAL_MODULE": true
       }
     ],
     "NATIVE_COMPILER": "Default",
     "IS_FULL_BUILD": false,
-    "BUILD_MODE": "debug",
-    "USE_NORMALIZED_OHMURL": true
+    "BUILD_MODE": "debug"
   },
   "HVIGOR": {
     "IS_INCREMENTAL": true,
@@ -22,22 +24,23 @@
     "IS_HVIGORFILE_TYPE_CHECK": false,
     "TASK_TIME": {
       "923fe53966c6cd9343e11af776cd4b05be315ea4b200b02e4d5dfb0f929b73bf": {
-        "PreBuild": 9222875,
-        "CreateModuleInfo": 176833,
-        "ConfigureCmake": 78208,
-        "PreCheckSyscap": 89750,
-        "GeneratePkgSdkInfo": 400084,
-        "ProcessIntegratedHsp": 155084,
-        "BuildNativeWithCmake": 65417,
-        "SyscapTransform": 580958,
-        "ProcessStartupConfig": 554583,
-        "BuildNativeWithNinja": 223958,
-        "BuildJS": 427542,
-        "ProcessCompiledResources": 148583,
-        "PackingCheck": 1096542,
-        "SignHap": 225875,
-        "CollectDebugSymbol": 157584,
-        "assembleHap": 87167
+        "CreateModuleInfo": 174541,
+        "ConfigureCmake": 78500,
+        "PreCheckSyscap": 84666,
+        "GeneratePkgSdkInfo": 331792,
+        "ProcessIntegratedHsp": 167541,
+        "BuildNativeWithCmake": 73167,
+        "SyscapTransform": 821083,
+        "ProcessStartupConfig": 484167,
+        "BuildNativeWithNinja": 351125,
+        "BuildJS": 591542,
+        "CompileArkTS": 1949298000,
+        "ProcessCompiledResources": 214667,
+        "PackageHap": 308131000,
+        "PackingCheck": 1996042,
+        "SignHap": 326708,
+        "CollectDebugSymbol": 174292,
+        "assembleHap": 72084
       }
     },
     "APIS": [
@@ -48,7 +51,7 @@
       "ENABLE_CPP_FUNCTION_LEVEL_INCREMENTAL": false
     },
     "CONFIG_PROPERTIES": {},
-    "TOTAL_TIME": 148896417,
-    "BUILD_ID": "202606051249100640"
+    "TOTAL_TIME": 2383811625,
+    "BUILD_ID": "202606051352593180"
   }
 }

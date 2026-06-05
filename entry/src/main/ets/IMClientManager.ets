@@ -193,14 +193,19 @@ export default class IMClientManager {
       console.info(TAG + '=== 开始处理接收到的消息 ===');
       console.info(TAG + '发送者UID: ' + protocal.from);
       console.info(TAG + '原始dataContent长度: ' + (protocal.dataContent ? protocal.dataContent.length : 0));
-      console.info(TAG + '原始dataContent前200字符: ' + (protocal.dataContent ? protocal.dataContent.substring(0, 200) : '空'));
+      
+      // 打印dataContent前500字符用于调试
+      if (protocal.dataContent && protocal.dataContent.length > 0) {
+        const previewLength = Math.min(500, protocal.dataContent.length);
+        console.info(TAG + '原始dataContent前' + previewLength + '字符: ' + protocal.dataContent.substring(0, previewLength));
+      }
       
       // 尝试解析 JSON 格式的消息（可能包含头像数据）
       try {
         console.info(TAG + '尝试解析JSON格式...');
         const messageData: MessageData = JSON.parse(protocal.dataContent);
         
-        console.info(TAG + 'JSON解析成功');
+        console.info(TAG + '✅ JSON解析成功');
         console.info(TAG + '解析后对象keys: ' + Object.keys(messageData).join(', '));
         console.info(TAG + 'content字段存在: ' + (messageData.content !== undefined));
         console.info(TAG + 'avatarBase64字段存在: ' + (messageData.avatarBase64 !== undefined));
@@ -211,18 +216,32 @@ export default class IMClientManager {
           avatarBase64 = messageData.avatarBase64;
           
           console.info(TAG + '消息内容: ' + messageContent);
+          console.info(TAG + '消息内容长度: ' + messageContent.length);
           
           // 如果消息中携带了头像，更新缓存
           if (avatarBase64 && avatarBase64.length > 0) {
             const senderUid = protocal.from;
             console.info(TAG + '✅ 检测到头像数据');
+            console.info(TAG + '发送者UID: ' + senderUid);
             console.info(TAG + '头像Base64长度: ' + avatarBase64.length);
             console.info(TAG + '头像Base64前100字符: ' + avatarBase64.substring(0, 100));
             
+            // 验证Base64长度是否合理
+            if (avatarBase64.length > 50000) {
+              console.warn(TAG + `⚠️ 收到的头像Base64长度(${avatarBase64.length})超过50000，可能不完整`);
+            } else {
+              console.info(TAG + `✅ 头像Base64长度(${avatarBase64.length})在合理范围内`);
+            }
+            
             // 更新头像缓存
+            console.info(TAG + '开始更新头像缓存...');
             const updateResult = AvatarCacheManager.getInstance().updateAvatar(senderUid, avatarBase64);
             console.info(TAG + '头像缓存更新结果: ' + (updateResult ? '成功' : '无变化'));
-            this.getLog().info('[应用层]  >> 收到头像数据，已更新缓存，发送者UID: ' + senderUid);
+            this.getLog().info('[应用层]  >> 收到头像数据，已更新缓存，发送者UID: ' + senderUid + '，Base64长度: ' + avatarBase64.length);
+            
+            // 打印缓存状态
+            const cachedAvatar = AvatarCacheManager.getInstance().getAvatar(senderUid);
+            console.info(TAG + '验证缓存：' + (cachedAvatar ? '缓存中存在该用户头像，长度=' + cachedAvatar.length : '缓存中不存在'));
           } else {
             console.info(TAG + 'ℹ️ 消息中无头像数据或为空');
           }
