@@ -68,26 +68,42 @@ export default class AvatarCacheManager {
    * @returns boolean true表示缓存已更新，false表示无变化
    */
   updateAvatar(uid: string, base64: string): boolean {
+    console.info(TAG + `=== updateAvatar 被调用 ===`);
+    console.info(TAG + `uid: ${uid}`);
+    console.info(TAG + `base64长度: ${base64 ? base64.length : 0}`);
+    console.info(TAG + `base64前100字符: ${base64 ? base64.substring(0, 100) : '空'}`);
+    
     if (!uid || !base64) {
+      console.error(TAG + `❌ 参数无效：uid=${uid}, base64=${base64 ? '有值' : '空'}`);
       return false;
     }
     
     const cachedBase64 = this.cache.get(uid);
+    console.info(TAG + `缓存中是否已有该用户头像: ${cachedBase64 ? '是' : '否'}`);
     
     // 如果缓存中的值与新值相同，则无需更新
     if (cachedBase64 === base64) {
-      console.info(TAG + `Avatar cache not changed for uid: ${uid}`);
+      console.info(TAG + `✅ 头像缓存无变化，uid: ${uid}`);
       return false;
     }
     
     // 更新缓存
     this.cache.set(uid, base64);
-    console.info(TAG + `Avatar cache updated for uid: ${uid}, base64 length: ${base64.length}`);
+    console.info(TAG + `✅ 头像缓存已更新，uid: ${uid}, base64长度: ${base64.length}`);
+    
+    // 打印当前缓存内容
+    console.info(TAG + `当前缓存大小: ${this.cache.size}`);
+    this.cache.forEach((value: string, key: string) => {
+      console.info(TAG + `缓存项 - uid: ${key}, base64长度: ${value.length}`);
+    });
     
     // 发送头像更新事件，通知 UI 刷新
     if (this.eventHub) {
+      console.info(TAG + `准备发送头像更新事件...`);
       this.eventHub.emit('avatarUpdated', uid);
-      console.info(TAG + `Avatar update event emitted for uid: ${uid}`);
+      console.info(TAG + `✅ 头像更新事件已发送，uid: ${uid}`);
+    } else {
+      console.error(TAG + `❌ EventHub未初始化，无法发送事件`);
     }
     
     return true;

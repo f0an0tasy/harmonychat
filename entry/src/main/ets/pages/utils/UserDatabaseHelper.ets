@@ -353,20 +353,28 @@ export default class UserDatabaseHelper {
    * @returns Promise<boolean> true表示更新成功，false表示失败
    */
   public async updateUserAvatar(username: string, avatarPath: string): Promise<boolean> {
+    console.info(TAG + '=== updateUserAvatar 开始 ===');
+    console.info(TAG + '参数：username=' + username + ', avatarPath=' + avatarPath);
+    
     if (this.rdbStore === null) {
-      console.error(TAG + 'RdbStore is null, cannot update avatar');
+      console.error(TAG + '❌ RdbStore is null, cannot update avatar');
       return false;
     }
     
     try {
       // 先检查用户是否存在
+      console.info(TAG + '检查用户是否存在...');
       const exists = await this.isUserExists(username);
+      console.info(TAG + '用户存在检查结果：' + exists);
+      
       if (!exists) {
-        console.info(TAG + 'User does not exist: ' + username);
+        console.error(TAG + '❌ User does not exist: ' + username);
+        console.info(TAG + '提示：请确保用户已注册或登录');
         return false;
       }
       
       // 更新头像路径
+      console.info(TAG + '准备执行数据库更新...');
       const valueBucket: relationalStore.ValuesBucket = {
         'avatar_path': avatarPath
       };
@@ -374,18 +382,28 @@ export default class UserDatabaseHelper {
       const predicates = new relationalStore.RdbPredicates(this.TABLE_NAME);
       predicates.equalTo('username', username);
       
+      console.info(TAG + '执行 SQL: UPDATE ' + this.TABLE_NAME + ' SET avatar_path=? WHERE username=?');
       const rowCount = await this.rdbStore.update(valueBucket, predicates);
       const success = rowCount > 0;
-      console.info(TAG + 'Avatar update result: ' + success + ', rows affected: ' + rowCount);
+      
+      console.info(TAG + '数据库更新执行完成');
+      console.info(TAG + '影响行数：' + rowCount);
+      console.info(TAG + '更新结果：' + (success ? '✅ 成功' : '❌ 失败'));
       
       // 更新成功后，清除该用户的头像缓存
       if (success) {
+        console.info(TAG + '清除头像缓存：' + username);
         this.clearAvatarCache(username);
+        console.info(TAG + '✅ 头像缓存已清除');
       }
       
+      console.info(TAG + '=== updateUserAvatar 完成 ===');
       return success;
     } catch (err) {
-      console.error(TAG + 'Failed to update avatar: ' + JSON.stringify(err));
+      console.error(TAG + '❌ Failed to update avatar: ' + JSON.stringify(err));
+      if (err instanceof Error) {
+        console.error(TAG + '错误堆栈: ' + err.stack);
+      }
       return false;
     }
   }

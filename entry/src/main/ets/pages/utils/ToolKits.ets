@@ -404,37 +404,60 @@ export default class ToolKits {
    * @returns Promise<string | null> 返回复制后的本地路径，null表示失败
    */
   static async copyImageToPrivateDir(uri: string, username: string, context: common.UIAbilityContext): Promise<string | null> {
+    console.info(TAG + '=== copyImageToPrivateDir 开始 ===');
+    console.info(TAG + '参数：uri=' + uri);
+    console.info(TAG + '参数：username=' + username);
+    console.info(TAG + '参数：filesDir=' + context.filesDir);
+    
     try {
       // 创建avatars目录（如果不存在）
       const avatarsDir = context.filesDir + '/avatars';
+      console.info(TAG + '目标目录：' + avatarsDir);
       
       // 检查目录是否存在，不存在则创建
       try {
+        console.info(TAG + '检查目录是否存在...');
         const stat = fs.statSync(avatarsDir);
+        console.info(TAG + '目录状态：isDirectory=' + stat.isDirectory());
+        
         if (!stat.isDirectory()) {
           // 如果存在同名文件但不是目录，先删除
+          console.info(TAG + '存在同名文件但不是目录，删除并重新创建');
           fs.rmdirSync(avatarsDir);
           fs.mkdirSync(avatarsDir);
+          console.info(TAG + '✅ 目录已创建');
+        } else {
+          console.info(TAG + '✅ 目录已存在');
         }
       } catch (err) {
         // 目录不存在，创建它
+        console.info(TAG + '目录不存在，创建目录...');
         fs.mkdirSync(avatarsDir, true);
+        console.info(TAG + '✅ 目录已创建');
       }
       
-      // 生成新文件名：{username}_avatar.jpg
-      const newFileName = `${username}_avatar.jpg`;
+      // 生成新文件名：{username}_avatar_{timestamp}.jpg（加入时间戳避免缓存）
+      const timestamp = Date.now();
+      const newFileName = `${username}_avatar_${timestamp}.jpg`;
       const destPath = `${avatarsDir}/${newFileName}`;
+      console.info(TAG + '目标文件路径：' + destPath);
       
       // 打开源文件（URI）
+      console.info(TAG + '打开源文件（URI）...');
       const srcFile = fs.openSync(uri, fs.OpenMode.READ_ONLY);
+      console.info(TAG + '✅ 源文件已打开，fd=' + srcFile.fd);
       
       // 创建目标文件
+      console.info(TAG + '创建目标文件...');
       const destFile = fs.openSync(destPath, fs.OpenMode.CREATE | fs.OpenMode.WRITE_ONLY | fs.OpenMode.TRUNC);
+      console.info(TAG + '✅ 目标文件已创建，fd=' + destFile.fd);
       
       // 复制数据
+      console.info(TAG + '开始复制数据...');
       const bufferSize = 4096;
       let buffer = new ArrayBuffer(bufferSize);
       let readLen = fs.readSync(srcFile.fd, buffer);
+      let totalBytes = 0;
       
       while (readLen > 0) {
         // 如果读取的数据小于缓冲区大小，只写入实际读取的数据
@@ -444,17 +467,43 @@ export default class ToolKits {
         } else {
           fs.writeSync(destFile.fd, buffer);
         }
+        totalBytes += readLen;
         readLen = fs.readSync(srcFile.fd, buffer);
       }
+      
+      console.info(TAG + '✅ 数据复制完成，总字节数：' + totalBytes);
       
       // 关闭文件
       fs.closeSync(srcFile);
       fs.closeSync(destFile);
+      console.info(TAG + '✅ 文件已关闭');
       
-      console.info(TAG + `Image copied successfully to: ${destPath}`);
+      // 验证文件是否创建成功
+      const fileExists = ToolKits.isFileExists(destPath);
+      console.info(TAG + '验证文件存在：' + fileExists);
+      
+      if (!fileExists) {
+        console.error(TAG + '❌ 文件创建失败，目标文件不存在');
+        return null;
+      }
+      
+      // 获取文件大小
+      const stat = fs.statSync(destPath);
+      console.info(TAG + '✅ 文件大小：' + stat.size + ' bytes');
+      
+      if (stat.size === 0) {
+        console.error(TAG + '❌ 文件大小为0，复制失败');
+        return null;
+      }
+      
+      console.info(TAG + '=== copyImageToPrivateDir 完成 ===');
+      console.info(TAG + '✅ Image copied successfully to: ' + destPath);
       return destPath;
     } catch (err) {
-      console.error(TAG + 'Failed to copy image: ' + JSON.stringify(err));
+      console.error(TAG + '❌ Failed to copy image: ' + JSON.stringify(err));
+      if (err instanceof Error) {
+        console.error(TAG + '错误堆栈: ' + err.stack);
+      }
       return null;
     }
   }
@@ -498,44 +547,56 @@ export default class ToolKits {
    * @returns Promise<string | null> 返回Base64字符串，null表示失败
    */
   static async readImageToBase64(filePath: string): Promise<string | null> {
+    console.info(TAG + '=== readImageToBase64 开始 ===');
+    console.info(TAG + '文件路径: ' + filePath);
+    
     try {
       // 检查文件是否存在
       if (!ToolKits.isFileExists(filePath)) {
-        console.error(TAG + 'Image file not exists: ' + filePath);
+        console.error(TAG + '❌ 图片文件不存在: ' + filePath);
         return null;
       }
+      console.info(TAG + '✅ 文件存在');
 
       // 打开文件
       const file = fs.openSync(filePath, fs.OpenMode.READ_ONLY);
+      console.info(TAG + '✅ 文件已打开');
       
       // 获取文件大小
       const stat = fs.statSync(filePath);
       const fileSize = stat.size;
+      console.info(TAG + '文件大小: ' + fileSize + ' bytes');
       
       // 限制文件大小（最大 5MB）
       const MAX_SIZE = 5 * 1024 * 1024;
       if (fileSize > MAX_SIZE) {
-        console.warn(TAG + `Image file too large (${fileSize} bytes), max is ${MAX_SIZE} bytes`);
+        console.warn(TAG + `⚠️ 图片文件过大 (${fileSize} bytes)，最大限制 ${MAX_SIZE} bytes`);
         fs.closeSync(file);
         return null;
       }
       
       // 读取文件内容
       const buffer = new ArrayBuffer(fileSize);
-      fs.readSync(file.fd, buffer);
+      const readLen = fs.readSync(file.fd, buffer);
+      console.info(TAG + '✅ 文件已读取，读取字节数: ' + readLen);
       fs.closeSync(file);
+      console.info(TAG + '✅ 文件已关闭');
       
       // 转换为Base64
       // 使用 util.Base64Helper 进行编码
+      console.info(TAG + '开始转换为Base64...');
       const util = await import('@kit.ArkTS');
       const base64Helper = new util.util.Base64Helper();
       const uint8Array = new Uint8Array(buffer);
       const base64String = base64Helper.encodeToStringSync(uint8Array);
       
-      console.info(TAG + `Image converted to Base64, size: ${base64String.length} chars`);
+      console.info(TAG + `✅ 图片已转换为Base64`);
+      console.info(TAG + `Base64长度: ${base64String.length} 字符`);
+      console.info(TAG + `Base64前100字符: ${base64String.substring(0, 100)}`);
+      console.info(TAG + '=== readImageToBase64 完成 ===');
       return base64String;
     } catch (err) {
-      console.error(TAG + 'Failed to read image to Base64: ' + JSON.stringify(err));
+      console.error(TAG + '❌ 读取图片转Base64失败: ' + JSON.stringify(err));
       return null;
     }
   }
@@ -548,6 +609,18 @@ export default class ToolKits {
    * @returns string Data URL格式的字符串
    */
   static base64ToDataURL(base64: string, mimeType: string = 'image/jpeg'): string {
-    return `data:${mimeType};base64,${base64}`;
+    console.info(TAG + '=== base64ToDataURL ===');
+    console.info(TAG + '输入Base64长度: ' + (base64 ? base64.length : 0));
+    console.info(TAG + 'MIME类型: ' + mimeType);
+    
+    if (!base64 || base64.length === 0) {
+      console.error(TAG + '❌ Base64为空');
+      return '';
+    }
+    
+    const dataUrl = `data:${mimeType};base64,${base64}`;
+    console.info(TAG + '✅ Data URL已生成');
+    console.info(TAG + 'Data URL前100字符: ' + dataUrl.substring(0, 100));
+    return dataUrl;
   }
 }

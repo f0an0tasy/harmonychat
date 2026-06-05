@@ -73,22 +73,43 @@ export struct ChatInputView {
       try {
         // 获取当前用户的头像路径
         const currentUsername = ToolKits.getLocalUserUid();
+        console.info(TAG + '=== 开始准备发送消息 ===');
+        console.info(TAG + '当前用户: ' + currentUsername);
+        console.info(TAG + '接收者: ' + this.receiverInput);
+        console.info(TAG + '消息内容: ' + this.messageInput);
+        
         if (currentUsername && this.userDbHelper) {
           const avatarPath = await this.userDbHelper.getUserAvatar(currentUsername);
+          console.info(TAG + '头像路径: ' + (avatarPath || '无'));
           
-          if (avatarPath && ToolKits.isFileExists(avatarPath)) {
-            // 读取头像并转换为 Base64
-            const base64 = await ToolKits.readImageToBase64(avatarPath);
+          if (avatarPath) {
+            const fileExists = ToolKits.isFileExists(avatarPath);
+            console.info(TAG + '头像文件是否存在: ' + fileExists);
             
-            if (base64) {
-              // 每次发送消息都携带头像
-              avatarBase64 = base64;
-              console.info(TAG + 'Avatar will be sent with message, length: ' + base64.length);
+            if (fileExists) {
+              // 读取头像并转换为 Base64
+              console.info(TAG + '开始读取头像文件...');
+              const base64 = await ToolKits.readImageToBase64(avatarPath);
+              
+              if (base64) {
+                // 每次发送消息都携带头像
+                avatarBase64 = base64;
+                console.info(TAG + '✅ 头像读取成功，Base64长度: ' + base64.length);
+                console.info(TAG + 'Base64前100字符: ' + base64.substring(0, 100));
+              } else {
+                console.error(TAG + '❌ 头像读取失败，Base64为空');
+              }
+            } else {
+              console.warn(TAG + '⚠️ 头像文件不存在: ' + avatarPath);
             }
+          } else {
+            console.info(TAG + 'ℹ️ 用户未设置头像');
           }
+        } else {
+          console.warn(TAG + '⚠️ 无法获取当前用户或数据库助手');
         }
       } catch (err) {
-        console.error(TAG + 'Failed to get avatar for sending: ' + JSON.stringify(err));
+        console.error(TAG + '❌ 获取头像失败: ' + JSON.stringify(err));
       }
       
       // === 构建消息内容 ===
@@ -100,15 +121,21 @@ export struct ChatInputView {
           avatarBase64: avatarBase64
         };
         messageContent = JSON.stringify(messageData);
+        console.info(TAG + '✅ 消息已封装为JSON格式');
+        console.info(TAG + 'JSON总长度: ' + messageContent.length);
+        console.info(TAG + 'JSON前200字符: ' + messageContent.substring(0, 200));
+        console.info(TAG + '包含avatarBase64字段: ' + (messageContent.indexOf('"avatarBase64"') !== -1));
       } else {
         // 否则直接发送原始消息
         messageContent = this.messageInput;
+        console.info(TAG + 'ℹ️ 消息为纯文本格式（无头像）');
       }
       
       // 发送消息
+      console.info(TAG + '开始发送消息...');
       let code = LocalDataSender.getInstance().sendCommonDataPlain(messageContent, this.receiverInput, true, fingerPring);
       if(code === ErrorCode.COMMON_CODE_OK) {
-        ClientCoreSDK.Log.info("数据已成功发出！");
+        ClientCoreSDK.Log.info("✅ 数据已成功发出！");
 
         // 用于ui显示的消息对象（注意：UI显示使用原始消息内容，不包含头像数据）
         let m: Message = Message.createChatMsgEntity_OUTGO_TEXT(this.messageInput, fingerPring);
@@ -116,7 +143,9 @@ export struct ChatInputView {
         IMClientManager.getInstance().getMessageProvider().putMessage(m);
         // 清空输入框
         this.messageInput = '';
+        console.info(TAG + '=== 消息发送完成 ===');
       } else {
+        console.error(TAG + '❌ 消息发送失败，错误码: ' + code);
         ToolKits.showToast("数据发送失败。错误码是："+code+"！");
       }
     } else {

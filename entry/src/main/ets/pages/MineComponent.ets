@@ -16,6 +16,7 @@ import UserDatabaseHelper from './utils/UserDatabaseHelper';
 import IMClientManager from '../IMClientManager';
 import PreferenceManager from './utils/PreferenceManager';
 import FontScaleManager, { FONT_SCALE_OPTIONS, FontScaleOption } from './utils/FontScaleManager';
+import { AvatarSendManager } from './utils/AvatarCacheManager';
 
 const TAG: string = '[MineComponent] ';
 
@@ -377,6 +378,8 @@ export struct MineComponent {
   @State avatarText: string = '';
   /** 用户头像路径 */
   @State avatarPath: string = '';
+  /** 图片组件刷新key（用于强制刷新Image组件） */
+  @State imageKey: number = 0;
   /** 是否正在加载头像 */
   @State isLoadingAvatar: boolean = false;
   
@@ -439,12 +442,18 @@ export struct MineComponent {
    * 选择并保存头像。
    */
   async selectAndSaveAvatar(): Promise<void> {
+    console.info(TAG + '=== 开始选择头像 ===');
+    
     if (!this.context || !this.userDbHelper || !this.currentUsername) {
+      console.error(TAG + '❌ 初始化失败：context=' + !!this.context + 
+        ', userDbHelper=' + !!this.userDbHelper + 
+        ', currentUsername=' + this.currentUsername);
       ToolKits.showToast('初始化失败，请重试');
       return;
     }
     
     if (this.isLoadingAvatar) {
+      console.warn(TAG + '⚠️ 正在加载中，请稍候');
       return;
     }
     
@@ -452,6 +461,7 @@ export struct MineComponent {
     
     try {
       // 创建PhotoViewPicker实例
+      console.info(TAG + '创建 PhotoViewPicker 实例');
       const photoPicker = new photoAccessHelper.PhotoViewPicker();
       
       // 设置选择选项
@@ -461,49 +471,79 @@ export struct MineComponent {
       };
       
       // 打开图片选择器
+      console.info(TAG + '打开图片选择器');
       const photoSelectResult: photoAccessHelper.PhotoSelectResult = await photoPicker.select(photoSelectOptions);
       
       // 检查是否选择了图片
       if (!photoSelectResult.photoUris || photoSelectResult.photoUris.length === 0) {
         this.isLoadingAvatar = false;
-        console.info(TAG + 'No image selected');
+        console.info(TAG + '⚠️ 未选择图片');
         return;
       }
       
       const selectedUri = photoSelectResult.photoUris[0];
-      console.info(TAG + 'Selected image URI: ' + selectedUri);
+      console.info(TAG + '✅ 已选择图片，URI: ' + selectedUri);
       
       // 复制图片到私有目录
+      console.info(TAG + '开始复制图片到私有目录...');
       const newPath = await ToolKits.copyImageToPrivateDir(selectedUri, this.currentUsername, this.context);
+      console.info(TAG + '复制结果：' + (newPath ? '成功，路径=' + newPath : '失败'));
       
       if (!newPath) {
         this.isLoadingAvatar = false;
+        console.error(TAG + '❌ 图片复制失败');
+        ToolKits.showToast('图片保存失败，请重试');
+        return;
+      }
+      
+      // 验证文件是否存在且大小>0
+      const fileExists = ToolKits.isFileExists(newPath);
+      console.info(TAG + '验证文件存在：' + fileExists);
+      
+      if (!fileExists) {
+        this.isLoadingAvatar = false;
+        console.error(TAG + '❌ 复制后的文件不存在');
         ToolKits.showToast('图片保存失败，请重试');
         return;
       }
       
       // 删除旧头像（如果存在且与新头像不同）
       if (this.avatarPath && this.avatarPath !== newPath && ToolKits.isFileExists(this.avatarPath)) {
+        console.info(TAG + '删除旧头像：' + this.avatarPath);
         ToolKits.deleteFile(this.avatarPath);
       }
       
       // 保存新头像路径到数据库
+      console.info(TAG + '调用 updateUserAvatar，用户名=' + this.currentUsername + ', 路径=' + newPath);
       const success = await this.userDbHelper.updateUserAvatar(this.currentUsername, newPath);
+      console.info(TAG + '数据库更新结果：' + (success ? '成功' : '失败'));
       
       this.isLoadingAvatar = false;
       
       if (success) {
-        // 更新UI显示
+        // 更新UI显示 - 强制刷新
+        console.info(TAG + '更新UI显示，旧路径=' + this.avatarPath + ', 新路径=' + newPath);
+        
+        // 更新头像路径
         this.avatarPath = newPath;
         
+        // 更新imageKey，强制Image组件重新渲染
+        this.imageKey++;
+        console.info(TAG + '更新imageKey: ' + this.imageKey);
+        
+        // 重置头像发送缓存，确保下次发送消息时携带新头像
+        console.info(TAG + '重置 AvatarSendManager 缓存');
+        AvatarSendManager.resetLastSentAvatarBase64();
+        
         ToolKits.showToast('头像设置成功');
-        console.info(TAG + 'Avatar saved successfully: ' + newPath);
+        console.info(TAG + '✅ 头像更新完成，最终路径: ' + this.avatarPath);
       } else {
+        console.error(TAG + '❌ 数据库更新失败');
         ToolKits.showToast('头像保存失败，请重试');
       }
     } catch (err) {
       this.isLoadingAvatar = false;
-      console.error(TAG + 'Failed to select avatar: ' + JSON.stringify(err));
+      console.error(TAG + '❌ 选择头像异常: ' + JSON.stringify(err));
       ToolKits.showToast('选择图片失败，请重试');
     }
   }
@@ -620,6 +660,12 @@ export struct MineComponent {
               .height(70)
               .borderRadius(35)
               .objectFit(ImageFit.Cover)
+              .key(`avatar_${this.imageKey}`) // 使用动态key强制刷新
+              .onError(() => {
+                // 图片加载失败时，降级显示默认头像
+                console.error(TAG + '头像加载失败，降级显示默认头像，路径: ' + this.avatarPath);
+                this.avatarPath = '';
+              })
           } else {
             // 显示默认头像（首字母）
             Circle()

@@ -46,6 +46,8 @@ export struct MsgView_normal {
    * 组件即将出现时调用。
    */
   async aboutToAppear(): Promise<void> {
+    console.info(TAG + '=== NormalMsgView aboutToAppear ===');
+    
     // 初始化上下文和数据库助手
     try {
       this.context = getContext(this) as common.UIAbilityContext;
@@ -60,6 +62,9 @@ export struct MsgView_normal {
     } else if (this.message && this.message.senderId && this.message.senderId.length > 0) {
       this.avatarText = this.message.senderId.charAt(0).toUpperCase();
     }
+    
+    console.info(TAG + '消息发送者ID: ' + (this.message ? this.message.senderId : '空'));
+    console.info(TAG + '消息发送者显示名: ' + (this.message ? this.message.senderDisplayName : '空'));
     
     // 加载头像
     await this.loadAvatar();
@@ -80,52 +85,90 @@ export struct MsgView_normal {
    * 订阅头像更新事件。
    */
   addAvatarUpdateEvent(): void {
-    IMClientManager.getInstance().getEmitter().on('avatarUpdated', this.avatarUpdateEventCallback = (uid: string) => {
-      // 如果更新的头像属于当前消息的发送者，重新加载头像
-      if (this.message && this.message.senderId === uid) {
-        console.info(TAG + `Avatar updated for sender: ${uid}, reloading...`);
-        this.loadAvatarFromCache();
+    console.info(TAG + '订阅头像更新事件');
+    try {
+      const emitter = IMClientManager.getInstance().getEmitter();
+      if (emitter) {
+        this.avatarUpdateEventCallback = (uid: string) => {
+          console.info(TAG + `收到头像更新事件，uid: ${uid}`);
+          // 如果更新的头像属于当前消息的发送者，重新加载头像
+          if (this.message && this.message.senderId === uid) {
+            console.info(TAG + `✅ 头像属于当前消息发送者，重新加载...`);
+            this.loadAvatarFromCache();
+          } else {
+            console.info(TAG + `ℹ️ 头像不属于当前消息发送者，忽略`);
+          }
+        };
+        emitter.on('avatarUpdated', this.avatarUpdateEventCallback);
+        console.info(TAG + '✅ 头像更新事件订阅成功');
+      } else {
+        console.error(TAG + '❌ 无法获取EventHub');
       }
-    });
+    } catch (err) {
+      console.error(TAG + '❌ 订阅头像更新事件失败: ' + JSON.stringify(err));
+    }
   }
   
   /**
    * 取消订阅头像更新事件。
    */
   removeAvatarUpdateEvent(): void {
-    IMClientManager.getInstance().getEmitter().off('avatarUpdated', this.avatarUpdateEventCallback);
+    console.info(TAG + '取消订阅头像更新事件');
+    try {
+      if (this.avatarUpdateEventCallback) {
+        const emitter = IMClientManager.getInstance().getEmitter();
+        if (emitter) {
+          emitter.off('avatarUpdated', this.avatarUpdateEventCallback);
+          console.info(TAG + '✅ 头像更新事件取消订阅成功');
+        }
+      }
+    } catch (err) {
+      console.error(TAG + '❌ 取消订阅头像更新事件失败: ' + JSON.stringify(err));
+    }
   }
   
   /**
    * 加载发送者头像。
    */
   async loadAvatar(): Promise<void> {
+    console.info(TAG + '=== 开始加载头像 ===');
+    
     if (!this.userDbHelper || !this.message || !this.message.senderId) {
+      console.warn(TAG + '⚠️ 无法加载头像：数据库助手或消息为空');
       return;
     }
     
+    console.info(TAG + '发送者ID: ' + this.message.senderId);
+    
     // 优先从缓存中加载头像 Base64
     const cachedBase64 = AvatarCacheManager.getInstance().getAvatar(this.message.senderId);
+    console.info(TAG + '从缓存获取头像: ' + (cachedBase64 ? '成功，长度=' + cachedBase64.length : '无'));
+    
     if (cachedBase64 && cachedBase64.length > 0) {
       this.avatarBase64 = cachedBase64;
       this.avatarPath = ''; // 清空本地路径，使用 Base64
-      console.info(TAG + 'Avatar loaded from cache for ' + this.message.senderId);
+      console.info(TAG + '✅ 头像已从缓存加载');
+      console.info(TAG + 'Base64前100字符: ' + cachedBase64.substring(0, 100));
       return;
     }
     
     // 如果缓存中没有，尝试从本地数据库加载（仅对本地用户有效）
+    console.info(TAG + '缓存中无头像，尝试从本地数据库加载...');
     try {
       const savedAvatarPath = await this.userDbHelper.getUserAvatar(this.message.senderId);
+      console.info(TAG + '本地数据库头像路径: ' + (savedAvatarPath || '无'));
+      
       if (savedAvatarPath && ToolKits.isFileExists(savedAvatarPath)) {
         this.avatarPath = savedAvatarPath;
         this.avatarBase64 = ''; // 清空 Base64，使用本地路径
-        console.info(TAG + 'Avatar loaded from database for ' + this.message.senderId + ': ' + savedAvatarPath);
+        console.info(TAG + '✅ 头像已从本地数据库加载: ' + savedAvatarPath);
       } else {
         this.avatarPath = '';
         this.avatarBase64 = '';
+        console.info(TAG + 'ℹ️ 本地无头像，将显示默认头像');
       }
     } catch (err) {
-      console.error(TAG + 'Failed to load avatar: ' + JSON.stringify(err));
+      console.error(TAG + '❌ 加载头像失败: ' + JSON.stringify(err));
       this.avatarPath = '';
       this.avatarBase64 = '';
     }
@@ -135,15 +178,25 @@ export struct MsgView_normal {
    * 从缓存中重新加载头像。
    */
   loadAvatarFromCache(): void {
+    console.info(TAG + '=== 从缓存重新加载头像 ===');
+    
     if (!this.message || !this.message.senderId) {
+      console.warn(TAG + '⚠️ 无法重新加载：消息为空');
       return;
     }
     
+    console.info(TAG + '发送者ID: ' + this.message.senderId);
+    
     const cachedBase64 = AvatarCacheManager.getInstance().getAvatar(this.message.senderId);
+    console.info(TAG + '从缓存获取头像: ' + (cachedBase64 ? '成功，长度=' + cachedBase64.length : '无'));
+    
     if (cachedBase64 && cachedBase64.length > 0) {
       this.avatarBase64 = cachedBase64;
       this.avatarPath = '';
-      console.info(TAG + 'Avatar reloaded from cache for ' + this.message.senderId);
+      console.info(TAG + '✅ 头像已从缓存重新加载');
+      console.info(TAG + 'Base64前100字符: ' + cachedBase64.substring(0, 100));
+    } else {
+      console.warn(TAG + '⚠️ 缓存中仍无头像');
     }
   }
 
@@ -208,6 +261,12 @@ export struct MsgView_normal {
           .height(40)
           .borderRadius(20)
           .objectFit(ImageFit.Cover)
+          .onComplete(() => {
+            console.info(TAG + '✅ Base64头像加载成功');
+          })
+          .onError(() => {
+            console.error(TAG + '❌ Base64头像加载失败');
+          })
       } else if (this.avatarPath && this.avatarPath.length > 0) {
         // 显示本地路径头像
         Image('file://' + this.avatarPath)
@@ -215,6 +274,12 @@ export struct MsgView_normal {
           .height(40)
           .borderRadius(20)
           .objectFit(ImageFit.Cover)
+          .onComplete(() => {
+            console.info(TAG + '✅ 本地头像加载成功');
+          })
+          .onError(() => {
+            console.error(TAG + '❌ 本地头像加载失败');
+          })
       } else {
         // 显示默认头像（首字母）
         Circle()

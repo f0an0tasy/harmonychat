@@ -190,24 +190,49 @@ export default class IMClientManager {
       let messageContent: string = protocal.dataContent;
       let avatarBase64: string | undefined = undefined;
       
+      console.info(TAG + '=== 开始处理接收到的消息 ===');
+      console.info(TAG + '发送者UID: ' + protocal.from);
+      console.info(TAG + '原始dataContent长度: ' + (protocal.dataContent ? protocal.dataContent.length : 0));
+      console.info(TAG + '原始dataContent前200字符: ' + (protocal.dataContent ? protocal.dataContent.substring(0, 200) : '空'));
+      
       // 尝试解析 JSON 格式的消息（可能包含头像数据）
       try {
+        console.info(TAG + '尝试解析JSON格式...');
         const messageData: MessageData = JSON.parse(protocal.dataContent);
+        
+        console.info(TAG + 'JSON解析成功');
+        console.info(TAG + '解析后对象keys: ' + Object.keys(messageData).join(', '));
+        console.info(TAG + 'content字段存在: ' + (messageData.content !== undefined));
+        console.info(TAG + 'avatarBase64字段存在: ' + (messageData.avatarBase64 !== undefined));
         
         // 如果解析成功且包含 content 字段，说明是 JSON 格式的消息
         if (messageData && messageData.content) {
           messageContent = messageData.content;
           avatarBase64 = messageData.avatarBase64;
           
+          console.info(TAG + '消息内容: ' + messageContent);
+          
           // 如果消息中携带了头像，更新缓存
           if (avatarBase64 && avatarBase64.length > 0) {
             const senderUid = protocal.from;
-            AvatarCacheManager.getInstance().updateAvatar(senderUid, avatarBase64);
+            console.info(TAG + '✅ 检测到头像数据');
+            console.info(TAG + '头像Base64长度: ' + avatarBase64.length);
+            console.info(TAG + '头像Base64前100字符: ' + avatarBase64.substring(0, 100));
+            
+            // 更新头像缓存
+            const updateResult = AvatarCacheManager.getInstance().updateAvatar(senderUid, avatarBase64);
+            console.info(TAG + '头像缓存更新结果: ' + (updateResult ? '成功' : '无变化'));
             this.getLog().info('[应用层]  >> 收到头像数据，已更新缓存，发送者UID: ' + senderUid);
+          } else {
+            console.info(TAG + 'ℹ️ 消息中无头像数据或为空');
           }
+        } else {
+          console.warn(TAG + '⚠️ JSON解析成功但缺少content字段');
         }
       } catch (err) {
         // 解析失败，说明是普通文本消息，直接使用原始内容
+        console.info(TAG + 'ℹ️ JSON解析失败，作为普通文本消息处理');
+        console.info(TAG + '解析错误: ' + JSON.stringify(err));
         // this.getLog().info('[应用层]  >> 消息不是JSON格式，作为普通文本处理');
       }
       
@@ -217,6 +242,7 @@ export default class IMClientManager {
       
       // 将收到的消息放入全局消息缓存集合中（MessageProvider.putMessage()方法中会同时通知ui层进行刷新显示）
       this.messageProvider.putMessage(m);
+      console.info(TAG + '=== 消息处理完成 ===');
     });
 
     /*
