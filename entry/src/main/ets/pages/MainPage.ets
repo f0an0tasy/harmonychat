@@ -8,7 +8,7 @@
  * 技术社区：http://www.52im.net
  */
 
-import { ChatComponent } from './ChatComponent';
+import { ConversationListPage } from './ConversationListPage';
 import { MineComponent } from './MineComponent';
 import ToolKits from './utils/ToolKits';
 import FontScaleManager from './utils/FontScaleManager';
@@ -79,9 +79,9 @@ struct MainPage {
 
   build() {
     Tabs({ barPosition: BarPosition.End }) {
-      // 聊天Tab
+      // 聊天Tab（会话列表）
       TabContent() {
-        ChatComponent()
+        ConversationListPage()
       }
       .tabBar(this.TabBuilder(0))
 

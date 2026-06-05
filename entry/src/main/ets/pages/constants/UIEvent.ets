@@ -31,4 +31,7 @@ export default class UIEvent {
   static readonly UIEVENT_messageUpdate = 'uievent.messageUpdate';
   /** UI事件：更新了聊天消息（多条聊天消息） */
   static readonly UIEVENT_messagesUpdate = 'uievent.messagesUpdate';
+
+  /** UI事件：会话列表已更新 */
+  static readonly UIEVENT_conversationListUpdated = 'uievent.conversationListUpdated';
 }

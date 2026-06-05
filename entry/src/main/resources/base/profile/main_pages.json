@@ -5,6 +5,8 @@
     "pages/LoginPage",
     "pages/RegisterPage",
     "pages/SplashPage",
-    "pages/MainPage"
+    "pages/MainPage",
+    "pages/ChatDetailPage",
+    "pages/ConversationListPage"
   ]
 }

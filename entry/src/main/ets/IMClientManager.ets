@@ -15,6 +15,7 @@ import Message from "./pages/model/Message";
 import MessagesProvider from "./pages/model/MessagesProvider";
 import MsgSendStatus from "./pages/constants/MsgSendStatus";
 import AvatarCacheManager from "./pages/utils/AvatarCacheManager";
+import ConversationManager from "./pages/model/ConversationManager";
 
 const TAG: string = '[IMClientManager] ';
 
@@ -259,8 +260,20 @@ export default class IMClientManager {
       let m = Message.createChatMsgEntity_INCOME_TEXT(protocal.from, 'UID: '+protocal.from, messageContent, 0);
       m.fingerPrintOfProtocal = protocal.fp;
       
-      // 将收到的消息放入全局消息缓存集合中（MessageProvider.putMessage()方法中会同时通知ui层进行刷新显示）
-      this.messageProvider.putMessage(m);
+      // === 按好友分组存储消息 ===
+      const senderUid = protocal.from;
+      
+      // 将收到的消息放入对应好友的消息列表
+      this.messageProvider.putMessageToFriend(senderUid, m);
+      
+      // 更新会话列表摘要（触发会话列表UI刷新）
+      const conversationManager = ConversationManager.getInstance();
+      conversationManager.updateConversationSummary(
+        senderUid,
+        messageContent,
+        Date.now()
+      );
+      
       console.info(TAG + '=== 消息处理完成 ===');
     });
 
