@@ -227,22 +227,28 @@ export default class IMClientManager {
             console.info(TAG + '头像Base64长度: ' + avatarBase64.length);
             console.info(TAG + '头像Base64前100字符: ' + avatarBase64.substring(0, 100));
             
-            // 验证Base64长度是否合理
-            if (avatarBase64.length > 50000) {
-              console.warn(TAG + `⚠️ 收到的头像Base64长度(${avatarBase64.length})超过50000，可能不完整`);
+            // 接收端长度校验：如果超过60000则丢弃（视为异常数据）
+            if (avatarBase64.length > 60000) {
+              console.error(TAG + `❌ 收到的头像Base64长度(${avatarBase64.length})超过60000，视为异常数据，丢弃该头像`);
+              this.getLog().error('[应用层]  >> 收到异常头像数据，长度超过60000，已丢弃，发送者UID: ' + senderUid);
             } else {
-              console.info(TAG + `✅ 头像Base64长度(${avatarBase64.length})在合理范围内`);
+              // 验证Base64长度是否合理
+              if (avatarBase64.length > 50000) {
+                console.warn(TAG + `⚠️ 收到的头像Base64长度(${avatarBase64.length})超过50000，可能不完整`);
+              } else {
+                console.info(TAG + `✅ 头像Base64长度(${avatarBase64.length})在合理范围内`);
+              }
+              
+              // 更新头像缓存
+              console.info(TAG + '开始更新头像缓存...');
+              const updateResult = AvatarCacheManager.getInstance().updateAvatar(senderUid, avatarBase64);
+              console.info(TAG + '头像缓存更新结果: ' + (updateResult ? '成功' : '无变化'));
+              this.getLog().info('[应用层]  >> 收到头像数据，已更新缓存，发送者UID: ' + senderUid + '，Base64长度: ' + avatarBase64.length);
+              
+              // 打印缓存状态
+              const cachedAvatar = AvatarCacheManager.getInstance().getAvatar(senderUid);
+              console.info(TAG + '验证缓存：' + (cachedAvatar ? '缓存中存在该用户头像，长度=' + cachedAvatar.length : '缓存中不存在'));
             }
-            
-            // 更新头像缓存
-            console.info(TAG + '开始更新头像缓存...');
-            const updateResult = AvatarCacheManager.getInstance().updateAvatar(senderUid, avatarBase64);
-            console.info(TAG + '头像缓存更新结果: ' + (updateResult ? '成功' : '无变化'));
-            this.getLog().info('[应用层]  >> 收到头像数据，已更新缓存，发送者UID: ' + senderUid + '，Base64长度: ' + avatarBase64.length);
-            
-            // 打印缓存状态
-            const cachedAvatar = AvatarCacheManager.getInstance().getAvatar(senderUid);
-            console.info(TAG + '验证缓存：' + (cachedAvatar ? '缓存中存在该用户头像，长度=' + cachedAvatar.length : '缓存中不存在'));
           } else {
             console.info(TAG + 'ℹ️ 消息中无头像数据或为空');
           }

@@ -18,6 +18,7 @@ import IMClientManager from '../IMClientManager';
 import UIEvent from './constants/UIEvent';
 import ToolKits from './utils/ToolKits';
 import FontScaleManager from './utils/FontScaleManager';
+import { promptAction } from '@kit.ArkUI';
 
 const TAG: string = '[ConversationListPage] ';
 
@@ -386,7 +387,8 @@ export struct ConversationListPage {
                 ConversationItem({
                   friendUid: uid,
                   lastMessage: this.getLastMessage(uid),
-                  lastMessageTime: this.getLastMessageTime(uid)
+                  lastMessageTime: this.getLastMessageTime(uid),
+                  isPinned: this.isPinned(uid)
                 })
 
                 // 分割线
@@ -399,6 +401,12 @@ export struct ConversationListPage {
             }
             .onClick(() => {
               this.goToChatDetail(uid);
+            })
+            .swipeAction({
+              end: {
+                builder: () => this.buildSwipeMenu(uid),
+                actionAreaDistance: 120
+              }
             })
           }, (uid: string) => uid)
         }
@@ -546,6 +554,110 @@ export struct ConversationListPage {
     } catch (err) {
       console.error(TAG + 'Failed to add friend: ' + JSON.stringify(err));
       ToolKits.showToast('添加失败');
+    }
+  }
+
+  /**
+   * 检查会话是否置顶。
+   */
+  isPinned(uid: string): boolean {
+    if (this.conversationManager) {
+      return this.conversationManager.isPinned(uid);
+    }
+    return false;
+  }
+
+  /**
+   * 构建左滑菜单。
+   */
+  @Builder
+  buildSwipeMenu(uid: string) {
+    Row() {
+      // 置顶按钮
+      Button(this.isPinned(uid) ? '取消置顶' : '置顶')
+        .fontSize(14)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(Color.White)
+        .backgroundColor('#F4B942')
+        .borderRadius(0)
+        .width(70)
+        .height('100%')
+        .onClick(() => {
+          this.togglePin(uid);
+        })
+
+      // 删除按钮
+      Button('删除')
+        .fontSize(14)
+        .fontWeight(FontWeight.Medium)
+        .fontColor(Color.White)
+        .backgroundColor('#FF3B30')
+        .borderRadius(0)
+        .width(70)
+        .height('100%')
+        .onClick(() => {
+          this.confirmDelete(uid);
+        })
+    }
+    .height('100%')
+  }
+
+  /**
+   * 置顶/取消置顶会话。
+   */
+  async togglePin(uid: string): Promise<void> {
+    if (this.conversationManager) {
+      const success = await this.conversationManager.togglePin(uid);
+      if (success) {
+        const isPinned = this.conversationManager.isPinned(uid);
+        ToolKits.showToast(isPinned ? '已置顶' : '已取消置顶');
+        // 刷新会话列表
+        this.refreshConversationList();
+      }
+    }
+  }
+
+  /**
+   * 确认删除会话。
+   */
+  confirmDelete(uid: string): void {
+    promptAction.showDialog({
+      title: '删除会话',
+      message: `确定删除与 ${uid} 的聊天记录吗？`,
+      buttons: [
+        { text: '取消', color: '#666666' },
+        { text: '删除', color: '#FF3B30' }
+      ]
+    }).then((result) => {
+      if (result.index === 1) {
+        // 用户点击了删除按钮
+        this.deleteConversation(uid);
+      }
+    }).catch((err: Error) => {
+      console.error(TAG + 'Dialog error: ' + err.message);
+    });
+  }
+
+  /**
+   * 删除会话。
+   */
+  async deleteConversation(uid: string): Promise<void> {
+    try {
+      // 删除会话记录
+      if (this.conversationManager) {
+        const success = await this.conversationManager.removeConversation(uid);
+        if (success) {
+          // 删除该好友的所有聊天消息
+          IMClientManager.getInstance().getMessageProvider().deleteMessagesByFriendUid(uid);
+          
+          ToolKits.showToast('删除成功');
+          // 刷新会话列表
+          this.refreshConversationList();
+        }
+      }
+    } catch (err) {
+      console.error(TAG + 'Failed to delete conversation: ' + JSON.stringify(err));
+      ToolKits.showToast('删除失败');
     }
   }
 }

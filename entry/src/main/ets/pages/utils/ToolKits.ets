@@ -766,4 +766,175 @@ export default class ToolKits {
       return null;
     }
   }
+
+  /**
+   * 压缩头像并转换为Base64字符串（强压缩方案）。
+   * 专门用于发送消息时携带头像数据，确保Base64长度控制在10KB以内。
+   * 
+   * 压缩策略：
+   * 1. 目标分辨率：100x100像素
+   * 2. JPEG质量：40%
+   * 3. 如果Base64长度仍超过12000，则进一步降低质量至30%或缩小尺寸至80x80
+   * 
+   * @param imagePath 图片文件路径
+   * @returns Promise<string> 返回Base64字符串，空字符串表示失败
+   */
+  static async compressAvatarToBase64(imagePath: string): Promise<string> {
+    console.info(TAG + '=== compressAvatarToBase64 开始（强压缩方案）===');
+    console.info(TAG + `文件路径: ${imagePath}`);
+    
+    try {
+      // 检查文件是否存在
+      if (!ToolKits.isFileExists(imagePath)) {
+        console.error(TAG + '❌ 头像文件不存在: ' + imagePath);
+        return '';
+      }
+      
+      // 获取原文件大小
+      const stat = fs.statSync(imagePath);
+      const originalFileSize = stat.size;
+      console.info(TAG + `原文件大小: ${originalFileSize} bytes (${(originalFileSize / 1024).toFixed(2)} KB)`);
+      
+      // 创建ImageSource
+      console.info(TAG + '创建ImageSource...');
+      const imageSource = image.createImageSource(imagePath);
+      
+      // 获取原图信息
+      const imageInfo = await imageSource.getImageInfo();
+      console.info(TAG + `原图尺寸：${imageInfo.size.width}x${imageInfo.size.height}`);
+      
+      // 第一次压缩：100x100，质量40
+      let targetWidth = 100;
+      let targetHeight = 100;
+      let quality = 40;
+      
+      console.info(TAG + `第一次压缩：${targetWidth}x${targetHeight}，质量${quality}...`);
+      
+      // 创建PixelMap（使用RGB_565格式节省内存）
+      const decodingOptions: image.DecodingOptions = {
+        desiredSize: { width: targetWidth, height: targetHeight },
+        editable: true,
+        desiredPixelFormat: image.PixelMapFormat.RGB_565
+      };
+      const pixelMap = await imageSource.createPixelMap(decodingOptions);
+      console.info(TAG + '✅ PixelMap创建成功');
+      
+      // 释放ImageSource
+      imageSource.release();
+      
+      // 创建ImagePacker
+      const imagePacker = image.createImagePacker();
+      
+      // 编码为JPEG
+      const packOpts: image.PackingOption = {
+        format: 'image/jpeg',
+        quality: quality
+      };
+      
+      let packedData = await imagePacker.packing(pixelMap, packOpts);
+      console.info(TAG + `✅ 第一次编码完成，数据大小：${packedData.byteLength} bytes`);
+      
+      // 转换为Base64
+      const util = await import('@kit.ArkTS');
+      const base64Helper = new util.util.Base64Helper();
+      let uint8Array = new Uint8Array(packedData);
+      let base64String = base64Helper.encodeToStringSync(uint8Array);
+      
+      console.info(TAG + `第一次压缩后Base64长度：${base64String.length} 字符`);
+      
+      // 检查Base64长度是否超过12000（12KB）
+      if (base64String.length > 12000) {
+        console.warn(TAG + `⚠️ Base64长度(${base64String.length})超过12000，进行二次压缩...`);
+        
+        // 释放资源
+        imagePacker.release();
+        pixelMap.release();
+        
+        // 第二次压缩：降低质量至30%
+        quality = 30;
+        console.info(TAG + `第二次压缩：质量降至${quality}...`);
+        
+        const imageSource2 = image.createImageSource(imagePath);
+        const pixelMap2 = await imageSource2.createPixelMap({
+          desiredSize: { width: targetWidth, height: targetHeight },
+          editable: true,
+          desiredPixelFormat: image.PixelMapFormat.RGB_565
+        });
+        imageSource2.release();
+        
+        const imagePacker2 = image.createImagePacker();
+        const packOpts2: image.PackingOption = {
+          format: 'image/jpeg',
+          quality: quality
+        };
+        
+        packedData = await imagePacker2.packing(pixelMap2, packOpts2);
+        console.info(TAG + `✅ 第二次编码完成，数据大小：${packedData.byteLength} bytes`);
+        
+        uint8Array = new Uint8Array(packedData);
+        base64String = base64Helper.encodeToStringSync(uint8Array);
+        
+        console.info(TAG + `第二次压缩后Base64长度：${base64String.length} 字符`);
+        
+        imagePacker2.release();
+        pixelMap2.release();
+        
+        // 如果仍然超过12000，进行第三次压缩：缩小尺寸至80x80
+        if (base64String.length > 12000) {
+          console.warn(TAG + `⚠️ Base64长度(${base64String.length})仍超过12000，进行第三次压缩...`);
+          
+          targetWidth = 80;
+          targetHeight = 80;
+          console.info(TAG + `第三次压缩：${targetWidth}x${targetHeight}，质量${quality}...`);
+          
+          const imageSource3 = image.createImageSource(imagePath);
+          const pixelMap3 = await imageSource3.createPixelMap({
+            desiredSize: { width: targetWidth, height: targetHeight },
+            editable: true,
+            desiredPixelFormat: image.PixelMapFormat.RGB_565
+          });
+          imageSource3.release();
+          
+          const imagePacker3 = image.createImagePacker();
+          const packOpts3: image.PackingOption = {
+            format: 'image/jpeg',
+            quality: quality
+          };
+          
+          packedData = await imagePacker3.packing(pixelMap3, packOpts3);
+          console.info(TAG + `✅ 第三次编码完成，数据大小：${packedData.byteLength} bytes`);
+          
+          uint8Array = new Uint8Array(packedData);
+          base64String = base64Helper.encodeToStringSync(uint8Array);
+          
+          console.info(TAG + `第三次压缩后Base64长度：${base64String.length} 字符`);
+          
+          imagePacker3.release();
+          pixelMap3.release();
+        }
+      } else {
+        // 释放资源
+        imagePacker.release();
+        pixelMap.release();
+      }
+      
+      // 最终检查
+      if (base64String.length > 15000) {
+        console.error(TAG + `❌ 最终Base64长度(${base64String.length})仍超过15000，放弃携带头像`);
+        return '';
+      }
+      
+      console.info(TAG + `✅ 最终Base64长度：${base64String.length} 字符`);
+      console.info(TAG + `压缩比：${((1 - base64String.length / (originalFileSize * 1.37)) * 100).toFixed(1)}%`);
+      console.info(TAG + '=== compressAvatarToBase64 完成 ===');
+      
+      return base64String;
+    } catch (err) {
+      console.error(TAG + '❌ 压缩头像失败: ' + JSON.stringify(err));
+      if (err instanceof Error) {
+        console.error(TAG + '错误堆栈: ' + err.stack);
+      }
+      return '';
+    }
+  }
 }

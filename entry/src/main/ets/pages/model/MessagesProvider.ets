@@ -331,6 +331,16 @@ export default class MessagesProvider {
   }
 
   /**
+   * 删除指定好友的所有消息（别名方法，语义更清晰）。
+   *
+   * @param friendUid 好友UID
+   */
+  deleteMessagesByFriendUid(friendUid: string): void {
+    this.clearFriendMessages(friendUid);
+    console.info('[MessagesProvider] Messages deleted for friend: ' + friendUid);
+  }
+
+  /**
    * 清空所有消息。
    */
   clear(): void {

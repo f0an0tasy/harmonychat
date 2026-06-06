@@ -16,6 +16,7 @@ import UIEvent from '../constants/UIEvent';
 const TAG: string = '[ConversationManager] ';
 const PREFERENCES_NAME: string = 'ConversationStore';
 const KEY_FRIEND_LIST: string = 'friend_list';
+const KEY_PINNED_FRIENDS: string = 'pinned_friends';
 
 /**
  * 会话摘要信息。
@@ -51,6 +52,9 @@ export default class ConversationManager {
 
   /** 会话列表（好友UID数组） */
   private conversations: string[] = [];
+
+  /** 置顶会话列表（好友UID数组） */
+  private pinnedConversations: string[] = [];
 
   /** 会话摘要信息Map */
   private conversationSummaries: Map<string, ConversationSummary> = new Map();
@@ -106,14 +110,24 @@ export default class ConversationManager {
     }
 
     try {
+      // 加载普通会话列表
       const savedList = await this.preferences.get(KEY_FRIEND_LIST, '[]');
       const listStr = savedList as string;
       this.conversations = JSON.parse(listStr) as string[];
-      console.info(TAG + 'Conversations loaded: ' + this.conversations.length + ' items');
-      return this.conversations;
+      
+      // 加载置顶会话列表
+      const savedPinnedList = await this.preferences.get(KEY_PINNED_FRIENDS, '[]');
+      const pinnedListStr = savedPinnedList as string;
+      this.pinnedConversations = JSON.parse(pinnedListStr) as string[];
+      
+      console.info(TAG + 'Conversations loaded: ' + this.conversations.length + ' items, pinned: ' + this.pinnedConversations.length + ' items');
+      
+      // 返回合并后的列表（置顶在前，普通在后）
+      return this.getMergedConversations();
     } catch (err) {
       console.error(TAG + 'Failed to load conversations: ' + JSON.stringify(err));
       this.conversations = [];
+      this.pinnedConversations = [];
       return [];
     }
   }
@@ -132,9 +146,12 @@ export default class ConversationManager {
     }
 
     try {
+      // 保存普通会话列表
       await this.preferences.put(KEY_FRIEND_LIST, JSON.stringify(this.conversations));
+      // 保存置顶会话列表
+      await this.preferences.put(KEY_PINNED_FRIENDS, JSON.stringify(this.pinnedConversations));
       await this.preferences.flush();
-      console.info(TAG + 'Conversations saved: ' + this.conversations.length + ' items');
+      console.info(TAG + 'Conversations saved: ' + this.conversations.length + ' items, pinned: ' + this.pinnedConversations.length + ' items');
     } catch (err) {
       console.error(TAG + 'Failed to save conversations: ' + JSON.stringify(err));
     }
@@ -142,10 +159,70 @@ export default class ConversationManager {
 
   /**
    * 获取会话列表。
+   * 返回合并后的列表（置顶在前，普通在后）。
    * @returns 好友UID数组
    */
   public getConversations(): string[] {
-    return this.conversations;
+    return this.getMergedConversations();
+  }
+
+  /**
+   * 获取合并后的会话列表（置顶在前，普通在后）。
+   * @returns 好友UID数组
+   */
+  private getMergedConversations(): string[] {
+    return [...this.pinnedConversations, ...this.conversations];
+  }
+
+  /**
+   * 检查会话是否置顶。
+   * @param friendUid 好友UID
+   * @returns true表示已置顶
+   */
+  public isPinned(friendUid: string): boolean {
+    return this.pinnedConversations.includes(friendUid);
+  }
+
+  /**
+   * 置顶/取消置顶会话。
+   * @param friendUid 好友UID
+   * @returns true表示操作成功
+   */
+  public async togglePin(friendUid: string): Promise<boolean> {
+    // 检查会话是否存在
+    if (!this.hasConversation(friendUid) && !this.pinnedConversations.includes(friendUid)) {
+      console.info(TAG + 'Conversation not found: ' + friendUid);
+      return false;
+    }
+
+    const isCurrentlyPinned = this.isPinned(friendUid);
+    
+    if (isCurrentlyPinned) {
+      // 取消置顶：从置顶列表移到普通列表
+      const pinnedIndex = this.pinnedConversations.indexOf(friendUid);
+      if (pinnedIndex !== -1) {
+        this.pinnedConversations.splice(pinnedIndex, 1);
+        // 添加到普通列表开头（按最新消息时间排序）
+        this.conversations.unshift(friendUid);
+      }
+    } else {
+      // 置顶：从普通列表移到置顶列表
+      const normalIndex = this.conversations.indexOf(friendUid);
+      if (normalIndex !== -1) {
+        this.conversations.splice(normalIndex, 1);
+      }
+      // 添加到置顶列表开头
+      this.pinnedConversations.unshift(friendUid);
+    }
+
+    // 保存到 Preferences
+    await this.saveConversations();
+    
+    // 通知UI更新
+    this.notifyConversationListUpdated();
+
+    console.info(TAG + 'Conversation pin toggled: ' + friendUid + ', now pinned: ' + !isCurrentlyPinned);
+    return true;
   }
 
   /**
@@ -154,7 +231,7 @@ export default class ConversationManager {
    * @returns true表示已存在
    */
   public hasConversation(friendUid: string): boolean {
-    return this.conversations.includes(friendUid);
+    return this.conversations.includes(friendUid) || this.pinnedConversations.includes(friendUid);
   }
 
   /**
@@ -195,13 +272,27 @@ export default class ConversationManager {
    * @returns true表示删除成功
    */
   public async removeConversation(friendUid: string): Promise<boolean> {
-    const index = this.conversations.indexOf(friendUid);
-    if (index === -1) {
+    let removed = false;
+    
+    // 从普通列表删除
+    const normalIndex = this.conversations.indexOf(friendUid);
+    if (normalIndex !== -1) {
+      this.conversations.splice(normalIndex, 1);
+      removed = true;
+    }
+    
+    // 从置顶列表删除
+    const pinnedIndex = this.pinnedConversations.indexOf(friendUid);
+    if (pinnedIndex !== -1) {
+      this.pinnedConversations.splice(pinnedIndex, 1);
+      removed = true;
+    }
+
+    if (!removed) {
       console.info(TAG + 'Conversation not found: ' + friendUid);
       return false;
     }
 
-    this.conversations.splice(index, 1);
     this.conversationSummaries.delete(friendUid);
 
     await this.saveConversations();
@@ -239,11 +330,23 @@ export default class ConversationManager {
       });
     }
 
-    // 将该会话移动到列表最前面（最新消息的会话在最上面）
-    const index = this.conversations.indexOf(friendUid);
-    if (index > 0) {
-      this.conversations.splice(index, 1);
-      this.conversations.unshift(friendUid);
+    // 根据置顶状态，将该会话移动到对应列表的最前面
+    const isPinned = this.isPinned(friendUid);
+    
+    if (isPinned) {
+      // 置顶会话：移动到置顶列表最前面
+      const pinnedIndex = this.pinnedConversations.indexOf(friendUid);
+      if (pinnedIndex > 0) {
+        this.pinnedConversations.splice(pinnedIndex, 1);
+        this.pinnedConversations.unshift(friendUid);
+      }
+    } else {
+      // 普通会话：移动到普通列表最前面
+      const normalIndex = this.conversations.indexOf(friendUid);
+      if (normalIndex > 0) {
+        this.conversations.splice(normalIndex, 1);
+        this.conversations.unshift(friendUid);
+      }
     }
 
     // 通知UI更新
@@ -291,6 +394,7 @@ export default class ConversationManager {
    */
   public async clearAll(): Promise<void> {
     this.conversations = [];
+    this.pinnedConversations = [];
     this.conversationSummaries.clear();
     await this.saveConversations();
     this.notifyConversationListUpdated();

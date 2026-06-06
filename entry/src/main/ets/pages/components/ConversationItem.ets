@@ -22,6 +22,8 @@ export struct ConversationItem {
   @Prop lastMessage: string = '';
   /** 最后一条消息时间戳 */
   @Prop lastMessageTime: number = 0;
+  /** 是否置顶 */
+  @Prop isPinned: boolean = false;
 
   /**
    * 格式化时间显示。
@@ -95,13 +97,25 @@ export struct ConversationItem {
 
       // 中间内容区
       Column() {
-        // 好友UID
-        Text(this.friendUid)
-          .fontSize(16)
-          .fontColor('#333333')
-          .fontWeight(FontWeight.Medium)
-          .maxLines(1)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
+        // 好友UID（带置顶图标）
+        Row() {
+          Text(this.friendUid)
+            .fontSize(16)
+            .fontColor('#333333')
+            .fontWeight(FontWeight.Medium)
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .layoutWeight(1)
+          
+          // 置顶图标
+          if (this.isPinned) {
+            SymbolGlyph($r('sys.symbol.pin'))
+              .fontSize(14)
+              .fontColor(['#F4B942'])
+              .margin({ left: 4 })
+          }
+        }
+        .width('100%')
 
         // 最后一条消息
         Text(this.truncateMessage(this.lastMessage))
@@ -126,6 +140,6 @@ export struct ConversationItem {
     .height(64)
     .padding({ left: 16, right: 16 })
     .alignItems(VerticalAlign.Center)
-    .backgroundColor(Color.White)
+    .backgroundColor(this.isPinned ? '#F5F5F5' : Color.White)
   }
 }

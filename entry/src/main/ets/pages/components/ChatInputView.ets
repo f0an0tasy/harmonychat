@@ -15,6 +15,7 @@ import ToolKits from "../utils/ToolKits";
 import UserDatabaseHelper from "../utils/UserDatabaseHelper";
 import ConversationManager from "../model/ConversationManager";
 import { common } from '@kit.AbilityKit';
+import { fileIo as fs } from '@kit.CoreFileKit';
 
 const TAG: string = '[ChatInputView] ';
 
@@ -51,6 +52,11 @@ export struct ChatInputView {
 
   /** 上下文 */
   private context: common.UIAbilityContext | null = null;
+  
+  /** 缓存的头像Base64（内存缓存） */
+  private static cachedAvatarBase64: string = '';
+  /** 缓存时头像文件的修改时间（用于判断是否需要重新压缩） */
+  private static cachedAvatarMtime: number = 0;
 
   /**
    * 组件即将出现时调用。
@@ -88,7 +94,7 @@ export struct ChatInputView {
     // 生成消息指纹码
     let fingerPrint: string = Protocal.genFingerPrint();
 
-    // === 头像携带逻辑 ===
+    // === 头像携带逻辑（带缓存） ===
     let avatarBase64: string = '';
     try {
       const currentUsername = ToolKits.getLocalUserUid();
@@ -106,21 +112,46 @@ export struct ChatInputView {
           console.info(TAG + '头像文件是否存在: ' + fileExists);
 
           if (fileExists) {
-            // 压缩头像并转换为 Base64
-            console.info(TAG + '开始压缩头像文件...');
-            const base64 = await ToolKits.compressImageToBase64(
-              avatarPath,
-              200,  // maxWidth
-              200,  // maxHeight
-              40,   // quality
-              45000 // maxBase64Length
-            );
-
-            if (base64 && base64.length > 0) {
-              avatarBase64 = base64;
-              console.info(TAG + '✅ 头像压缩成功，Base64长度: ' + base64.length);
+            // 检查文件修改时间，判断是否需要重新压缩
+            const stat = fs.statSync(avatarPath);
+            const currentMtime = stat.mtime;
+            console.info(TAG + '头像文件修改时间: ' + currentMtime);
+            console.info(TAG + '缓存修改时间: ' + ChatInputView.cachedAvatarMtime);
+            
+            // 如果文件未修改且缓存存在，直接使用缓存
+            if (ChatInputView.cachedAvatarBase64 && 
+                ChatInputView.cachedAvatarBase64.length > 0 &&
+                ChatInputView.cachedAvatarMtime === currentMtime) {
+              avatarBase64 = ChatInputView.cachedAvatarBase64;
+              console.info(TAG + '✅ 使用缓存的头像Base64，长度: ' + avatarBase64.length);
             } else {
-              console.error(TAG + '❌ 头像压缩失败，Base64为空');
+              // 文件已更新或缓存不存在，重新压缩
+              console.info(TAG + '头像文件已更新或缓存不存在，开始重新压缩...');
+              const startTime = Date.now();
+              
+              avatarBase64 = await ToolKits.compressAvatarToBase64(avatarPath);
+              
+              const compressTime = Date.now() - startTime;
+              console.info(TAG + `压缩耗时: ${compressTime}ms`);
+              
+              if (avatarBase64 && avatarBase64.length > 0) {
+                // 检查Base64长度
+                if (avatarBase64.length > 50000) {
+                  console.error(TAG + `❌ Base64长度(${avatarBase64.length})超过50000，放弃携带头像`);
+                  avatarBase64 = '';
+                } else {
+                  // 更新缓存
+                  ChatInputView.cachedAvatarBase64 = avatarBase64;
+                  ChatInputView.cachedAvatarMtime = currentMtime;
+                  console.info(TAG + '✅ 头像压缩成功并已缓存，Base64长度: ' + avatarBase64.length);
+                  
+                  if (avatarBase64.length > 15000) {
+                    console.warn(TAG + `⚠️ Base64长度(${avatarBase64.length})超过15000，但仍低于50000安全上限`);
+                  }
+                }
+              } else {
+                console.error(TAG + '❌ 头像压缩失败，Base64为空');
+              }
             }
           }
         }
@@ -138,6 +169,9 @@ export struct ChatInputView {
       };
       messageContent = JSON.stringify(messageData);
       console.info(TAG + '✅ 消息已封装为JSON格式');
+      console.info(TAG + `JSON总长度: ${messageContent.length} 字符`);
+      console.info(TAG + `消息内容长度: ${this.messageInput.length} 字符`);
+      console.info(TAG + `头像Base64长度: ${avatarBase64.length} 字符`);
     } else {
       messageContent = this.messageInput;
       console.info(TAG + 'ℹ️ 消息为纯文本格式（无头像）');
