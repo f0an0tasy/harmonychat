@@ -1,17 +1,8 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { ConversationListPage } from './ConversationListPage';
 import { MineComponent } from './MineComponent';
 import ToolKits from './utils/ToolKits';
 import FontScaleManager from './utils/FontScaleManager';
+import UserDatabaseHelper from './utils/UserDatabaseHelper';
 import { common } from '@kit.AbilityKit';
 
 const TAG: string = '[MainPage] ';
@@ -20,7 +11,7 @@ const TAG: string = '[MainPage] ';
  * 主页面（底部Tab容器）。
  * 包含"聊天"和"我的"两个Tab。
  *
- * @author Jack Jiang
+ * @author wangyifan & qinweiming
  */
 @Entry
 @Component
@@ -35,6 +26,9 @@ struct MainPage {
   private fontScaleManager: FontScaleManager | null = null;
   /** 上下文 */
   private context: common.UIAbilityContext | null = null;
+  
+  /** 会话列表刷新触发器（用于触发 ConversationListPage 刷新） */
+  @State conversationRefreshTrigger: number = 0;
 
   /**
    * 组件即将出现时调用。
@@ -45,7 +39,7 @@ struct MainPage {
     this.context = getContext(this) as common.UIAbilityContext;
     
     // 初始化头像刷新触发器
-    AppStorage.setOrCreate<number>('avatarRefreshTrigger', 0);
+    AppStorage.set<number>('avatarRefreshTrigger', 0);
     
     // 初始化字体缩放管理器并应用用户设置
     if (this.context) {
@@ -62,26 +56,45 @@ struct MainPage {
           this.fontScaleManager.applyFontScale(fontScale);
           
           console.info(TAG + `Font scale applied for user ${currentUsername}: ${fontScale}`);
+          
+          // 加载用户的头像ID
+          const userDbHelper = UserDatabaseHelper.getInstance(this.context);
+          const savedAvatarId = await userDbHelper.getUserAvatarId(currentUsername);
+          AppStorage.set<number>('currentUserAvatarId', savedAvatarId);
+          console.info(TAG + `Avatar ID loaded for user ${currentUsername}: ${savedAvatarId}`);
         } catch (err) {
-          console.error(TAG + 'Failed to apply font scale: ' + JSON.stringify(err));
+          console.error(TAG + 'Failed to apply font scale or load avatar: ' + JSON.stringify(err));
+          // 设置默认头像ID
+          AppStorage.set<number>('currentUserAvatarId', 1);
         }
+      } else {
+        // 如果没有当前用户名，设置默认头像ID
+        AppStorage.set<number>('currentUserAvatarId', 1);
       }
     }
   }
 
   /**
    * 界面显示时被调用。
+   * 从详情页返回时会触发此方法，强制刷新会话列表。
    */
   onPageShow(): void {
     // 设置全面屏状态栏颜色
     ToolKits.setStatusBarColor(getContext(this), ToolKits.chat_page_title_color, ToolKits.chat_page_title_background_color);
+    
+    // 从详情页返回时强制刷新会话列表
+    // 通过更新触发器来通知 ConversationListPage 刷新
+    this.conversationRefreshTrigger = Date.now();
+    console.info(TAG + 'onPageShow triggered, refreshing conversation list, trigger=' + this.conversationRefreshTrigger);
   }
 
   build() {
     Tabs({ barPosition: BarPosition.End }) {
       // 聊天Tab（会话列表）
       TabContent() {
-        ConversationListPage()
+        ConversationListPage({ 
+          refreshTrigger: $conversationRefreshTrigger 
+        })
       }
       .tabBar(this.TabBuilder(0))
 

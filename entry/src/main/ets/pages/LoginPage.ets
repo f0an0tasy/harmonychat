@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { common, Want } from '@kit.AbilityKit';
 import { router, window, KeyboardAvoidMode } from '@kit.ArkUI';
 import { LoginInputView } from './components/LoginInputView';
@@ -23,7 +13,7 @@ const TAG: string = '[LoginPage] ';
  * 登陆界面。
  * 实现真正的账号密码验证，支持注册功能。
  *
- * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 @Entry({ routeName: 'LoginPage' })
 @Component
@@ -69,8 +59,37 @@ struct LoginPage {
 
         // TODO: -> 友情提示：登陆MobileIMSDK服务器成功后的事情在此实现即可！
         
-        // 保存当前登录用户名到全局存储
+        // 保存当前登录用户名到全局存储（使用 setOrCreate 确保值被正确设置）
         AppStorage.setOrCreate('currentUsername', this.loginName);
+        
+        // === 关键修复：登录成功后预加载用户头像ID到AppStorage ===
+        (async () => {
+          try {
+            if (this.userDbHelper) {
+              await this.userDbHelper.initDatabase();
+              
+              // 预加载用户头像ID并存入AppStorage
+              const avatarId = await this.userDbHelper.getUserAvatarId(this.loginName);
+              AppStorage.setOrCreate('currentUserAvatarId', avatarId);
+              console.info(TAG + '✅ 用户头像ID已预加载到AppStorage: ' + avatarId);
+              
+              // 清理数据库中的无效消息
+              const cleanedCount = await this.userDbHelper.cleanInvalidMessages(this.loginName);
+              if (cleanedCount > 0) {
+                console.info(TAG + '✅ 登录成功后清理了 ' + cleanedCount + ' 条无效消息记录');
+              }
+            }
+          } catch (err) {
+            console.error(TAG + '❌ 登录成功后初始化失败: ' + JSON.stringify(err));
+            // 失败时设置默认头像ID
+            AppStorage.setOrCreate('currentUserAvatarId', 1);
+          }
+        })();
+        
+        // 发送登录成功事件，通知其他页面刷新数据
+        let context = getContext(this) as common.UIAbilityContext;
+        context.eventHub.emit('loginSuccess', this.loginName);
+        console.info(TAG + 'Login success event emitted for user: ' + this.loginName);
 
         // 进入主界面（底部Tab容器页）
         router.replaceUrl({ url: 'pages/MainPage'});

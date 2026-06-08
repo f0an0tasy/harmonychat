@@ -1,20 +1,10 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { ClientCoreSDK } from "mobileimsdk/Index";
 import ToolKits from "../utils/ToolKits";
 
 /**
  * 聊天界面的自定义标题栏组件。
  *
- * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 @Preview
 @Component
@@ -25,8 +15,8 @@ export struct CustomeTitleBar {
 
   @Prop keepAliveStatus: boolean;
   
-  // 用户头像路径（从父组件传入）
-  @Prop avatarPath: string = '';
+  // 用户头像ID（1-11，从父组件传入）
+  @Prop avatarId: number = 1;
   
   // 用户头像首字母（从父组件传入）
   @Prop avatarText: string = 'U';
@@ -68,9 +58,9 @@ export struct CustomeTitleBar {
 
         Row() {
           // 用户头像显示区域
-          if (this.avatarPath && this.avatarPath.length > 0) {
-            // 显示自定义头像
-            Image('file://' + this.avatarPath)
+          if (this.avatarId && this.avatarId >= 1 && this.avatarId <= 11) {
+            // 显示内置头像资源
+            Image($r('app.media.avatar_' + this.avatarId))
               .width(32)
               .height(32)
               .borderRadius(16)

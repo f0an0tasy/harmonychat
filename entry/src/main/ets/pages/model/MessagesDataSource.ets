@@ -1,17 +1,8 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import IMClientManager from "../../IMClientManager";
 import { BasicDataSource } from "../common/LazyDataSource";
 import Message from "./Message";
 import AvatarCacheManager from "../../pages/utils/AvatarCacheManager";
+import { ClientCoreSDK } from 'mobileimsdk/Index';
 
 /**
  * 聊天界面（ChatDetailPage.ets）中的List列表对应的数据源实现类（负责聊天消息数据的UI显示）。
@@ -21,7 +12,7 @@ import AvatarCacheManager from "../../pages/utils/AvatarCacheManager";
  *
  * 支持多好友消息分组存储，每个好友有独立的消息列表。
  *
- * @author JackJang
+ * @author wangyifan & qinweiming
  * @since 2.0
  */
 export default class MessagesDataSource extends BasicDataSource<Message> {
@@ -75,9 +66,19 @@ export default class MessagesDataSource extends BasicDataSource<Message> {
   static messageItemKey(m: Message) {
     // 优化点：给更新的消息对象加个最近更新时间戳，这应该是个更通用的key计算项，不然一旦变更内容多了，这个key的计算就不那么优雅了
     
-    // 加入头像版本因子，当头像更新时强制刷新列表
-    const avatarBase64 = AvatarCacheManager.getInstance().getAvatar(m.senderId);
-    const avatarHash = avatarBase64 ? avatarBase64.length.toString() : '0';
+    // 获取当前用户ID
+    const currentUserId = ClientCoreSDK.getInstance().currentLoginInfo?.loginUserId;
+    let avatarHash: string;
+    
+    // 如果消息是当前用户发出的，使用 AppStorage 中的 currentUserAvatarId
+    if (currentUserId && m.senderId === currentUserId) {
+      const currentAvatarId = AppStorage.get<number>('currentUserAvatarId') ?? 1;
+      avatarHash = currentAvatarId.toString();
+    } else {
+      // 否则使用缓存中的头像ID
+      const avatarBase64 = AvatarCacheManager.getInstance().getAvatar(m.senderId);
+      avatarHash = avatarBase64 ? avatarBase64.length.toString() : '0';
+    }
     
     const key = `${m.msgType}-${m.fingerPrintOfProtocal}-${m.sendStatus}-${avatarHash}`;
     

@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { ErrorCode, ClientCoreSDK, PKickoutInfo } from 'mobileimsdk/Index';
 import { ChatInputView } from './components/ChatInputView';
 import { MsgView_normal } from './components/msg_view/NormalMsgView';
@@ -21,6 +11,7 @@ import { router } from '@kit.ArkUI';
 import ToolKits from './utils/ToolKits';
 import { common } from '@kit.AbilityKit';
 import { MsgTimeView } from './components/msg_view/MsgTimeView';
+import UserDatabaseHelper from './utils/UserDatabaseHelper';
 
 // 定义事件数据接口
 interface MessageAddedEventData {
@@ -45,7 +36,7 @@ const TAG: string = '[ChatDetailPage] ';
  * 显示与指定好友的聊天消息列表。
  * 从会话列表点击进入，通过路由参数传递 friendUid。
  *
- * @author Jack Jiang
+ * @author wangyifan & qinweiming
  */
 @Entry
 @Component
@@ -55,11 +46,23 @@ struct ChatDetailPage {
 
   /** 当前聊天对象的好友UID（从路由参数获取） */
   private friendUid: string = '';
+  
+  /** 当前登录用户UID */
+  private currentUser: string = '';
 
   /** 连接状态 */
   @State connectStatus: boolean = ClientCoreSDK.getInstance().connectedToServer;
   /** 心跳状态 */
   @State keepAliveStatus: boolean = false;
+  
+  /** 是否正在加载更多消息 */
+  @State isLoadingMore: boolean = false;
+  /** 是否还有更多历史消息 */
+  @State hasMoreMessages: boolean = true;
+  /** 是否已从数据库加载过消息 */
+  private isInitializedFromDb: boolean = false;
+  /** 是否是首次进入页面（用于控制初始滚动） */
+  private isFirstEnter: boolean = true;
 
   /** 聊天消息列表数据源 */
   messagesDataSource: MessagesDataSource = new MessagesDataSource();
@@ -76,7 +79,7 @@ struct ChatDetailPage {
   /**
    * 组件即将出现时调用。
    */
-  aboutToAppear(): void {
+  async aboutToAppear(): Promise<void> {
     // 获取路由参数
     const params = router.getParams() as Record<string, Object>;
     if (params && params['friendUid']) {
@@ -84,18 +87,52 @@ struct ChatDetailPage {
       console.info(TAG + 'friendUid from params: ' + this.friendUid);
     }
 
+    // 获取当前登录用户
+    this.currentUser = ClientCoreSDK.getInstance().currentLoginInfo?.loginUserId ?? '';
+    
+    // 初始化数据库
+    const context = getContext(this) as common.UIAbilityContext;
+    const dbHelper = UserDatabaseHelper.getInstance(context);
+    await dbHelper.initDatabase();
+    
+    // 设置MessagesProvider的当前用户
+    IMClientManager.getInstance().getMessageProvider().setCurrentUser(this.currentUser, context);
+
     // 设置数据源的好友UID并初始化
     if (this.friendUid) {
       this.messagesDataSource.setFriendUid(this.friendUid);
       // 切换到该好友的消息
       IMClientManager.getInstance().getMessageProvider().switchToFriend(this.friendUid);
+      
+      // 从数据库加载历史消息
+      if (!this.isInitializedFromDb) {
+        const loaded = await IMClientManager.getInstance().getMessageProvider()
+          .initFromDatabase(this.friendUid, this.currentUser);
+        if (loaded) {
+          this.isInitializedFromDb = true;
+          // 更新是否有更多消息的状态
+          this.hasMoreMessages = IMClientManager.getInstance().getMessageProvider()
+            .hasMoreHistoryMessages(this.friendUid);
+          // 刷新数据源
+          this.messagesDataSource.notifyDataReload();
+          
+          // 滚动到最新消息（底部）
+          // 使用 setTimeout 确保 UI 渲染完成后再滚动
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 100);
+        }
+      }
     }
 
     // 添加事件监听
     this.addEvents();
 
-    // 添加一条系统消息
-    IMClientManager.getInstance().getMessageProvider().addSystemMessage('与 ' + this.friendUid + ' 的聊天');
+    // 添加一条系统消息（仅在首次打开时）
+    const messages = IMClientManager.getInstance().getMessageProvider().getMessagesOfFriend(this.friendUid);
+    if (messages.length === 0) {
+      IMClientManager.getInstance().getMessageProvider().addSystemMessage('与 ' + this.friendUid + ' 的聊天');
+    }
   }
 
   /**
@@ -120,6 +157,15 @@ struct ChatDetailPage {
 
     // 刷新消息列表
     this.messagesDataSource.notifyDataReload();
+    
+    // 首次进入页面时滚动到底部
+    if (this.isFirstEnter) {
+      this.isFirstEnter = false;
+      // 使用 setTimeout 确保 UI 渲染完成后再滚动
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 150);
+    }
   }
 
   /**
@@ -221,6 +267,42 @@ struct ChatDetailPage {
    */
   scrollToBottom(): void {
     this.scroller.scrollEdge(Edge.Bottom);
+  }
+  
+  /**
+   * 加载更多历史消息。
+   * 当滚动到顶部时调用。
+   */
+  async loadMoreMessages(): Promise<void> {
+    if (this.isLoadingMore || !this.hasMoreMessages) {
+      return;
+    }
+    
+    this.isLoadingMore = true;
+    console.info(TAG + 'Loading more messages...');
+    
+    try {
+      const olderMessages = await IMClientManager.getInstance().getMessageProvider()
+        .loadMoreMessages(this.friendUid, this.currentUser);
+      
+      if (olderMessages.length > 0) {
+        // 刷新数据源
+        this.messagesDataSource.notifyDataReload();
+        
+        // 保持滚动位置（可选：滚动到加载前的第一条消息位置）
+        // 这里简单处理，让用户看到新加载的消息
+      }
+      
+      // 更新是否有更多消息的状态
+      this.hasMoreMessages = IMClientManager.getInstance().getMessageProvider()
+        .hasMoreHistoryMessages(this.friendUid);
+      
+      console.info(TAG + 'Loaded ' + olderMessages.length + ' older messages, hasMore: ' + this.hasMoreMessages);
+    } catch (err) {
+      console.error(TAG + 'Failed to load more messages: ' + JSON.stringify(err));
+    } finally {
+      this.isLoadingMore = false;
+    }
   }
 
   /**
@@ -379,6 +461,12 @@ struct ChatDetailPage {
           let toBeSmall = (newHeight > 0 && newHeight < oldHeight);
           if (toBeSmall) {
             this.scrollToBottom();
+          }
+        })
+        .onScrollIndex((start: number, end: number) => {
+          // 当第一个可见项索引为0时，尝试加载更多消息
+          if (start === 0 && !this.isLoadingMore && this.hasMoreMessages) {
+            this.loadMoreMessages();
           }
         })
         .scrollBar(BarState.Off)

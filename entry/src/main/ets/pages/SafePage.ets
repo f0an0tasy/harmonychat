@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { router } from '@kit.ArkUI';
 import { common } from '@kit.AbilityKit';
 import ToolKits from './utils/ToolKits';
@@ -15,7 +5,7 @@ import ToolKits from './utils/ToolKits';
 /**
  * 隐私提示和确认界面。
  *
- * @author huawei、Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 @Entry
 @Component

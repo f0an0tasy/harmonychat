@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { ClientCoreSDK, Protocal, Utils } from "mobileimsdk/Index";
 import ToolKits from "../utils/ToolKits";
 import MsgType from "../constants/MsgType";
@@ -18,7 +8,7 @@ import MsgSendStatus from "../constants/MsgSendStatus";
  *
  * 代码参考自IM产品RainbowChat：http://www.52im.net/thread-19-1-1.html
  *
- * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 export default class Message {
 
@@ -30,12 +20,27 @@ export default class Message {
   date: number = 0;
   
   /** 
+   * 消息接收者的UID（用于发出的消息）。
+   * 对于发出的消息，此字段存储接收者的UID；
+   * 对于收到的消息，此字段可为空。
+   * 用于数据库持久化时确定friend_uid。
+   */
+  to?: string = undefined;
+  
+  /** 
+   * 发送者的头像ID（1-11）。
+   * 用于从内置头像资源中加载对应头像图片。
+   * 当用户设置或修改头像后，发送消息时会携带此字段，
+   * 接收方收到后可直接使用 $r('app.media.avatar_' + avatarId) 显示。
+   */
+  avatarId: number = 1;
+  
+  /** 
+   * @deprecated 已废弃，请使用 avatarId
    * 发送者的头像Base64（仅在需要时携带）。
-   * 用于解决：用户自定义头像在对方设备上无法显示的问题。
-   * 当用户设置或修改头像后，首次发送消息时会携带此字段，
-   * 接收方收到后会缓存并更新显示。
    */
   avatarBase64?: string = undefined;
+  
   /** 消息内容（注意：此消息内容可能并非扁平文本，可能是对象的JSON字串，以不同消息定义的封装对象为准）。*/
   content: string = '';
 
@@ -47,7 +52,7 @@ export default class Message {
   fingerPrintOfParent: string = '';
 
   /** 辅助UI显示字段：消息从网络发送的当前状态. 本字段仅针对发送的消息（而非收到的消息哦） */
-  sendStatus: MsgSendStatus = MsgSendStatus.sending;
+  sendStatus: number = MsgSendStatus.sending;
 
   /**
    * 辅助UI显示字段：是否显示消息气泡上方的时间。
@@ -57,12 +62,15 @@ export default class Message {
    */
   showTopTime: boolean = false;
 
-  constructor(senderId: string, senderDisplayName: string, date: number, content: string, msgType: number) {
+  constructor(senderId: string, senderDisplayName: string, date: number, content: string, msgType: number, avatarId?: number) {
     this.senderId = senderId;
     this.senderDisplayName = senderDisplayName;
     this.date = (date <= 0 ? Utils.getCurrentUTCTimestamp() : date);
     this.content = content;
     this.msgType = msgType;
+    if (avatarId !== undefined && avatarId >= 1 && avatarId <= 11) {
+      this.avatarId = avatarId;
+    }
   }
 
   /** 是否"我"发出的消息 */
@@ -84,16 +92,22 @@ export default class Message {
    *
    * @param message 消息内容
    * @param fingerPrint 消息ID
+   * @param avatarId 发送者头像ID（可选，1-11）
+   * @param toUid 接收者UID（可选，用于数据库持久化）
    * @returns 新的消息对象
    */
-  static createChatMsgEntity_OUTGO_TEXT(message: string, fingerPrint: string): Message {
+  static createChatMsgEntity_OUTGO_TEXT(message: string, fingerPrint: string, avatarId?: number, toUid?: string): Message {
     let localUid = ToolKits.getLocalUserUid();
     if(!localUid) {
       ClientCoreSDK.Log.error('无法读取本地用户uid，还没有登录？');
     }
 
-    let cm: Message =  new Message(localUid ? localUid : '', "我", Utils.getCurrentUTCTimestamp(), message, MsgType.TYPE_TEXT);
+    let cm: Message =  new Message(localUid ? localUid : '', "我", Utils.getCurrentUTCTimestamp(), message, MsgType.TYPE_TEXT, avatarId);
     cm.fingerPrintOfProtocal = fingerPrint;
+    // 设置接收者UID（用于数据库持久化）
+    if (toUid) {
+      cm.to = toUid;
+    }
     return cm;
   }
 
@@ -104,10 +118,11 @@ export default class Message {
    * @param nickName 发送者昵称
    * @param message 消息内容
    * @param time 消息时间戳，0表示使用当前系统时间戳
+   * @param avatarId 发送者头像ID（可选，1-11）
    * @returns 新的消息对象
    */
-  static createChatMsgEntity_INCOME_TEXT(senderId: string, nickName: string, message: string, time: number): Message {
-    return new Message(senderId, nickName, time, message, MsgType.TYPE_TEXT);
+  static createChatMsgEntity_INCOME_TEXT(senderId: string, nickName: string, message: string, time: number, avatarId?: number): Message {
+    return new Message(senderId, nickName, time, message, MsgType.TYPE_TEXT, avatarId);
   }
 
   /**

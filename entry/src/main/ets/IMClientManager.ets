@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { ClientCoreSDK, LogLevel, SenseMode, LogUtils, SocketEvent, PLoginInfoResponse, Logger, Protocal, PErrorResponse, ErrorCode, PKickoutInfo, AutoReLoginDaemon, KeepAliveDaemon, LocalDataReciever, LocalDataSender, LocalSocketProvider, QoS4ReciveDaemon, QoS4SendDaemon } from "mobileimsdk/Index";
 import { common } from "@kit.AbilityKit";
 import UIEvent from "./pages/constants/UIEvent";
@@ -16,6 +6,7 @@ import MessagesProvider from "./pages/model/MessagesProvider";
 import MsgSendStatus from "./pages/constants/MsgSendStatus";
 import AvatarCacheManager from "./pages/utils/AvatarCacheManager";
 import ConversationManager from "./pages/model/ConversationManager";
+import UserDatabaseHelper from "./pages/utils/UserDatabaseHelper";
 
 const TAG: string = '[IMClientManager] ';
 
@@ -25,8 +16,8 @@ const TAG: string = '[IMClientManager] ';
 interface MessageData {
   /** 消息内容 */
   content: string;
-  /** 发送者头像Base64（可选） */
-  avatarBase64?: string;
+  /** 发送者头像ID（1-11，可选） */
+  avatarId?: number;
 }
 
 // MobileIMSDK服务端的WebSocket服务地址（如服务端已开启SSL，此处请使用wss）
@@ -36,7 +27,7 @@ const IM_SERVER_URL: string = 'ws://rbcore.52im.net:3000/websocket';// TODO: 默
 /**
  * MobileIMSDK的管理类。
  *
- * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 export default class IMClientManager {
 
@@ -187,9 +178,18 @@ export default class IMClientManager {
 
       this.getLog().info('[应用层]  >> 收到[聊天消息]📩：' + JSON.stringify(protocal));
 
+      // === 关键修复：验证发送者UID的有效性 ===
+      if (!protocal.from || !UserDatabaseHelper.isValidFriendUid(protocal.from)) {
+        this.getLog().error('[应用层]  ❌ 收到无效的发送者UID，消息将被丢弃: "' + protocal.from + '"');
+        console.error(TAG + '❌ protocal.from验证失败: ' + protocal.from);
+        return;
+      }
+      
+      console.info(TAG + '✅ protocal.from验证通过: ' + protocal.from);
+
       // === 解析消息内容 ===
       let messageContent: string = protocal.dataContent;
-      let avatarBase64: string | undefined = undefined;
+      let avatarId: number | undefined = undefined;
       
       console.info(TAG + '=== 开始处理接收到的消息 ===');
       console.info(TAG + '发送者UID: ' + protocal.from);
@@ -209,48 +209,59 @@ export default class IMClientManager {
         console.info(TAG + '✅ JSON解析成功');
         console.info(TAG + '解析后对象keys: ' + Object.keys(messageData).join(', '));
         console.info(TAG + 'content字段存在: ' + (messageData.content !== undefined));
-        console.info(TAG + 'avatarBase64字段存在: ' + (messageData.avatarBase64 !== undefined));
+        console.info(TAG + 'avatarId字段存在: ' + (messageData.avatarId !== undefined));
         
         // 如果解析成功且包含 content 字段，说明是 JSON 格式的消息
         if (messageData && messageData.content) {
           messageContent = messageData.content;
-          avatarBase64 = messageData.avatarBase64;
+          avatarId = messageData.avatarId;
           
           console.info(TAG + '消息内容: ' + messageContent);
           console.info(TAG + '消息内容长度: ' + messageContent.length);
           
-          // 如果消息中携带了头像，更新缓存
-          if (avatarBase64 && avatarBase64.length > 0) {
+          // 如果消息中携带了头像ID，更新缓存
+          if (avatarId !== undefined && avatarId >= 1 && avatarId <= 11) {
             const senderUid = protocal.from;
             console.info(TAG + '✅ 检测到头像数据');
             console.info(TAG + '发送者UID: ' + senderUid);
-            console.info(TAG + '头像Base64长度: ' + avatarBase64.length);
-            console.info(TAG + '头像Base64前100字符: ' + avatarBase64.substring(0, 100));
+            console.info(TAG + '头像ID: ' + avatarId);
             
-            // 接收端长度校验：如果超过60000则丢弃（视为异常数据）
-            if (avatarBase64.length > 60000) {
-              console.error(TAG + `❌ 收到的头像Base64长度(${avatarBase64.length})超过60000，视为异常数据，丢弃该头像`);
-              this.getLog().error('[应用层]  >> 收到异常头像数据，长度超过60000，已丢弃，发送者UID: ' + senderUid);
+            // 验证头像ID范围
+            if (avatarId < 1 || avatarId > 11) {
+              console.error(TAG + `❌ 收到的头像ID(${avatarId})超出有效范围(1-11)，丢弃该头像ID`);
+              this.getLog().error('[应用层]  >> 收到无效头像ID，超出范围，已丢弃，发送者UID: ' + senderUid);
             } else {
-              // 验证Base64长度是否合理
-              if (avatarBase64.length > 50000) {
-                console.warn(TAG + `⚠️ 收到的头像Base64长度(${avatarBase64.length})超过50000，可能不完整`);
-              } else {
-                console.info(TAG + `✅ 头像Base64长度(${avatarBase64.length})在合理范围内`);
-              }
+              console.info(TAG + `✅ 头像ID(${avatarId})在有效范围内`);
               
-              // 更新头像缓存
+              // 更新头像缓存（将avatarId转换为字符串存储）
               console.info(TAG + '开始更新头像缓存...');
-              const updateResult = AvatarCacheManager.getInstance().updateAvatar(senderUid, avatarBase64);
+              const updateResult = AvatarCacheManager.getInstance().updateAvatar(senderUid, avatarId.toString());
               console.info(TAG + '头像缓存更新结果: ' + (updateResult ? '成功' : '无变化'));
-              this.getLog().info('[应用层]  >> 收到头像数据，已更新缓存，发送者UID: ' + senderUid + '，Base64长度: ' + avatarBase64.length);
+              this.getLog().info('[应用层]  >> 收到头像数据，已更新缓存，发送者UID: ' + senderUid + '，头像ID: ' + avatarId);
+              
+              // 更新数据库中的头像ID
+              try {
+                const context = AppStorage.get('uiAbilityContext') as common.UIAbilityContext;
+                if (context) {
+                  const dbHelper = UserDatabaseHelper.getInstance(context);
+                  dbHelper.updateUserAvatarId(senderUid, avatarId).then((success: boolean) => {
+                    console.info(TAG + `数据库头像更新结果: ${success ? '成功' : '失败或无变化'}`);
+                  }).catch((err: Error) => {
+                    console.error(TAG + `数据库头像更新失败: ${err.message}`);
+                  });
+                } else {
+                  console.warn(TAG + '无法获取UIAbilityContext，跳过数据库更新');
+                }
+              } catch (err) {
+                console.error(TAG + '更新数据库头像ID异常: ' + JSON.stringify(err));
+              }
               
               // 打印缓存状态
               const cachedAvatar = AvatarCacheManager.getInstance().getAvatar(senderUid);
-              console.info(TAG + '验证缓存：' + (cachedAvatar ? '缓存中存在该用户头像，长度=' + cachedAvatar.length : '缓存中不存在'));
+              console.info(TAG + '验证缓存：' + (cachedAvatar ? '缓存中存在该用户头像，ID=' + cachedAvatar : '缓存中不存在'));
             }
           } else {
-            console.info(TAG + 'ℹ️ 消息中无头像数据或为空');
+            console.info(TAG + 'ℹ️ 消息中无头像ID或无效');
           }
         } else {
           console.warn(TAG + '⚠️ JSON解析成功但缺少content字段');
@@ -262,9 +273,16 @@ export default class IMClientManager {
         // this.getLog().info('[应用层]  >> 消息不是JSON格式，作为普通文本处理');
       }
       
-      // 创建消息对象
-      let m = Message.createChatMsgEntity_INCOME_TEXT(protocal.from, 'UID: '+protocal.from, messageContent, 0);
+      // 创建消息对象（如果消息中包含头像ID，则传递给构造函数）
+      let m = Message.createChatMsgEntity_INCOME_TEXT(protocal.from, 'UID: '+protocal.from, messageContent, 0, avatarId);
       m.fingerPrintOfProtocal = protocal.fp;
+      
+      // 记录头像ID设置情况
+      if (avatarId !== undefined && avatarId >= 1 && avatarId <= 11) {
+        console.info(TAG + '✅ 设置消息头像ID: ' + avatarId);
+      } else {
+        console.info(TAG + 'ℹ️ 使用默认头像ID: 1');
+      }
       
       // === 按好友分组存储消息 ===
       const senderUid = protocal.from;
@@ -272,13 +290,9 @@ export default class IMClientManager {
       // 将收到的消息放入对应好友的消息列表
       this.messageProvider.putMessageToFriend(senderUid, m);
       
-      // 更新会话列表摘要（触发会话列表UI刷新）
-      const conversationManager = ConversationManager.getInstance();
-      conversationManager.updateConversationSummary(
-        senderUid,
-        messageContent,
-        Date.now()
-      );
+      // === 关键修复：使用消息对象的实际时间戳，而不是 Date.now() ===
+      // updateConversationSummary 已在 putMessageToFriend 中调用，这里不需要重复调用
+      console.info(TAG + '✅ 消息已处理完成: senderUid=' + senderUid + ', time=' + m.date);
       
       console.info(TAG + '=== 消息处理完成 ===');
     });

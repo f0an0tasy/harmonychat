@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import Message from "../../model/Message";
 import MsgType from "../../constants/MsgType";
 import { MsgContentView_text } from "../msg_content_view/MsgContentView_text";
@@ -17,24 +7,27 @@ import UserDatabaseHelper from "../../utils/UserDatabaseHelper";
 import AvatarCacheManager from "../../utils/AvatarCacheManager";
 import IMClientManager from "../../../IMClientManager";
 import { common } from '@kit.AbilityKit';
+import { AppStorageV2 } from '@kit.ArkUI';
 
 const TAG: string = '[NormalMsgView] ';
 
 /**
  * 普通聊天消息UI组件。
  *
- * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 @Component
 export struct MsgView_normal {
   message?: Message;
   
-  /** 头像路径（自定义头像） */
-  @State avatarPath: string = '';
-  /** 头像Base64（从缓存或消息中获取） */
-  @State avatarBase64: string = '';
+  /** 头像ID（1-11，从消息或缓存中获取） */
+  @State avatarId: number = 1;
+  /** 当前用户头像ID（从AppStorage同步） */
+  @StorageLink('currentUserAvatarId') @Watch('onCurrentUserAvatarIdChanged') currentUserAvatarId: number = 1;
   /** 发送者首字母（用于默认头像） */
   @State avatarText: string = 'U';
+  /** 头像加载是否失败 */
+  @State avatarLoadFailed: boolean = false;
   /** 数据库助手 */
   private userDbHelper: UserDatabaseHelper | null = null;
   /** 上下文 */
@@ -140,37 +133,63 @@ export struct MsgView_normal {
     
     console.info(TAG + '发送者ID: ' + this.message.senderId);
     
-    // 优先从缓存中加载头像 Base64
-    const cachedBase64 = AvatarCacheManager.getInstance().getAvatar(this.message.senderId);
-    console.info(TAG + '从缓存获取头像: ' + (cachedBase64 ? '成功，长度=' + cachedBase64.length : '无'));
-    
-    if (cachedBase64 && cachedBase64.length > 0) {
-      this.avatarBase64 = cachedBase64;
-      this.avatarPath = ''; // 清空本地路径，使用 Base64
-      console.info(TAG + '✅ 头像已从缓存加载');
-      console.info(TAG + 'Base64前100字符: ' + cachedBase64.substring(0, 100));
+    // 如果是当前用户自己发出的消息，使用 AppStorage 中的 currentUserAvatarId
+    if (this.message.isOutgoing()) {
+      console.info(TAG + '✅ 当前用户自己发出的消息，使用 currentUserAvatarId: ' + this.currentUserAvatarId);
+      this.avatarId = this.currentUserAvatarId;
       return;
+    }
+    
+    // 首先检查消息本身是否包含头像ID
+    if (this.message.avatarId && this.message.avatarId >= 1 && this.message.avatarId <= 11) {
+      this.avatarId = this.message.avatarId;
+      console.info(TAG + '✅ 从消息中获取头像ID: ' + this.message.avatarId);
+      return;
+    }
+    
+    console.info(TAG + '消息中无头像ID或无效，尝试从缓存获取...');
+    
+    // 从缓存中加载头像ID
+    const cachedAvatarIdStr = AvatarCacheManager.getInstance().getAvatar(this.message.senderId);
+    console.info(TAG + '从缓存获取头像: ' + (cachedAvatarIdStr ? '成功，avatarId=' + cachedAvatarIdStr : '无'));
+    
+    if (cachedAvatarIdStr) {
+      const cachedAvatarId = parseInt(cachedAvatarIdStr, 10);
+      if (!isNaN(cachedAvatarId) && cachedAvatarId >= 1 && cachedAvatarId <= 11) {
+        this.avatarId = cachedAvatarId;
+        console.info(TAG + '✅ 头像已从缓存加载，avatarId: ' + cachedAvatarId);
+        return;
+      } else {
+        console.warn(TAG + '⚠️ 缓存中的头像ID无效: ' + cachedAvatarIdStr);
+      }
     }
     
     // 如果缓存中没有，尝试从本地数据库加载（仅对本地用户有效）
     console.info(TAG + '缓存中无头像，尝试从本地数据库加载...');
     try {
-      const savedAvatarPath = await this.userDbHelper.getUserAvatar(this.message.senderId);
-      console.info(TAG + '本地数据库头像路径: ' + (savedAvatarPath || '无'));
+      const savedAvatarId = await this.userDbHelper.getUserAvatarId(this.message.senderId);
+      console.info(TAG + '本地数据库头像ID: ' + savedAvatarId);
       
-      if (savedAvatarPath && ToolKits.isFileExists(savedAvatarPath)) {
-        this.avatarPath = savedAvatarPath;
-        this.avatarBase64 = ''; // 清空 Base64，使用本地路径
-        console.info(TAG + '✅ 头像已从本地数据库加载: ' + savedAvatarPath);
+      if (savedAvatarId >= 1 && savedAvatarId <= 11) {
+        this.avatarId = savedAvatarId;
+        console.info(TAG + '✅ 头像已从本地数据库加载，avatarId: ' + savedAvatarId);
       } else {
-        this.avatarPath = '';
-        this.avatarBase64 = '';
-        console.info(TAG + 'ℹ️ 本地无头像，将显示默认头像');
+        this.avatarId = 1; // 默认头像ID
+        console.info(TAG + 'ℹ️ 本地无有效头像ID，使用默认头像ID: 1');
       }
     } catch (err) {
       console.error(TAG + '❌ 加载头像失败: ' + JSON.stringify(err));
-      this.avatarPath = '';
-      this.avatarBase64 = '';
+      this.avatarId = 1; // 默认头像ID
+    }
+  }
+  
+  /**
+   * 当 currentUserAvatarId 变化时触发。
+   */
+  onCurrentUserAvatarIdChanged(): void {
+    if (this.message && this.message.isOutgoing()) {
+      console.info(TAG + 'currentUserAvatarId 变化，更新头像ID: ' + this.currentUserAvatarId);
+      this.avatarId = this.currentUserAvatarId;
     }
   }
   
@@ -187,14 +206,24 @@ export struct MsgView_normal {
     
     console.info(TAG + '发送者ID: ' + this.message.senderId);
     
-    const cachedBase64 = AvatarCacheManager.getInstance().getAvatar(this.message.senderId);
-    console.info(TAG + '从缓存获取头像: ' + (cachedBase64 ? '成功，长度=' + cachedBase64.length : '无'));
+    // 如果是当前用户自己发出的消息，使用 AppStorage 中的 currentUserAvatarId
+    if (this.message.isOutgoing()) {
+      console.info(TAG + '✅ 当前用户自己发出的消息，使用 currentUserAvatarId: ' + this.currentUserAvatarId);
+      this.avatarId = this.currentUserAvatarId;
+      return;
+    }
     
-    if (cachedBase64 && cachedBase64.length > 0) {
-      this.avatarBase64 = cachedBase64;
-      this.avatarPath = '';
-      console.info(TAG + '✅ 头像已从缓存重新加载');
-      console.info(TAG + 'Base64前100字符: ' + cachedBase64.substring(0, 100));
+    const cachedAvatarIdStr = AvatarCacheManager.getInstance().getAvatar(this.message.senderId);
+    console.info(TAG + '从缓存获取头像: ' + (cachedAvatarIdStr ? '成功，avatarId=' + cachedAvatarIdStr : '无'));
+    
+    if (cachedAvatarIdStr) {
+      const cachedAvatarId = parseInt(cachedAvatarIdStr, 10);
+      if (!isNaN(cachedAvatarId) && cachedAvatarId >= 1 && cachedAvatarId <= 11) {
+        this.avatarId = cachedAvatarId;
+        console.info(TAG + '✅ 头像已从缓存重新加载，avatarId: ' + cachedAvatarId);
+      } else {
+        console.warn(TAG + '⚠️ 缓存中的头像ID无效: ' + cachedAvatarIdStr);
+      }
     } else {
       console.warn(TAG + '⚠️ 缓存中仍无头像');
     }
@@ -253,44 +282,33 @@ export struct MsgView_normal {
   @Builder
   AvatarImage(isOutgoing: boolean) {
     Stack() {
-      // 优先显示 Base64 头像（从消息或缓存中获取）
-      if (this.avatarBase64 && this.avatarBase64.length > 0) {
-        // 显示 Base64 头像
-        Image(ToolKits.base64ToDataURL(this.avatarBase64))
-          .width(40)
-          .height(40)
-          .borderRadius(20)
-          .objectFit(ImageFit.Cover)
-          .onComplete(() => {
-            console.info(TAG + '✅ Base64头像加载成功');
-          })
-          .onError(() => {
-            console.error(TAG + '❌ Base64头像加载失败');
-          })
-      } else if (this.avatarPath && this.avatarPath.length > 0) {
-        // 显示本地路径头像
-        Image('file://' + this.avatarPath)
-          .width(40)
-          .height(40)
-          .borderRadius(20)
-          .objectFit(ImageFit.Cover)
-          .onComplete(() => {
-            console.info(TAG + '✅ 本地头像加载成功');
-          })
-          .onError(() => {
-            console.error(TAG + '❌ 本地头像加载失败');
-          })
+      if (this.avatarLoadFailed) {
+        // 如果内置资源加载失败，显示默认头像（首字母）
+        Column() {
+          Text(this.avatarText)
+            .fontSize(18)
+            .fontColor(Color.White)
+            .fontWeight(FontWeight.Medium)
+        }
+        .width(40)
+        .height(40)
+        .borderRadius(20)
+        .backgroundColor(isOutgoing ? '#0A59F7' : '#07C160')
+        .justifyContent(FlexAlign.Center)
       } else {
-        // 显示默认头像（首字母）
-        Circle()
+        // 显示内置头像资源
+        Image($r('app.media.avatar_' + this.avatarId))
           .width(40)
           .height(40)
-          .fill(isOutgoing ? '#0A59F7' : '#07C160')
-        
-        Text(this.avatarText)
-          .fontSize(18)
-          .fontColor(Color.White)
-          .fontWeight(FontWeight.Medium)
+          .borderRadius(20)
+          .objectFit(ImageFit.Cover)
+          .onComplete(() => {
+            console.info(TAG + '✅ 内置头像资源加载成功，avatarId: ' + this.avatarId);
+          })
+          .onError(() => {
+            console.error(TAG + '❌ 内置头像资源加载失败，avatarId: ' + this.avatarId);
+            this.avatarLoadFailed = true;
+          })
       }
     }
     .width(40)

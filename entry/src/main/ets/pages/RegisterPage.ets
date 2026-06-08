@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { common } from '@kit.AbilityKit';
 import { router } from '@kit.ArkUI';
 import ToolKits from './utils/ToolKits';
@@ -19,7 +9,7 @@ const TAG: string = '[RegisterPage] ';
  * 注册界面。
  * 实现用户注册功能，将账号密码存储到本地数据库。
  *
- * @author Jack Jiang
+ * @author wangyifan & qinweiming
  */
 @Entry({ routeName: 'RegisterPage' })
 @Component

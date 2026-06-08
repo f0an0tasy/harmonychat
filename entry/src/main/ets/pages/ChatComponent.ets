@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import {ErrorCode, ClientCoreSDK, PKickoutInfo} from 'mobileimsdk/Index'
 import { ChatInputView } from './components/ChatInputView';
 import { CustomeTitleBar } from './components/ChatTitleBar'
@@ -29,7 +19,7 @@ const TAG: string = '[ChatComponent] '
 /**
  * 聊天界面组件（用于嵌入到Tab容器中）。
  *
- * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 @Component
 export struct ChatComponent {
@@ -45,8 +35,8 @@ export struct ChatComponent {
   @StorageProp('currentUsername') currentUsername: string = '';
   /** 用户头像首字母 */
   @State avatarText: string = 'U';
-  /** 用户头像路径 */
-  @State avatarPath: string = '';
+  /** 用户头像ID（1-11） */
+  @State avatarId: number = 1;
   /** 头像刷新触发器（用于监听Tab切换事件） */
   @StorageLink('avatarRefreshTrigger') @Watch('onAvatarRefreshTriggered') avatarRefreshTrigger: number = 0;
 
@@ -120,17 +110,17 @@ export struct ChatComponent {
     }
     
     try {
-      const savedAvatarPath = await this.userDbHelper.getUserAvatar(this.currentUsername);
-      if (savedAvatarPath && ToolKits.isFileExists(savedAvatarPath)) {
-        this.avatarPath = savedAvatarPath;
-        console.info(TAG + 'Avatar loaded: ' + savedAvatarPath);
+      const savedAvatarId = await this.userDbHelper.getUserAvatarId(this.currentUsername);
+      if (savedAvatarId && savedAvatarId >= 1 && savedAvatarId <= 11) {
+        this.avatarId = savedAvatarId;
+        console.info(TAG + 'Avatar loaded, avatarId: ' + savedAvatarId);
       } else {
-        this.avatarPath = '';
-        console.info(TAG + 'No custom avatar found, using default');
+        this.avatarId = 1; // 默认头像ID
+        console.info(TAG + 'No custom avatar found, using default avatarId: 1');
       }
     } catch (err) {
       console.error(TAG + 'Failed to load avatar: ' + JSON.stringify(err));
-      this.avatarPath = '';
+      this.avatarId = 1; // 默认头像ID
     }
   }
 
@@ -278,7 +268,7 @@ export struct ChatComponent {
       CustomeTitleBar({ 
         connectStatus: this.connectStatus, 
         keepAliveStatus: this.keepAliveStatus,
-        avatarPath: this.avatarPath,
+        avatarId: this.avatarId,
         avatarText: this.avatarText
       })
 

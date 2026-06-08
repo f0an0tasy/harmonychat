@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { common } from '@kit.AbilityKit';
 import { ClientCoreSDK } from 'mobileimsdk/Index';
 
@@ -15,20 +5,20 @@ const TAG: string = '[AvatarCacheManager] ';
 
 /**
  * 头像缓存管理器。
- * 用于缓存从消息中接收到的其他用户的头像Base64数据。
+ * 用于缓存从消息中接收到的其他用户的头像ID。
  * 
  * 功能说明：
- * 1. 当收到消息中携带 avatarBase64 时，更新缓存
- * 2. 提供 getAvatar() 方法供 UI 组件获取头像
+ * 1. 当收到消息中携带 avatarId 时，更新缓存
+ * 2. 提供 getAvatar() 方法供 UI 组件获取头像ID
  * 3. 通过 EventHub 发送头像更新事件，通知 UI 刷新
  * 
- * @author Jack Jiang
+ * @author wangyifan & qinweiming
  */
 export default class AvatarCacheManager {
   /** 本类的全局单例 */
   private static instance: AvatarCacheManager;
   
-  /** 头像缓存：Map<uid, base64> */
+  /** 头像缓存：Map<uid, avatarId> */
   private cache: Map<string, string> = new Map();
   
   /** EventHub 引用（用于发送头像更新事件） */
@@ -61,50 +51,46 @@ export default class AvatarCacheManager {
   
   /**
    * 更新用户头像缓存。
-   * 当收到消息中携带 avatarBase64 时调用。
+   * 当收到消息中携带 avatarId 时调用。
    * 
    * @param uid 用户UID
-   * @param base64 头像Base64字符串
+   * @param avatarId 头像ID字符串（1-11）
    * @returns boolean true表示缓存已更新，false表示无变化
    */
-  updateAvatar(uid: string, base64: string): boolean {
+  updateAvatar(uid: string, avatarId: string): boolean {
     console.info(TAG + `=== updateAvatar 被调用 ===`);
     console.info(TAG + `uid: ${uid}`);
-    console.info(TAG + `base64长度: ${base64 ? base64.length : 0}`);
-    console.info(TAG + `base64前100字符: ${base64 ? base64.substring(0, 100) : '空'}`);
+    console.info(TAG + `avatarId: ${avatarId}`);
     
-    if (!uid || !base64) {
-      console.error(TAG + `❌ 参数无效：uid=${uid}, base64=${base64 ? '有值' : '空'}`);
+    if (!uid || !avatarId) {
+      console.error(TAG + `❌ 参数无效：uid=${uid}, avatarId=${avatarId ? '有值' : '空'}`);
       return false;
     }
     
-    // 验证Base64长度
-    if (base64.length === 0) {
-      console.error(TAG + `❌ Base64长度为0`);
+    // 验证avatarId格式
+    const avatarIdNum = parseInt(avatarId, 10);
+    if (isNaN(avatarIdNum) || avatarIdNum < 1 || avatarIdNum > 11) {
+      console.error(TAG + `❌ avatarId无效：${avatarId}，应为1-11的数字`);
       return false;
     }
     
-    if (base64.length > 50000) {
-      console.warn(TAG + `⚠️ Base64长度(${base64.length})超过50000，可能不完整`);
-    }
-    
-    const cachedBase64 = this.cache.get(uid);
-    console.info(TAG + `缓存中是否已有该用户头像: ${cachedBase64 ? '是' : '否'}`);
+    const cachedAvatarId = this.cache.get(uid);
+    console.info(TAG + `缓存中是否已有该用户头像: ${cachedAvatarId ? '是' : '否'}`);
     
     // 如果缓存中的值与新值相同，则无需更新
-    if (cachedBase64 === base64) {
+    if (cachedAvatarId === avatarId) {
       console.info(TAG + `✅ 头像缓存无变化，uid: ${uid}`);
       return false;
     }
     
     // 更新缓存
-    this.cache.set(uid, base64);
-    console.info(TAG + `✅ 头像缓存已更新，uid: ${uid}, base64长度: ${base64.length}`);
+    this.cache.set(uid, avatarId);
+    console.info(TAG + `✅ 头像缓存已更新，uid: ${uid}, avatarId: ${avatarId}`);
     
     // 打印当前缓存内容
     console.info(TAG + `当前缓存大小: ${this.cache.size}`);
     this.cache.forEach((value: string, key: string) => {
-      console.info(TAG + `缓存项 - uid: ${key}, base64长度: ${value.length}`);
+      console.info(TAG + `缓存项 - uid: ${key}, avatarId: ${value}`);
     });
     
     // 发送头像更新事件，通知 UI 刷新
@@ -124,22 +110,22 @@ export default class AvatarCacheManager {
   }
   
   /**
-   * 获取用户头像Base64。
+   * 获取用户头像ID。
    * 
    * @param uid 用户UID
-   * @returns string | undefined 返回Base64字符串，undefined表示无缓存
+   * @returns string | undefined 返回头像ID字符串（1-11），undefined表示无缓存
    */
   getAvatar(uid: string): string | undefined {
-    const base64 = this.cache.get(uid);
+    const avatarId = this.cache.get(uid);
     
     // 打印获取日志（仅在调试时启用）
-    // if (base64) {
-    //   console.info(TAG + `getAvatar: uid=${uid}, 找到缓存，长度=${base64.length}`);
+    // if (avatarId) {
+    //   console.info(TAG + `getAvatar: uid=${uid}, 找到缓存，avatarId=${avatarId}`);
     // } else {
     //   console.info(TAG + `getAvatar: uid=${uid}, 未找到缓存`);
     // }
     
-    return base64;
+    return avatarId;
   }
   
   /**
@@ -177,57 +163,57 @@ export default class AvatarCacheManager {
  * 用于管理发送消息时的头像携带逻辑。
  * 
  * 功能说明：
- * 1. 维护上次发送的头像Base64，避免每次消息都携带
+ * 1. 维护上次发送的头像ID，避免每次消息都携带
  * 2. 仅在头像变化时才携带，减少网络开销
  * 3. 提供重置方法，在用户修改头像后调用
  * 
- * @author Jack Jiang
+ * @author wangyifan & qinweiming
  */
 export class AvatarSendManager {
-  /** 上次发送的头像Base64 */
-  private static lastSentAvatarBase64: string = '';
+  /** 上次发送的头像ID */
+  private static lastSentAvatarId: number = 0;
   
   /**
-   * 获取上次发送的头像Base64。
+   * 获取上次发送的头像ID。
    * 
-   * @returns string 上次发送的头像Base64
+   * @returns number 上次发送的头像ID（0表示未发送过）
    */
-  static getLastSentAvatarBase64(): string {
-    return AvatarSendManager.lastSentAvatarBase64;
+  static getLastSentAvatarId(): number {
+    return AvatarSendManager.lastSentAvatarId;
   }
   
   /**
-   * 更新上次发送的头像Base64。
+   * 更新上次发送的头像ID。
    * 
-   * @param base64 新的头像Base64
+   * @param avatarId 新的头像ID
    */
-  static updateLastSentAvatarBase64(base64: string): void {
-    AvatarSendManager.lastSentAvatarBase64 = base64;
-    console.info(TAG + `Last sent avatar updated, length: ${base64.length}`);
+  static updateLastSentAvatarId(avatarId: number): void {
+    AvatarSendManager.lastSentAvatarId = avatarId;
+    console.info(TAG + `Last sent avatar updated, avatarId: ${avatarId}`);
   }
   
   /**
-   * 重置上次发送的头像Base64。
+   * 重置上次发送的头像ID。
    * 在用户修改头像后调用，确保下次发送消息时携带新头像。
    */
   static resetLastSentAvatarBase64(): void {
-    AvatarSendManager.lastSentAvatarBase64 = '';
+    AvatarSendManager.lastSentAvatarId = 0;
     console.info(TAG + 'Last sent avatar reset');
   }
   
   /**
    * 检查是否需要携带头像。
    * 
-   * @param currentBase64 当前的头像Base64
+   * @param currentAvatarId 当前的头像ID
    * @returns boolean true表示需要携带
    */
-  static shouldSendAvatar(currentBase64: string): boolean {
-    // 如果当前头像为空，不需要携带
-    if (!currentBase64 || currentBase64.length === 0) {
+  static shouldSendAvatar(currentAvatarId: number): boolean {
+    // 如果当前头像ID无效，不需要携带
+    if (currentAvatarId < 1 || currentAvatarId > 11) {
       return false;
     }
     
     // 如果与上次发送的头像不同，需要携带
-    return AvatarSendManager.lastSentAvatarBase64 !== currentBase64;
+    return AvatarSendManager.lastSentAvatarId !== currentAvatarId;
   }
 }

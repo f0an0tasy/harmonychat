@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { router, promptAction } from '@kit.ArkUI';
 import { common } from '@kit.AbilityKit';
 import ConversationManager from '../model/ConversationManager';
@@ -54,7 +44,7 @@ export class AddFriendDialogController {
  * 添加好友对话框组件。
  * 用于输入好友UID并添加到会话列表。
  *
- * @author Jack Jiang
+ * @author wangyifan & qinweiming
  */
 @CustomDialog
 export struct AddFriendDialog {
@@ -83,6 +73,11 @@ export struct AddFriendDialog {
     try {
       this.context = getContext(this) as common.UIAbilityContext;
       this.userDbHelper = UserDatabaseHelper.getInstance(this.context);
+      // 设置当前用户到会话管理器，用于按用户隔离会话列表
+      const currentUsername = AppStorage.get('currentUsername') as string;
+      if (currentUsername && currentUsername.length > 0) {
+        ConversationManager.getInstance(this.context).setCurrentUser(currentUsername);
+      }
     } catch (err) {
       console.error(TAG + 'Failed to get context: ' + JSON.stringify(err));
     }

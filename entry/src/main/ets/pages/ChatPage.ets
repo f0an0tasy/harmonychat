@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import {ErrorCode, ClientCoreSDK, PKickoutInfo} from 'mobileimsdk/Index'
 import { ChatInputView } from './components/ChatInputView';
 import { CustomeTitleBar } from './components/ChatTitleBar'
@@ -22,13 +12,14 @@ import {router } from '@kit.ArkUI';
 import ToolKits from './utils/ToolKits';
 import { common } from '@kit.AbilityKit';
 import { MsgTimeView } from './components/msg_view/MsgTimeView';
+import UserDatabaseHelper from './utils/UserDatabaseHelper';
 
 const TAG: string = '[ChatPage] '
 
 /**
  * 主界面（聊天单页）。
  *
- * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 @Entry
 @Component
@@ -40,9 +31,18 @@ struct ChatPage {
   @State connectStatus: boolean = ClientCoreSDK.getInstance().connectedToServer;
   /** 心跳状态：true表示刚刚已发送心跳包，本心跳状态仅仅是为了在ui界面上实现心跳呼吸灯效果 */
   @State keepAliveStatus: boolean = false;
+  /** 用户头像ID（1-11） */
+  @State avatarId: number = 1;
+  /** 当前登录用户名 */
+  @StorageProp('currentUsername') currentUsername: string = '';
+  /** 用户头像首字母 */
+  @State avatarText: string = 'U';
 
   /** 聊天消息列表对应的数据源对象（本对象与MessageProvider配合，用于实现UI界面与数据组的解偶）*/
   messagesDataSource: MessagesDataSource = new MessagesDataSource();
+  
+  /** 数据库助手 */
+  private userDbHelper: UserDatabaseHelper | null = null;
 
   /** 事件回调：增加了聊天消息 */
   meessageAddedEventCallback?: Function;
@@ -63,10 +63,44 @@ struct ChatPage {
    * 生命周期中只被调用一次，类似于iOS中的viewDidLoad、Android中的onCreate.
    */
   aboutToAppear() {
+    // 初始化数据库助手
+    this.userDbHelper = UserDatabaseHelper.getInstance(getContext(this) as common.UIAbilityContext);
+    
+    // 设置头像文字（用户名首字母）
+    if (this.currentUsername && this.currentUsername.length > 0) {
+      this.avatarText = this.currentUsername.charAt(0).toUpperCase();
+    }
+    
+    // 加载用户头像
+    this.loadUserAvatar();
+    
     // 添加事件通知
     this.addEvents();
     // 添加一条预定义的系统消息在列表列表里
     IMClientManager.getInstance().getMessageProvider().addSystemMessage('当前通信层，基于鸿蒙NEXT原生WebSocket');
+  }
+
+  /**
+   * 加载用户头像
+   */
+  async loadUserAvatar(): Promise<void> {
+    if (!this.userDbHelper || !this.currentUsername) {
+      return;
+    }
+    
+    try {
+      const savedAvatarId = await this.userDbHelper.getUserAvatarId(this.currentUsername);
+      if (savedAvatarId && savedAvatarId >= 1 && savedAvatarId <= 11) {
+        this.avatarId = savedAvatarId;
+        console.info(TAG + 'Avatar loaded, avatarId: ' + savedAvatarId);
+      } else {
+        this.avatarId = 1; // 默认头像ID
+        console.info(TAG + 'No custom avatar found, using default avatarId: 1');
+      }
+    } catch (err) {
+      console.error(TAG + 'Failed to load avatar: ' + JSON.stringify(err));
+      this.avatarId = 1; // 默认头像ID
+    }
   }
 
   /**
@@ -85,6 +119,8 @@ struct ChatPage {
     ToolKits.setKeyboardAvoidModeToRESIZE(this.getUIContext(), true);
     // 设置全面屏状态栏颜色
     ToolKits.setStatusBarColor(getContext(this), ToolKits.chat_page_title_color, ToolKits.chat_page_title_background_color);
+    // 重新加载头像，确保与"我的"页面同步
+    this.loadUserAvatar();
   }
 
   /**
@@ -228,7 +264,12 @@ struct ChatPage {
   build() {
     Column() {
       // 聊天界面自定义标题栏
-      CustomeTitleBar({ connectStatus: this.connectStatus, keepAliveStatus: this.keepAliveStatus })
+      CustomeTitleBar({ 
+        connectStatus: this.connectStatus, 
+        keepAliveStatus: this.keepAliveStatus,
+        avatarId: this.avatarId,
+        avatarText: this.avatarText
+      })
 
       // 聊天界面内容区
       Column() {

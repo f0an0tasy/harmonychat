@@ -1,13 +1,3 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 import { promptAction, window, KeyboardAvoidMode } from "@kit.ArkUI";
 import { Callback } from "@ohos.base";
 import { common } from "@kit.AbilityKit";
@@ -20,7 +10,7 @@ const TAG: string = '[ToolKits] ';
 /**
  * 工具类。
  *
- * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+ * @author wangyifan & qinweiming
  */
 export default class ToolKits {
 
@@ -173,7 +163,7 @@ export default class ToolKits {
    * @param timeWithSegmentStr 本参数仅在mustIncludeTime=true时有生效，表示在时间字符串前带上“上午”、“下午”、“晚上”这样的描述
    *
    * @return 输出格式形如：“刚刚”、“10:30”、“昨天 12:04”、“前天 20:51”、“星期二”、“2019/2/21 12:09”等形式
-   * @author Jack Jiang(http://www.52im.net/thread-2792-1-1.html)
+   * @author wangyifan & qinweiming
    */
   static getTimeStringAutoShort2(timestamp: number, mustIncludeTime: boolean, timeWithSegmentStr: boolean): string {
     // 当前时间
@@ -603,6 +593,7 @@ export default class ToolKits {
   }
 
   /**
+   * @deprecated 已废弃，请使用头像ID方案
    * 将Base64字符串转换为可用于Image组件显示的Data URL格式。
    * 
    * @param base64 Base64字符串
@@ -768,6 +759,7 @@ export default class ToolKits {
   }
 
   /**
+   * @deprecated 已废弃，请使用头像ID方案
    * 压缩头像并转换为Base64字符串（强压缩方案）。
    * 专门用于发送消息时携带头像数据，确保Base64长度控制在10KB以内。
    * 

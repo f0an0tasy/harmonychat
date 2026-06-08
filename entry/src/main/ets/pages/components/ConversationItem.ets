@@ -1,18 +1,8 @@
-/*
- * Copyright (C) 2024  即时通讯网(52im.net) & Jack Jiang.
- * The MobileIMSDK-鸿蒙Next客户端 Project. All rights reserved.
- *
- * 联系邮件：jack.jiang@52im.net
- * 联系微信：hellojackjiang
- * 联系QQ： 413980957
- * 技术社区：http://www.52im.net
- */
-
 /**
  * 会话列表项组件。
  * 显示单个会话的信息，包括头像、好友UID、最后一条消息、时间等。
  *
- * @author Jack Jiang
+ * @author wangyifan & qinweiming
  */
 @Component
 export struct ConversationItem {
@@ -24,6 +14,8 @@ export struct ConversationItem {
   @Prop lastMessageTime: number = 0;
   /** 是否置顶 */
   @Prop isPinned: boolean = false;
+  /** 最后一条消息发送者的头像ID（1-11），用于显示内置头像 */
+  @Prop avatarId: number = 1;
 
   /**
    * 格式化时间显示。
@@ -83,17 +75,28 @@ export struct ConversationItem {
   build() {
     Row() {
       // 左侧头像
-      Row() {
-        Text(this.getAvatarText())
-          .fontSize(20)
-          .fontColor(Color.White)
-          .fontWeight(FontWeight.Medium)
+      // === 关键修改：根据 avatarId 显示内置头像或字母头像 ===
+      if (this.avatarId >= 1 && this.avatarId <= 11) {
+        // 显示内置头像
+        Image($r('app.media.avatar_' + this.avatarId))
+          .width(48)
+          .height(48)
+          .borderRadius(24)
+          .objectFit(ImageFit.Cover)
+      } else {
+        // 回退到字母头像
+        Row() {
+          Text(this.getAvatarText())
+            .fontSize(20)
+            .fontColor(Color.White)
+            .fontWeight(FontWeight.Medium)
+        }
+        .width(48)
+        .height(48)
+        .borderRadius(24)
+        .backgroundColor('#0A59F7')
+        .justifyContent(FlexAlign.Center)
       }
-      .width(48)
-      .height(48)
-      .borderRadius(24)
-      .backgroundColor('#0A59F7')
-      .justifyContent(FlexAlign.Center)
 
       // 中间内容区
       Column() {
